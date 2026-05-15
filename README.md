@@ -17,15 +17,17 @@ own dog food.
 ## Repo layout
 
     WORKSPACE.md              the spec
-    AGENTS.md                 forward + reading order
+    AGENTS.md                 universal AAIF entry (read by any runtime)
+    CLAUDE.md → AGENTS.md     symlink (Claude Code reads this)
+    GEMINI.md → AGENTS.md     symlink (Gemini CLI reads this)
     0-storage/                (empty in spec repo; raw inputs slot)
     1-active/                 (empty in spec repo; working area slot)
     2-mind/
       atelier/                (empty in v0.1; user-stance content)
-      factory/                version log
+      factory/                version log + getting-started walkthrough
     3-playbook/               (empty in spec repo; spec is documentation)
     4-control/
-      principle/              operating principles
+      principle/              operating principles + runtime-integration
       rule/                   contribution rules
       runtime/                (empty; N/A for spec repo)
       external/               (empty; N/A for spec repo)
@@ -39,7 +41,11 @@ shape and populate when adopted operationally.
 1. This `README.md`
 2. `WORKSPACE.md` — the spec itself
 3. `4-control/principle/principle.md` — how to operate the workspace
-4. `4-control/rule/contribution.md` — how to propose changes
+4. `4-control/principle/runtime-integration.md` — per-runtime
+   integration (Claude Code, Gemini CLI, Codex CLI; verified against
+   official docs)
+5. `2-mind/factory/getting-started.md` — adoption walkthrough
+6. `4-control/rule/contribution.md` — how to propose changes
 
 ## Getting started for adopters
 

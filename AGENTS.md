@@ -9,7 +9,24 @@ human-agent collaboration.
 1. `WORKSPACE.md` — the spec
 2. `2-mind/factory/getting-started.md` — adoption walkthrough
 3. `4-control/principle/principle.md` — operating principles
-4. `4-control/rule/contribution.md` — contribution rules (this spec only)
+4. `4-control/principle/runtime-integration.md` — per-runtime integration spec (Claude Code, Gemini CLI, Codex CLI; verified against official docs)
+5. `4-control/rule/contribution.md` — contribution rules (this spec only)
+
+## Per-runtime entry
+
+This workspace adopts the AAIF universal entry pattern. Each runtime
+reads its own auto-discovered instruction file at the workspace root,
+all pointing at this `AGENTS.md`:
+
+- **Codex CLI** — reads `AGENTS.md` directly (native AAIF support).
+- **Claude Code** — reads `CLAUDE.md` → symlinked to `AGENTS.md`.
+- **Gemini CLI** — reads `GEMINI.md` → symlinked to `AGENTS.md`, or
+  configure `context.fileName: ["AGENTS.md", "GEMINI.md"]` in
+  `~/.gemini/settings.json`.
+
+See `4-control/principle/runtime-integration.md` for the full mapping
+including settings, MCP servers, subagents, hooks, and per-runtime
+specifics verified against official documentation.
 
 ## Conventions for working in this repo
 
