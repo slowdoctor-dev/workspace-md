@@ -43,20 +43,57 @@ because it appears later in the prompt context.
 
 Canonical config lives inside the workspace at
 `4-control/runtime/<runtime-name>/`. Symlinks bind canonical files to
-each runtime's expected location:
+the runtime's expected location.
+
+Two integration depths are possible — adopters choose:
+
+**Project-level (recommended; "run at repo root, just works"):**
+
+Each hosted CLI auto-discovers `<repo>/.<runtime>/` when invoked at the
+repo root. Symlinking those discovery paths to the workspace canonical
+makes settings apply automatically *only when in this workspace* —
+without polluting the user's global config.
 
 ```
-~/.claude/  ←→  4-control/runtime/claude/
-~/.gemini/  ←→  4-control/runtime/gemini/
-~/.codex/   ←→  4-control/runtime/codex/
+<repo>/.claude/settings.json    →  4-control/runtime/claude/settings.json
+<repo>/.codex/config.toml       →  4-control/runtime/codex/config.toml
+<repo>/.gemini/settings.json    →  4-control/runtime/gemini/settings.json
+<repo>/.mcp.json                →  4-control/external/mcp/claude.json
 ```
 
-Editing the canonical file in the workspace updates every runtime view.
-Per-runtime drift is prevented by construction.
+**User-level (optional; global default):**
+
+Symlinking `~/.<runtime>/` to the workspace canonical makes workspace
+settings the default for that runtime everywhere on the system. Useful
+for one-workspace machines; conflicts arise on multi-workspace machines.
+
+```
+~/.claude/settings.json   →  4-control/runtime/claude/settings.json
+~/.gemini/settings.json   →  4-control/runtime/gemini/settings.json
+~/.codex/config.toml      →  4-control/runtime/codex/config.toml
+```
+
+Hosted CLIs apply *project-level overrides user-level* precedence, so
+both can coexist when needed.
 
 **Secrets never live in `runtime/`.** Use the runtime's own credential
 mechanism, environment variables outside `.env`, or
 `~/.config/<workspace>-secrets/`.
+
+### Local LLM runtimes do NOT have project-level auto-discovery
+
+Ollama, LM Studio, and MLX do not look at `<repo>/.<name>/` or any
+repo-level convention when launched. The "just works at repo root"
+convenience does not apply natively. Workspace.md bridges this with
+bootstrap scripts in `3-playbook/act/script/`:
+
+- `3-playbook/act/script/ollama-up.sh` — builds canonical
+  `4-control/runtime/ollama/Modelfile` and starts the server.
+- `3-playbook/act/script/lmstudio-up.sh` — starts the LM Studio
+  server, optionally loads a model, and references canonical presets +
+  MCP config.
+
+These scripts are the local-LLM equivalent of the hosted-CLI symlinks.
 
 ---
 
@@ -153,13 +190,19 @@ mechanism, environment variables outside `.env`, or
 ### Mapping to workspace.md layers
 
 ```
-4-control/runtime/claude/CLAUDE.md       ←→ ~/.claude/CLAUDE.md
-                                          (or symlink to root AGENTS.md)
-4-control/runtime/claude/settings.json   ←→ ~/.claude/settings.json
-4-control/runtime/claude/agents/         ←→ ~/.claude/agents/
-4-control/runtime/claude/skills/         ←→ ~/.claude/skills/
+# Project-level (recommended; auto-discovered when running `claude` at repo root)
+<repo>/.claude/settings.json   ←→  4-control/runtime/claude/settings.json
+<repo>/.claude/agents/         ←→  4-control/runtime/claude/agents/
+<repo>/.claude/skills/         ←→  4-control/runtime/claude/skills/
+<repo>/.mcp.json               ←→  4-control/external/mcp/claude.json
+<repo>/CLAUDE.md               ←→  <repo>/AGENTS.md (root symlink)
+
+# User-level (optional)
+~/.claude/settings.json        ←→  4-control/runtime/claude/settings.json
+~/.claude/CLAUDE.md            ←→  4-control/runtime/claude/CLAUDE.md (or symlink to AGENTS.md)
+
+# Hooks (executable code lives in 3-playbook regardless)
 3-playbook/cue/hooks/<script>.sh         (referenced from settings.json)
-4-control/external/mcp/claude.json       ←→ <repo>/.mcp.json
 ```
 
 ---
@@ -253,13 +296,20 @@ mechanism, environment variables outside `.env`, or
 ### Mapping to workspace.md layers
 
 ```
-4-control/runtime/gemini/GEMINI.md       ←→ ~/.gemini/GEMINI.md
-                                          (or symlink to root AGENTS.md)
-4-control/runtime/gemini/settings.json   ←→ ~/.gemini/settings.json
-4-control/runtime/gemini/commands/       ←→ ~/.gemini/commands/
-4-control/runtime/gemini/agents/         ←→ ~/.gemini/agents/
+# Project-level (recommended; auto-discovered when running `gemini` at repo root)
+<repo>/.gemini/settings.json   ←→  4-control/runtime/gemini/settings.json
+<repo>/.gemini/commands/       ←→  4-control/runtime/gemini/commands/
+<repo>/.gemini/agents/         ←→  4-control/runtime/gemini/agents/
+<repo>/GEMINI.md               ←→  <repo>/AGENTS.md (root symlink)
+                                   (also set `context.fileName: ["AGENTS.md", "GEMINI.md"]`
+                                   in settings.json so both names are recognized)
+
+# User-level (optional)
+~/.gemini/settings.json        ←→  4-control/runtime/gemini/settings.json
+~/.gemini/GEMINI.md            ←→  4-control/runtime/gemini/GEMINI.md (or symlink to AGENTS.md)
+
+# Hooks (MCP servers live inside Gemini settings.json mcpServers key — no separate file)
 3-playbook/cue/hooks/<script>.sh         (referenced from settings.json)
-4-control/external/mcp/gemini.json       (or embedded in gemini settings.json)
 ```
 
 ---
@@ -374,13 +424,24 @@ url = "https://mcp.stripe.com"
 ### Mapping to workspace.md layers
 
 ```
-4-control/runtime/codex/AGENTS.md         ←→ ~/.codex/AGENTS.md
-                                            (or root AGENTS.md served directly)
-4-control/runtime/codex/AGENTS.override.md ←→ ~/.codex/AGENTS.override.md (optional)
-4-control/runtime/codex/config.toml       ←→ ~/.codex/config.toml
+# Project-level (recommended; loaded when running `codex` at repo root IF project is trusted)
+<repo>/.codex/config.toml      ←→  4-control/runtime/codex/config.toml
+<repo>/AGENTS.md                  (Codex reads directly — native AAIF)
+
+# User-level (optional)
+~/.codex/config.toml           ←→  4-control/runtime/codex/config.toml
+~/.codex/AGENTS.md             ←→  4-control/runtime/codex/AGENTS.md
+~/.codex/AGENTS.override.md    ←→  4-control/runtime/codex/AGENTS.override.md (optional)
+
+# Hooks (Codex hooks live in config.toml [hooks] or hooks.json — no separate dir convention)
 3-playbook/cue/hooks/<script>             (referenced from config.toml [hooks] or hooks.json)
+
+# MCP servers (TOML, embedded in config.toml [mcp_servers] table)
 4-control/external/mcp/codex.toml         ←→ extracted [mcp_servers] section
-                                            (or embedded directly in config.toml)
+                                            (or kept inline in config.toml)
+
+# IMPORTANT: Codex loads project-level config only when project is TRUSTED.
+# First invocation at this repo prompts for trust. See WORKSPACE.md adopter notes.
 ```
 
 ---

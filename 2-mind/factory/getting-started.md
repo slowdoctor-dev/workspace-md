@@ -120,9 +120,37 @@ For shared workspaces:
 
 ## 3. Attach your first runtime
 
-`4-control/runtime/` binds your LLM CLI / runtime to the workspace.
-One subfolder per runtime; canonical config files inside; symlinks
-bind them to the runtime's expected location.
+`4-control/runtime/` holds canonical config files for each LLM runtime;
+symlinks bind them to the runtime's expected discovery locations.
+
+### 3.0 Two integration depths — pick based on your needs
+
+**Project-level (recommended; comes pre-configured in Path A clone):**
+
+When a hosted CLI is invoked from a directory it treats as a project root, it auto-discovers `<repo>/.<runtime>/` and uses any settings there. Path A clones already include the following project-level symlinks:
+
+    .claude/settings.json  →  4-control/runtime/claude/settings.json
+    .codex/config.toml     →  4-control/runtime/codex/config.toml
+    .gemini/settings.json  →  4-control/runtime/gemini/settings.json
+    .mcp.json              →  4-control/external/mcp/claude.json
+
+This means **running `claude`, `codex`, or `gemini` at the repo root just works** — workspace settings apply only here, your global `~/.<runtime>/` is untouched.
+
+To customize, edit the canonical files at `4-control/runtime/<runtime>/` and `4-control/external/mcp/`. Changes propagate automatically through the symlinks.
+
+If you used Path B (manual): create these symlinks yourself:
+
+    mkdir -p .claude .codex .gemini
+    ln -s ../4-control/runtime/claude/settings.json .claude/settings.json
+    ln -s ../4-control/runtime/codex/config.toml    .codex/config.toml
+    ln -s ../4-control/runtime/gemini/settings.json .gemini/settings.json
+    ln -s 4-control/external/mcp/claude.json        .mcp.json
+
+**User-level (optional):**
+
+If you want workspace settings to apply globally for a runtime (everywhere on your machine, not just this workspace), follow the per-runtime commands below to symlink `~/.<runtime>/` to canonical workspace paths.
+
+Project-level overrides user-level when both are configured.
 
 ### 3.1 Claude Code (multi-file directory)
 
@@ -182,15 +210,49 @@ If `~/.claude/` doesn't exist yet (Claude Code not yet installed):
     mkdir -p ~/.codex
     ln -sf "$(pwd)/4-control/runtime/codex/config.toml" ~/.codex/config.toml
 
-### 3.4 Local LLM (Ollama)
+### 3.4 Local LLM backends (Ollama / LM Studio / MLX)
 
+Local LLM runtimes do not auto-discover `<repo>/.<name>/` — there is no
+project-level convenience comparable to the hosted CLIs. Workspace.md
+bridges this with bootstrap scripts in `3-playbook/act/script/`.
+
+**Ollama:**
+
+    # 1. Write your canonical Modelfile
     mkdir -p 4-control/runtime/ollama
     cat > 4-control/runtime/ollama/Modelfile <<'EOF'
     FROM llama3.1
     PARAMETER temperature 0.7
+    SYSTEM """
+    You are a focused assistant for this workspace.
+    """
     EOF
-    # Load into Ollama
-    ollama create my-llama -f 4-control/runtime/ollama/Modelfile
+
+    # 2. Run the bootstrap script (builds the model and starts the server)
+    ./3-playbook/act/script/ollama-up.sh my-llama
+
+    # OpenAI-compat endpoint: http://localhost:11434/v1
+    # Anthropic-compat endpoint (Claude Code): http://localhost:11434
+
+**LM Studio:**
+
+    # Run the bootstrap script (starts server, optionally loads a model)
+    ./3-playbook/act/script/lmstudio-up.sh "qwen/qwen2.5-coder-32b-instruct-gguf" 1234
+
+    # Workspace presets at 4-control/runtime/lmstudio/presets/*.json
+    # MCP config at 4-control/runtime/lmstudio/mcp.json
+    # OpenAI-compat: http://localhost:1234/v1
+    # Anthropic-compat: http://localhost:1234
+
+**MLX (Apple Silicon):**
+
+For most adopters, access MLX through Ollama (v0.19+ default engine on
+Apple Silicon) or LM Studio (native MLX since v0.3.4). Direct
+`mlx_lm.server` use is appropriate for research and fine-tuning:
+
+    pip install mlx-lm
+    mlx_lm.server --model mlx-community/Mistral-7B-Instruct-v0.3-4bit --port 8080
+    # OpenAI-compat at http://localhost:8080/v1 (no Anthropic-compat)
 
 ### 3.5 Platform notes
 

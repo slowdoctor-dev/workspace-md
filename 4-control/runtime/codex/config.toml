@@ -1,0 +1,7 @@
+# Codex CLI configuration for this workspace.
+# Fields are documented at:
+#   https://developers.openai.com/codex/config-basic
+#   https://developers.openai.com/codex/config-reference
+#
+# Note: Codex loads project-level config.toml only when the project is
+# marked as trusted. First-run prompts for trust; adopt via `codex` CLI.
