@@ -134,7 +134,7 @@ The only symlinks committed to the spec repo are:
 
 - `CLAUDE.md → AGENTS.md` (Claude Code reads CLAUDE.md natively; AAIF sibling pattern)
 - `GEMINI.md → AGENTS.md` (Gemini CLI reads GEMINI.md natively; AAIF sibling pattern; also set `context.fileName: ["AGENTS.md", "GEMINI.md"]` in Gemini settings if you want both names recognized)
-- `.mcp.json → 4-control/external/mcp/claude.json` (Claude MCP — LLM-agnostic canonical externalization; same servers list usable as documentation/reference for Codex/Gemini MCP via merge)
+- `.mcp.json → 4-control/external/mcp/registry.json` (LLM-agnostic MCP server registry; JSON format coincides with Claude's native schema, enabling the direct symlink. Codex/Gemini consume the same registry via merge into their native configs.)
 
 **Codex CLI note**: Codex loads project-level `.codex/config.toml` only when the project is marked *trusted*. First invocation at this repo prompts for trust (security feature against malicious checked-in configs).
 
@@ -148,7 +148,7 @@ Edit at workspace root:
   frontmatter)
 - `.claude/skills/<name>/SKILL.md` — reusable skills with optional
   supporting files
-- `.mcp.json` (symlink to `4-control/external/mcp/claude.json`) — MCP
+- `.mcp.json` (symlink to `4-control/external/mcp/registry.json`) — MCP
   server list; edit the symlink target directly
 
 Hook scripts referenced from `.claude/settings.json` live at

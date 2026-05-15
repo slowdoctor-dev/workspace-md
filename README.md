@@ -26,8 +26,9 @@ own dog food.
       config.toml             project config (committed directly)
     .gemini/                  Gemini CLI native discovery
       settings.json           project settings (committed directly)
-    .mcp.json                 → 4-control/external/mcp/claude.json
-                              (only externalized config — MCP is LLM-agnostic)
+    .mcp.json                 → 4-control/external/mcp/registry.json
+                              (only externalized config — MCP server list is
+                              LLM-agnostic; JSON format coincides with Claude's)
     0-storage/                (empty in spec repo; raw inputs slot)
     1-active/                 (empty in spec repo; working area slot)
     2-mind/
@@ -43,7 +44,7 @@ own dog food.
                               Ollama Modelfile, LM Studio presets, MLX scripts.
                               Hosted CLIs use their native .<runtime>/ above.)
       external/mcp/
-        claude.json           LLM-agnostic Claude MCP server registry
+        registry.json         LLM-agnostic MCP server registry
                               (symlink target for .mcp.json)
 
 Empty folders are intentional in v0.1 — the spec repo is

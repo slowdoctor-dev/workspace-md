@@ -74,9 +74,13 @@ runtime-agnostic. The same MCP server (e.g., `filesystem`,
 config-file format differs. Canonical management here prevents drift.
 
 ```
-4-control/external/mcp/claude.json    Claude MCP (JSON; symlinked from .mcp.json)
-4-control/external/mcp/codex.toml     Codex [mcp_servers] section (TOML)
-4-control/external/mcp/gemini.json    Gemini mcpServers (JSON; merged into .gemini/settings.json)
+4-control/external/mcp/registry.json  Canonical MCP server list (neutral name;
+                                      JSON format for compatibility with Claude's
+                                      native schema — symlinked from .mcp.json)
+4-control/external/mcp/codex.toml     Codex-format derivation (TOML; merged into
+                                      .codex/config.toml [mcp_servers] section)
+4-control/external/mcp/gemini.json    Gemini-format derivation (JSON;
+                                      merged into .gemini/settings.json mcpServers)
 4-control/external/openapi/<svc>.yaml OpenAPI specs (runtime-agnostic)
 4-control/external/webhook/<src>.yaml webhook configs (runtime-agnostic)
 ```
@@ -84,7 +88,7 @@ config-file format differs. Canonical management here prevents drift.
 Where format-compatible (Claude `.mcp.json` JSON), bind via symlink:
 
 ```
-.mcp.json  →  4-control/external/mcp/claude.json
+.mcp.json  →  4-control/external/mcp/registry.json
 ```
 
 Where format-incompatible (Codex TOML, Gemini embedded JSON), the
@@ -207,8 +211,9 @@ credential mechanism, environment variables outside `.env`, or
 <repo>/.claude/settings.json      Claude project settings (committed directly)
 <repo>/.claude/agents/<...>       Claude subagents
 <repo>/.claude/skills/<...>       Claude skills
-<repo>/.mcp.json                  symlinked to 4-control/external/mcp/claude.json
-                                  (LLM-agnostic MCP externalization)
+<repo>/.mcp.json                  symlinked to 4-control/external/mcp/registry.json
+                                  (LLM-agnostic MCP canonical; JSON format
+                                  happens to match Claude's native schema)
 <repo>/CLAUDE.md                  symlinked to <repo>/AGENTS.md
                                   (AAIF sibling — same content for any runtime)
 

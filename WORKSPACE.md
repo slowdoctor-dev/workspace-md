@@ -46,21 +46,31 @@ governed).
                   Codex, Gemini) use their native `.<runtime>/` at
                   repo root directly — no externalization.
       external/   LLM-agnostic external connections — MCP servers,
-                  OpenAPI specs, webhooks. Canonical here, referenced
-                  from each runtime's native config (or symlinked when
-                  format-compatible, e.g., `.mcp.json` → Claude MCP).
+                  OpenAPI specs, webhooks. Canonical here under neutral
+                  names (e.g., `mcp/registry.json`); each runtime's
+                  native config references via symlink (format-compatible
+                  case) or merge (format-incompatible case).
       rule/       enforceable workspace rules + document conventions
       .env        environment variables (optional; secrets stay outside)
+
+**Separability principle**: content that is *inseparable* from a
+specific runtime (settings.json, config.toml, hooks tied to a runtime's
+event model) lives at the runtime's native location — workspace.md
+does not over-manage it. Content that *can* exist independently of any
+specific runtime (MCP server list, OpenAPI specs, webhook configs,
+business rules, documents) lives runtime-independently under
+`4-control/external/`, `2-mind/`, etc.
 
 Hosted CLIs' native discovery paths live at repo root and are
 committed directly:
 
-    .claude/settings.json     Claude Code project settings
-    .codex/config.toml        Codex CLI project config (trust required)
-    .gemini/settings.json     Gemini CLI project settings
-    .mcp.json                 Claude Code MCP (symlinked to
-                              4-control/external/mcp/claude.json
-                              for LLM-agnostic management)
+    .claude/settings.json     Claude Code project settings (runtime-specific)
+    .codex/config.toml        Codex CLI project config (runtime-specific; trust required)
+    .gemini/settings.json     Gemini CLI project settings (runtime-specific)
+    .mcp.json                 → 4-control/external/mcp/registry.json
+                              (Claude's MCP discovery path; symlink to the
+                              LLM-agnostic canonical because the format
+                              happens to match Claude's native schema)
 
 ## Rules and principles
 

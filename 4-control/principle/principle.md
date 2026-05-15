@@ -91,7 +91,7 @@ consumes it — canonical management here prevents drift.
 - **3rd-party MCP server**: registration + connection metadata only in
   `external/mcp/<runtime>.<format>` (per-runtime export from the
   canonical registry). Where format-compatible, the runtime's native
-  config path symlinks here (e.g., `.mcp.json` → `external/mcp/claude.json`).
+  config path symlinks here (e.g., `.mcp.json` → `external/mcp/registry.json`).
   Where format-incompatible (Codex TOML, Gemini embedded JSON), the
   per-runtime export sits here as documentation/staging and is merged
   into the runtime's native config manually or via sync script. No source
