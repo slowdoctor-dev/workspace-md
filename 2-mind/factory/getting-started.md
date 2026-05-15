@@ -15,24 +15,11 @@ Best when you want our skeleton + principle.md + helper docs immediately.
 
 (Continue with step 1 below.)
 
-### Path B — apply the spec manually to your own repo
+### Path B — apply manually to an existing repo
 
-Best when you have an existing repo and want to retrofit the structure
-without inheriting our files.
-
-    cd <your-existing-repo>
-    mkdir -p 0-storage 1-active \
-             2-mind/{atelier,factory} \
-             3-playbook/{role,cue,act/{skill,script}} \
-             4-control/{principle,runtime,external,rule}
-    touch 0-storage/.gitkeep 1-active/.gitkeep \
-          2-mind/{atelier,factory}/.gitkeep \
-          3-playbook/{role,cue,act/{skill,script}}/.gitkeep \
-          4-control/{principle,runtime,external,rule}/.gitkeep
-    curl -sL <raw-url>/WORKSPACE.md > WORKSPACE.md
-    curl -sL <raw-url>/AGENTS.md.example > AGENTS.md   # optional
-
-(Skip step 2; jump to step 3.)
+`mkdir -p` the 5-folder structure (per WORKSPACE.md §Layout) and copy
+`WORKSPACE.md` + `AGENTS.md` from this repo. Skip §1 (file
+replacement) and proceed to §3.
 
 ## 1. Replace spec-repo-only files (Path A only)
 
@@ -274,118 +261,23 @@ Apple Silicon) or LM Studio (native MLX since v0.3.4). Direct
     codex status        # shows trust state and active config layers
     ollama list         # if Ollama running
 
-## 4. Add your first content (with examples)
+## 4. Add your first content
 
-Each layer has a typical first file. Examples below are minimum-viable
-shapes you can copy and adapt.
+Each layer has a typical first file. Refer to WORKSPACE.md §Layout
+and `4-control/principle/principle.md` §Operational principles for
+the canonical descriptions.
 
-### 4.1 First atelier file
+| Layer | Typical first file | Shape |
+|---|---|---|
+| `2-mind/atelier/<stance>.md` | user stance (verbatim) | markdown body, Owner words preserved |
+| `2-mind/factory/<topic>-notes.md` | agent-maintained synthesis | `## Sources` / `## Synthesis` / `## Open questions` |
+| `3-playbook/role/<agent>/AGENTS.md` | agent spec | scope / tools / system prompt / invocation / last reviewed |
+| `3-playbook/act/skill/<task>/SKILL.md` | natural-language procedure | YAML frontmatter (`name`, `description`) + Hermes sections: When to Use / Quick Reference / Procedure / Pitfalls / Verification |
+| `4-control/rule/<topic>.md` | enforceable constraint | Rule / Rationale / Scope / Enforcement |
 
-`2-mind/atelier/<stance>.md` — user-authored stance, kept verbatim.
-
-    ---
-    # Workspace voice
-
-    Direct over polite. Concrete over abstract. Numbers when available.
-
-    ## Vocabulary preferences
-
-    - "user" not "customer"
-    - "agent" not "AI assistant"
-
-    ## Things we don't do
-
-    - No marketing fluff.
-    - No fabricated examples.
-
-### 4.2 First factory file
-
-`2-mind/factory/<topic>-notes.md` — agent-maintained synthesis.
-
-    ---
-    # Notes — <topic>
-
-    > Maintained by: agent. Audited: <date>.
-
-    ## Sources
-    - <link / file path>
-
-    ## Synthesis
-    <bullet observations the agent collected>
-
-    ## Open questions
-    <items needing user audit>
-
-### 4.3 First agent spec
-
-`3-playbook/role/<agent>/AGENTS.md` — agent's behavioral spec.
-
-    ---
-    # <agent-name>
-
-    ## Scope
-    <one-line description of what this agent handles>
-
-    ## Tools
-    <whitelist; format depends on runtime>
-
-    ## System prompt
-    <the prompt the runtime gives this agent>
-
-    ## Invocation conditions
-    <when this agent is spawned vs. another>
-
-    ## Last reviewed
-    <date>
-
-### 4.4 First skill
-
-`3-playbook/act/skill/<task>/SKILL.md` — natural-language procedure.
-
-    ---
-    # <task-name>
-
-    ## When to use
-    <trigger description>
-
-    ## Steps
-
-    1. <first step in natural language>
-    2. <second step>
-    3. <verification>
-
-    ## Done criteria
-    <how the agent knows it's complete>
-
-### 4.5 First rule
-
-`4-control/rule/<topic>.md` — enforceable workspace constraint.
-
-    ---
-    # <topic>
-
-    ## Rule
-    <one-line constraint>
-
-    ## Rationale
-    <why this rule exists>
-
-    ## Scope
-    <which layers / which agents this binds>
-
-    ## Enforcement
-    <hook, lint, or convention>
-
-### 4.6 Adding your own principles
-
-`4-control/principle/principle.md` (kept from spec) covers
-*operational principles* universal across workspaces. Add your own
-workspace's orientation alongside:
-
-- **Append**: add sections to the existing `principle.md` under a new
-  heading `## <your workspace> principles`.
-- **Or split**: create `4-control/principle/<your-workspace>.md`
-  alongside the operational one.
+For your workspace's own principles, either append to `principle.md`
+under a new section, or create `4-control/principle/<your>.md`
+alongside.
 
 ## 5. Attach an MCP server (optional)
 

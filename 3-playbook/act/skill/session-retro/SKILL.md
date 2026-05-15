@@ -204,24 +204,15 @@ ratify and promote them to `3-playbook/act/skill/`.
 
 ## Safety / scope constraints
 
-- **Write only** to: durable workspace content layers
-  (`2-mind/atelier/`, `2-mind/factory/`, `3-playbook/role/`,
-  `3-playbook/cue/`, `3-playbook/act/`, `4-control/rule/`,
-  `4-control/principle/`, `1-active/skill-candidates/`) plus
-  *non-runtime-specific* root files (`AGENTS.md`, `README.md`,
-  `.gitignore`) when those genuinely need refinement.
-- **Do not edit** runtime-native configs (`.claude/`, `.codex/`,
-  `.gemini/`, root `.mcp.json`) — separability principle.
-- **Do not edit** `WORKSPACE.md` or `LICENSE` without explicit user
-  direction — `WORKSPACE.md` changes follow `4-control/rule/contribution.md`;
-  `LICENSE` changes are legal decisions.
-- **Do not edit** forwarder symlinks (`CLAUDE.md`, `GEMINI.md`,
-  `.mcp.json`) — they point at canonical targets already.
-- **Never auto-commit**. Stage edits; let the user commit (consistent
-  with `session-end`).
-- **Never delete** — only add, append, or modify. Deletion requires
-  explicit user instruction.
-- **Quote-verbatim** for Owner content; don't paraphrase emic material.
+- **In scope**: durable content layers (`2-mind/`, `3-playbook/`,
+  `4-control/`), `1-active/skill-candidates/`, and non-runtime-specific
+  root files (`AGENTS.md`, `README.md`, `.gitignore`).
+- **Out of scope** (separability + governance): runtime-native configs
+  (`.claude/`, `.codex/`, `.gemini/`, root `.mcp.json`), forwarder
+  symlinks (`CLAUDE.md`, `GEMINI.md`), `WORKSPACE.md` (follows
+  `contribution.md`), `LICENSE` (legal).
+- **Never auto-commit**, **never delete** (append/modify only),
+  **quote-verbatim** for atelier Owner content.
 
 ## Done criteria
 

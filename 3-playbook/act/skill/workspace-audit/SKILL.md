@@ -225,24 +225,16 @@ files came close, limits could tighten.
 
 ## Safety / scope constraints
 
-- **Write only** to: durable workspace content layers (`2-mind/`,
-  `3-playbook/`, `4-control/`) + `0-storage/_archive/` (for archived
-  content) + *non-runtime-specific* root files (`AGENTS.md`,
-  `README.md`, `.gitignore`) when audit findings justify edits.
-- **Do not edit** runtime-native configs (`.claude/`, `.codex/`,
-  `.gemini/`, root `.mcp.json`) — separability principle.
-- **Do not edit** `WORKSPACE.md` (spec; follows `contribution.md`)
-  or `LICENSE` (legal) without explicit user direction.
-- **Do not edit** forwarder symlinks (`CLAUDE.md`, `GEMINI.md`,
-  `.mcp.json`) — they already point at canonical targets.
-- **Never auto-commit**. Stage; user commits.
-- **Deletion requires explicit ratification** per item.
-- **Preserve history** — archive (`git mv`) is the default for any
-  potentially-valuable stale content. Pure deletion only for
-  unambiguous orphans.
-- **Quote-verbatim preservation** — when merging atelier content,
-  Owner stance must remain verbatim. The wrapper / index may change;
-  the quoted words may not.
+- **In scope**: durable content layers (`2-mind/`, `3-playbook/`,
+  `4-control/`), `0-storage/_archive/` (for archived content), and
+  non-runtime-specific root files (`AGENTS.md`, `README.md`,
+  `.gitignore`) when findings justify edits.
+- **Out of scope** (separability + governance): runtime-native configs,
+  forwarder symlinks, `WORKSPACE.md`, `LICENSE`.
+- **Never auto-commit**. Deletion requires explicit per-item
+  ratification; archive (`git mv` to `0-storage/_archive/`) is the
+  default for stale content with potential value. Atelier merges
+  preserve Owner stance verbatim.
 
 ## Done criteria
 

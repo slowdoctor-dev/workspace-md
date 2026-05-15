@@ -1,7 +1,0 @@
-# Codex CLI project-level configuration.
-# Fields documented at:
-#   https://developers.openai.com/codex/config-basic
-#   https://developers.openai.com/codex/config-reference
-#
-# Codex loads this file only when the project is marked as trusted.
-# First invocation at the repo root prompts for trust.
