@@ -35,8 +35,11 @@ own dog food.
       atelier/                (empty in v0.1; user-stance content)
       factory/                version log + getting-started walkthrough
     3-playbook/
-      act/script/             ollama-up.sh, lmstudio-up.sh (local LLM bootstrap)
-      (role, cue, act/skill)  (empty in spec repo; spec is documentation)
+      act/script/             check-workspace.sh, ollama-up.sh, lmstudio-up.sh
+      act/skill/              session-init/, session-start/, session-end/
+                              (lifecycle skills — natural-language procedures
+                              that agents read and follow with judgment)
+      (role, cue)             (empty in spec repo; spec is documentation)
     4-control/
       principle/              operating principles + runtime-integration
       rule/                   contribution rules

@@ -456,23 +456,32 @@ Then register in `4-control/runtime/claude/settings.json`:
 
 ## 7. Verify the workspace
 
-A minimum-conformance check (manual):
+Run the bundled integrity-check script:
 
-    # All 5 top-level folders present
-    for d in 0-storage 1-active 2-mind 3-playbook 4-control; do
-      [ -d "$d" ] && echo "OK: $d/" || echo "MISSING: $d/"
-    done
+    ./3-playbook/act/script/check-workspace.sh
 
-    # 2-mind and 4-control subfolders
-    for d in 2-mind/{atelier,factory} \
-             4-control/{principle,runtime,external,rule}; do
-      [ -d "$d" ] && echo "OK: $d/" || echo "MISSING: $d/"
-    done
+It validates the 5-layer topology, the canonical symlinks
+(`CLAUDE.md`, `GEMINI.md`, `.mcp.json`), required root files, and
+checks for accidentally committed secrets.
 
-    # No secrets accidentally committed
-    git grep -nE '(AKIA[0-9A-Z]{16}|sk-[a-zA-Z0-9]{32,}|password\s*=)' \
-      && echo "WARNING: possible secret in tree" \
-      || echo "OK: no obvious secrets"
+Use `--quick` for a folder-presence-only check, `--repair` to recreate
+broken canonical symlinks, `--quiet` to suppress non-error output.
+
+## 8. Session lifecycle skills (optional but recommended)
+
+Three skills under `3-playbook/act/skill/` guide an agent through
+session lifecycle:
+
+| Skill | When |
+|---|---|
+| `session-init` | Once after `git clone` — verifies structure, detects runtimes, briefs reading order |
+| `session-start` | Every working-session start — reports state, surfaces stale ephemerals, brings backend up |
+| `session-end` | Before disconnecting — summarizes changes, suggests commits, updates session log, prunes |
+
+Each SKILL.md is a natural-language procedure the agent reads and
+follows with judgment. Invoke explicitly (e.g., `/session-start` in
+Claude Code) or rely on autonomous invocation when the agent decides
+the context matches.
 
 ## Troubleshooting
 
