@@ -73,6 +73,17 @@ Should exit 0 before the session is considered closed cleanly.
 Give the user a brief: "Session closed. Committed N changes. Session
 log updated. State at close: <branch> clean."
 
+### 8. (Optional) Chain to `session-retro`
+
+If the session had substantive work (more than trivial fixes), ask
+the user whether to run `session-retro` next. `session-retro` extracts
+session learnings into durable workspace assets (skills, rules,
+atelier stances, factory notes) — the operational instance of the
+*use-driven evolution* design value.
+
+`session-end` (this skill) handles closure; `session-retro` handles
+consolidation. They are complementary and can be chained.
+
 ## Done criteria
 
 - All meaningful changes are either committed or explicitly acknowledged

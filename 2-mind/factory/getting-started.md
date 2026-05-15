@@ -469,19 +469,26 @@ broken canonical symlinks, `--quiet` to suppress non-error output.
 
 ## 8. Session lifecycle skills (optional but recommended)
 
-Three skills under `3-playbook/act/skill/` guide an agent through
+Four skills under `3-playbook/act/skill/` guide an agent through
 session lifecycle:
 
-| Skill | When |
-|---|---|
-| `session-init` | Once after `git clone` — verifies structure, detects runtimes, briefs reading order |
-| `session-start` | Every working-session start — reports state, surfaces stale ephemerals, brings backend up |
-| `session-end` | Before disconnecting — summarizes changes, suggests commits, updates session log, prunes |
+| Skill | When | Role |
+|---|---|---|
+| `session-init` | Once after `git clone` | Verify structure, detect runtimes, brief reading order |
+| `session-start` | Every working-session start | Report state, surface stale ephemerals, bring backend up |
+| `session-end` | Before disconnecting | Summarize changes, suggest commits, update session log, prune |
+| `session-retro` | After `session-end` (or mid-session) | **Use-driven evolution** — extract session learnings into durable assets across all 5 layers: successes → skills, failures → rules/hooks, declared preferences → atelier (verbatim), observations → factory, orientation refinements → principle. User ratifies each proposed change. |
 
 Each SKILL.md is a natural-language procedure the agent reads and
 follows with judgment. Invoke explicitly (e.g., `/session-start` in
 Claude Code) or rely on autonomous invocation when the agent decides
 the context matches.
+
+`session-retro` is the operational instance of the *use-driven
+evolution* core design value (`4-control/principle/principle.md`).
+Pattern lineage: Anthropic's Auto Dream + community skills
+(`retrospective`, `summarize-session`, `hookify`) — but layer-aware
+for the workspace.md 5-folder topology.
 
 ## Troubleshooting
 
