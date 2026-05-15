@@ -120,95 +120,95 @@ For shared workspaces:
 
 ## 3. Attach your first runtime
 
-`4-control/runtime/` holds canonical config files for each LLM runtime;
-symlinks bind them to the runtime's expected discovery locations.
+### 3.0 Where each runtime's config lives
 
-### 3.0 Two integration depths — pick based on your needs
+| Runtime category | Where configs live | Why |
+|---|---|---|
+| **Hosted CLI** (Claude Code / Codex / Gemini) | Native: `<repo>/.claude/`, `<repo>/.codex/`, `<repo>/.gemini/` at repo root — committed directly | Each CLI auto-discovers its own location; using native paths avoids symlink fragility |
+| **External connections** (MCP, OpenAPI, webhook) | LLM-agnostic canonical: `4-control/external/` | Same MCP server is conceptually identical regardless of which runtime calls it |
+| **Local LLM backends** (Ollama / LM Studio / MLX) | Workspace-defined canonical: `4-control/runtime/<name>/` | These runtimes have no native repo-level convention; the workspace creates one |
 
-**Project-level (recommended; comes pre-configured in Path A clone):**
+**Running `claude` / `codex` / `gemini` at the workspace root** auto-loads `<repo>/.<runtime>/settings.json` (or `.codex/config.toml`). Path A clones include empty placeholder files at these paths; fill them in directly. No symlinks, no bootstrap step.
 
-When a hosted CLI is invoked from a directory it treats as a project root, it auto-discovers `<repo>/.<runtime>/` and uses any settings there. Path A clones already include the following project-level symlinks:
+The only symlinks committed to the spec repo are:
 
-    .claude/settings.json  →  4-control/runtime/claude/settings.json
-    .codex/config.toml     →  4-control/runtime/codex/config.toml
-    .gemini/settings.json  →  4-control/runtime/gemini/settings.json
-    .mcp.json              →  4-control/external/mcp/claude.json
+- `CLAUDE.md → AGENTS.md` (Claude Code reads CLAUDE.md natively; AAIF sibling pattern)
+- `GEMINI.md → AGENTS.md` (Gemini CLI reads GEMINI.md natively; AAIF sibling pattern; also set `context.fileName: ["AGENTS.md", "GEMINI.md"]` in Gemini settings if you want both names recognized)
+- `.mcp.json → 4-control/external/mcp/claude.json` (Claude MCP — LLM-agnostic canonical externalization; same servers list usable as documentation/reference for Codex/Gemini MCP via merge)
 
-This means **running `claude`, `codex`, or `gemini` at the repo root just works** — workspace settings apply only here, your global `~/.<runtime>/` is untouched.
+**Codex CLI note**: Codex loads project-level `.codex/config.toml` only when the project is marked *trusted*. First invocation at this repo prompts for trust (security feature against malicious checked-in configs).
 
-To customize, edit the canonical files at `4-control/runtime/<runtime>/` and `4-control/external/mcp/`. Changes propagate automatically through the symlinks.
+### 3.1 Claude Code
 
-If you used Path B (manual): create these symlinks yourself:
+Edit at workspace root:
 
-    mkdir -p .claude .codex .gemini
-    ln -s ../4-control/runtime/claude/settings.json .claude/settings.json
-    ln -s ../4-control/runtime/codex/config.toml    .codex/config.toml
-    ln -s ../4-control/runtime/gemini/settings.json .gemini/settings.json
-    ln -s 4-control/external/mcp/claude.json        .mcp.json
+- `.claude/settings.json` — project-level settings (permissions, hooks,
+  env, model, etc.)
+- `.claude/agents/<name>.md` — subagent definitions (markdown + YAML
+  frontmatter)
+- `.claude/skills/<name>/SKILL.md` — reusable skills with optional
+  supporting files
+- `.mcp.json` (symlink to `4-control/external/mcp/claude.json`) — MCP
+  server list; edit the symlink target directly
 
-**User-level (optional):**
+Hook scripts referenced from `.claude/settings.json` live at
+`3-playbook/cue/hooks/` (executable code = act/script, but triggers are
+in cue per WORKSPACE.md spec).
 
-If you want workspace settings to apply globally for a runtime (everywhere on your machine, not just this workspace), follow the per-runtime commands below to symlink `~/.<runtime>/` to canonical workspace paths.
+Verify after editing:
 
-Project-level overrides user-level when both are configured.
-
-### 3.1 Claude Code (multi-file directory)
-
-Claude Code's `~/.claude/` is a *directory* containing `settings.json`,
-`agents/`, `commands/`, `hooks/`, `mcp.json`, and more. Two options:
-
-**Option A — symlink the whole directory** (recommended for new
-adopters; preserves all Claude Code state in the workspace):
-
-    # Backup first
-    cp -a ~/.claude ~/.claude.backup-$(date +%Y%m%d)
-
-    # Move .claude content into runtime/claude/
-    mkdir -p 4-control/runtime/claude
-    mv ~/.claude/* ~/.claude/.[!.]* 4-control/runtime/claude/ 2>/dev/null
-    rmdir ~/.claude
-
-    # Symlink the whole directory
-    ln -s "$(pwd)/4-control/runtime/claude" ~/.claude
-
-    # Verify
-    readlink ~/.claude
-    # → expected: /your/workspace/4-control/runtime/claude
-
-**Option B — symlink individual files** (lower risk; some files stay
-in `~/.claude/` outside the workspace):
-
-    mkdir -p 4-control/runtime/claude
-    for f in settings.json mcp.json; do
-      if [ -f ~/.claude/$f ]; then
-        mv ~/.claude/$f 4-control/runtime/claude/$f
-        ln -s "$(pwd)/4-control/runtime/claude/$f" ~/.claude/$f
-      fi
-    done
-
-If `~/.claude/` doesn't exist yet (Claude Code not yet installed):
-
-    mkdir -p 4-control/runtime/claude
-    echo '{}' > 4-control/runtime/claude/settings.json
-    mkdir -p ~/.claude && ln -s "$(pwd)/4-control/runtime/claude/settings.json" ~/.claude/settings.json
+    claude --version
+    # In Claude Code, `/memory` lists loaded CLAUDE.md / settings paths.
 
 ### 3.2 Gemini CLI
 
-    mkdir -p 4-control/runtime/gemini
-    [ -f ~/.gemini/config.json ] && \
-      mv ~/.gemini/config.json 4-control/runtime/gemini/config.json || \
-      echo '{}' > 4-control/runtime/gemini/config.json
-    mkdir -p ~/.gemini
-    ln -sf "$(pwd)/4-control/runtime/gemini/config.json" ~/.gemini/config.json
+Edit at workspace root:
 
-### 3.3 Codex
+- `.gemini/settings.json` — project-level settings (MCP `mcpServers`
+  key lives inside)
+- `.gemini/commands/<name>.toml` — custom slash commands
+- `.gemini/agents/<name>.md` — subagents
 
-    mkdir -p 4-control/runtime/codex
-    [ -f ~/.codex/config.toml ] && \
-      mv ~/.codex/config.toml 4-control/runtime/codex/config.toml || \
-      touch 4-control/runtime/codex/config.toml
-    mkdir -p ~/.codex
-    ln -sf "$(pwd)/4-control/runtime/codex/config.toml" ~/.codex/config.toml
+Recommended setting to recognize both `AGENTS.md` and `GEMINI.md`:
+
+    {
+      "context": {
+        "fileName": ["AGENTS.md", "GEMINI.md"]
+      }
+    }
+
+Gemini's MCP config is embedded in `settings.json` `mcpServers` key.
+For LLM-agnostic management, keep
+`4-control/external/mcp/gemini.json` as the canonical reference and
+merge changes into `.gemini/settings.json` manually (or via the
+future `mcp-sync.sh`).
+
+Verify:
+
+    gemini --version
+    # In Gemini CLI, `/memory` lists loaded GEMINI.md / AGENTS.md.
+
+### 3.3 Codex CLI
+
+Edit at workspace root:
+
+- `.codex/config.toml` — project-level config (MCP `[mcp_servers]`
+  table lives inside)
+- (Hooks: in `[hooks]` table inside config.toml, or separate
+  `hooks.json` per Codex docs)
+
+Codex's MCP is embedded in `config.toml` `[mcp_servers]` table. For
+LLM-agnostic management, keep `4-control/external/mcp/codex.toml` as
+the canonical reference and merge into `.codex/config.toml`
+`[mcp_servers]` section manually.
+
+**Trust on first run**: Codex prompts to trust this project on first
+invocation; approve to load project-level `.codex/config.toml`.
+
+Verify:
+
+    codex --version
+    codex status        # shows trust + active config layers
 
 ### 3.4 Local LLM backends (Ollama / LM Studio / MLX)
 
@@ -254,23 +254,25 @@ Apple Silicon) or LM Studio (native MLX since v0.3.4). Direct
     mlx_lm.server --model mlx-community/Mistral-7B-Instruct-v0.3-4bit --port 8080
     # OpenAI-compat at http://localhost:8080/v1 (no Anthropic-compat)
 
-### 3.5 Platform notes
+### 3.5 Platform and security notes
 
-- **macOS / Linux / WSL**: `ln -s` as shown.
-- **Windows native**: use `mklink /D` (directory) or `mklink` (file) in
-  `cmd.exe` as administrator, or `New-Item -ItemType SymbolicLink` in
-  PowerShell.
+- **Symlinks** in this spec are limited to three: `CLAUDE.md`,
+  `GEMINI.md` → `AGENTS.md`, and `.mcp.json` → canonical Claude MCP.
+  All three are git-tracked. On macOS / Linux / WSL they work out of
+  the box. On Windows native, `git config --global core.symlinks true`
+  + admin terminal (or PowerShell `New-Item -ItemType SymbolicLink`)
+  may be needed for them to materialize correctly after clone.
 - **Secrets never go inside the workspace.** Use the runtime's own
   credential mechanism, environment variables outside `.env`, or
   `~/.config/<workspace>-secrets/`.
 
 ### 3.6 Verify
 
-    # All symlinks under .claude or .gemini point inside the workspace
-    ls -la ~/.claude/ ~/.gemini/ 2>/dev/null | grep '^l'
-
-    # The runtime starts up normally
-    claude --version  # or gemini, codex, ollama
+    # Runtime starts and discovers project config
+    claude --version    # then in Claude Code: `/memory` to confirm CLAUDE.md loaded
+    gemini --version    # then in Gemini CLI: `/memory`
+    codex status        # shows trust state and active config layers
+    ollama list         # if Ollama running
 
 ## 4. Add your first content (with examples)
 

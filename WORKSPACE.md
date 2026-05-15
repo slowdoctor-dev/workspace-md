@@ -40,11 +40,27 @@ governed).
     4-control/    workspace configuration & governance
                   (reading order: principle → runtime → external → rule)
       principle/  workspace operating principles / philosophy
-      runtime/    per-runtime configs (Claude Code, Gemini CLI, Codex,
-                  local LLMs), canonical + symlinked
-      external/   external connections (MCP servers, OpenAPI specs, webhooks)
+      runtime/    configs for runtimes lacking a native repo-level
+                  convention (local LLMs: Ollama Modelfile, LM Studio
+                  presets, MLX scripts). Hosted CLIs (Claude Code,
+                  Codex, Gemini) use their native `.<runtime>/` at
+                  repo root directly — no externalization.
+      external/   LLM-agnostic external connections — MCP servers,
+                  OpenAPI specs, webhooks. Canonical here, referenced
+                  from each runtime's native config (or symlinked when
+                  format-compatible, e.g., `.mcp.json` → Claude MCP).
       rule/       enforceable workspace rules + document conventions
       .env        environment variables (optional; secrets stay outside)
+
+Hosted CLIs' native discovery paths live at repo root and are
+committed directly:
+
+    .claude/settings.json     Claude Code project settings
+    .codex/config.toml        Codex CLI project config (trust required)
+    .gemini/settings.json     Gemini CLI project settings
+    .mcp.json                 Claude Code MCP (symlinked to
+                              4-control/external/mcp/claude.json
+                              for LLM-agnostic management)
 
 ## Rules and principles
 

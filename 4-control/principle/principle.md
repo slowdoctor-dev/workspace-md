@@ -51,27 +51,51 @@ where possible.
 
 ### Runtime attachment (`4-control/runtime/`)
 
-Each runtime gets its own subfolder. Canonical config files live in the
-subfolder; symlinks bind them to the runtime's expected location:
+Workspace.md distinguishes two cases:
 
-    runtime/claude/settings.json → ~/.claude/settings.json
-    runtime/gemini/config.json   → ~/.gemini/settings.json
-    runtime/codex/config.toml    → ~/.codex/config.toml
-    runtime/ollama/Modelfile     → (local model definition)
+**Hosted CLIs with native repo-level discovery** (Claude Code, Codex
+CLI, Gemini CLI) — use their native paths at workspace root directly,
+NOT externalized to `4-control/runtime/`:
 
-Editing the canonical file updates every runtime's view. Per-runtime
-drift is prevented by construction. Secrets stay outside the workspace
+    <repo>/.claude/settings.json     Claude Code project settings
+    <repo>/.codex/config.toml        Codex CLI project config
+    <repo>/.gemini/settings.json     Gemini CLI project settings
+
+Running the CLI at the workspace root auto-discovers these. No
+symlinks, no bootstrap. (Codex CLI requires the project to be marked
+trusted on first run.)
+
+**Runtimes lacking native repo-level discovery** (Ollama, LM Studio,
+MLX) — canonical lives in `4-control/runtime/<name>/`:
+
+    4-control/runtime/ollama/Modelfile          Ollama model definition
+    4-control/runtime/lmstudio/presets/*.json   LM Studio system prompts
+    4-control/runtime/mlx/run.sh                MLX launch script
+
+Bootstrap scripts in `3-playbook/act/script/` (e.g., `ollama-up.sh`,
+`lmstudio-up.sh`) bridge these canonical configs to the running
+runtime.
+
+Secrets stay outside the workspace regardless of runtime
 (e.g., `~/.config/<workspace>-secrets/`).
 
 ### External connections (`4-control/external/`)
 
-MCP servers, OpenAPI specs, webhook configs.
+LLM-agnostic external connections. The same MCP server, OpenAPI spec,
+or webhook is conceptually identical regardless of which runtime
+consumes it — canonical management here prevents drift.
 
 - **Self-owned MCP server**: source code + connection config travel
   together in `external/mcp/<server-name>/`. Tests and language tooling
   stay scoped to that folder.
 - **3rd-party MCP server**: registration + connection metadata only in
-  `external/mcp/registry.<format>`. No source code (lives in its own
+  `external/mcp/<runtime>.<format>` (per-runtime export from the
+  canonical registry). Where format-compatible, the runtime's native
+  config path symlinks here (e.g., `.mcp.json` → `external/mcp/claude.json`).
+  Where format-incompatible (Codex TOML, Gemini embedded JSON), the
+  per-runtime export sits here as documentation/staging and is merged
+  into the runtime's native config manually or via sync script. No source
+  code (lives in its own
   repo).
 - **OpenAPI / REST**: spec files in `external/openapi/<service>.yaml`.
   Referenced from `act/skill/` or `act/script/` at call time.

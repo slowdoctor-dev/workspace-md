@@ -18,15 +18,16 @@ own dog food.
 
     WORKSPACE.md              the spec
     AGENTS.md                 universal AAIF entry (read by any runtime)
-    CLAUDE.md → AGENTS.md     symlink (Claude Code reads this)
-    GEMINI.md → AGENTS.md     symlink (Gemini CLI reads this)
-    .claude/                  project-level discovery
-      settings.json           → 4-control/runtime/claude/settings.json (symlink)
-    .codex/                   project-level discovery
-      config.toml             → 4-control/runtime/codex/config.toml (symlink)
-    .gemini/                  project-level discovery
-      settings.json           → 4-control/runtime/gemini/settings.json (symlink)
-    .mcp.json                 → 4-control/external/mcp/claude.json (symlink)
+    CLAUDE.md → AGENTS.md     symlink (Claude Code reads this natively)
+    GEMINI.md → AGENTS.md     symlink (Gemini CLI reads this natively)
+    .claude/                  Claude Code native discovery
+      settings.json           project settings (committed directly)
+    .codex/                   Codex CLI native discovery
+      config.toml             project config (committed directly)
+    .gemini/                  Gemini CLI native discovery
+      settings.json           project settings (committed directly)
+    .mcp.json                 → 4-control/external/mcp/claude.json
+                              (only externalized config — MCP is LLM-agnostic)
     0-storage/                (empty in spec repo; raw inputs slot)
     1-active/                 (empty in spec repo; working area slot)
     2-mind/
@@ -38,12 +39,12 @@ own dog food.
     4-control/
       principle/              operating principles + runtime-integration
       rule/                   contribution rules
-      runtime/
-        claude/settings.json  canonical Claude Code settings (workspace level)
-        codex/config.toml     canonical Codex CLI config
-        gemini/settings.json  canonical Gemini CLI settings
+      runtime/                (reserved for local LLM canonicals —
+                              Ollama Modelfile, LM Studio presets, MLX scripts.
+                              Hosted CLIs use their native .<runtime>/ above.)
       external/mcp/
-        claude.json           canonical Claude MCP server registry
+        claude.json           LLM-agnostic Claude MCP server registry
+                              (symlink target for .mcp.json)
 
 Empty folders are intentional in v0.1 — the spec repo is
 documentation-shaped, not operational. They demonstrate the spec's
