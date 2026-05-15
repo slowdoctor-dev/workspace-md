@@ -267,13 +267,16 @@ Each layer has a typical first file. Refer to WORKSPACE.md §Layout
 and `4-control/principle/principle.md` §Operational principles for
 the canonical descriptions.
 
+All sub-folders below are *optional* — create only when content
+arrives (lazy-structure). The 5 top-level folders are mandated.
+
 | Layer | Typical first file | Shape |
 |---|---|---|
-| `2-mind/atelier/<stance>.md` | user stance (verbatim) | markdown body, Owner words preserved |
-| `2-mind/factory/<topic>-notes.md` | agent-maintained synthesis | `## Sources` / `## Synthesis` / `## Open questions` |
-| `3-playbook/role/<agent>/AGENTS.md` | agent spec | scope / tools / system prompt / invocation / last reviewed |
-| `3-playbook/act/skill/<task>/SKILL.md` | natural-language procedure | YAML frontmatter (`name`, `description`) + Hermes sections: When to Use / Quick Reference / Procedure / Pitfalls / Verification |
-| `4-control/rule/<topic>.md` | enforceable constraint | Rule / Rationale / Scope / Enforcement |
+| `2-mind/atelier/<stance>.md` (opt.) | user stance (verbatim) | markdown body, Owner words preserved |
+| `2-mind/factory/<topic>-notes.md` (rec.) | agent-maintained synthesis | `## Sources` / `## Synthesis` / `## Open questions` |
+| `3-playbook/role/<agent>/AGENTS.md` (opt.) | agent spec | scope / tools / system prompt / invocation / last reviewed |
+| `3-playbook/act/skill/<task>/SKILL.md` (opt.) | natural-language procedure | YAML frontmatter + Hermes sections: When to Use / Quick Reference / Procedure / Pitfalls / Verification |
+| `4-control/rule/<topic>.md` (opt.) | enforceable constraint | Rule / Rationale / Scope / Enforcement |
 
 For your workspace's own principles, either append to `principle.md`
 under a new section, or create `4-control/principle/<your>.md`

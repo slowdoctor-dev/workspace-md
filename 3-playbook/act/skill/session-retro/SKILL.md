@@ -88,11 +88,13 @@ runtime's native config. Otherwise, route:
 
 All durable workspace files are in scope — `2-mind/`, `3-playbook/`,
 `4-control/`, plus root-level files (`AGENTS.md`, `README.md`,
-`.gitignore`) that are not runtime-specific. Files explicitly *out of
-scope* by separability principle: runtime-native configs
+`.gitignore`) that are not runtime-specific. Sub-folders are
+*optional* per workspace.md spec (lazy-structure) — create only when
+content arrives; route to where the target already exists when
+possible. Files explicitly *out of scope*: runtime-native configs
 (`.claude/`, `.codex/`, `.gemini/`), forwarder symlinks (`CLAUDE.md`,
 `GEMINI.md`, `.mcp.json`), and `WORKSPACE.md` (governed by
-`4-control/rule/contribution.md`; spec changes use that process).
+`4-control/rule/contribution.md`).
 
 Default to **NOT** creating new subfolders. Lazy structure: a new
 subfolder appears only on the *second* occurrence of a content kind.

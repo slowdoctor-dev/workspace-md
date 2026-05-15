@@ -45,19 +45,12 @@ if [[ "${QUICK}" -eq 1 ]]; then
   exit "${errors}"
 fi
 
-# 2-mind subfolders (fixed taxonomy)
-for d in 2-mind/atelier 2-mind/factory; do
-  [[ -d "${d}" ]] && ok "folder ${d}/" || fail "missing ${d}/"
-done
-
-# 3-playbook subfolders (fixed taxonomy; act/rule optional per spec)
-for d in 3-playbook/role 3-playbook/cue 3-playbook/act/skill 3-playbook/act/script; do
-  [[ -d "${d}" ]] && ok "folder ${d}/" || fail "missing ${d}/"
-done
-
-# 4-control subfolders (fixed taxonomy)
-for d in 4-control/principle 4-control/rule 4-control/runtime 4-control/external; do
-  [[ -d "${d}" ]] && ok "folder ${d}/" || fail "missing ${d}/"
+# Sub-folders are optional per workspace.md (lazy-structure); only
+# report which ones exist. Missing optional sub-folders are not errors.
+for d in 2-mind/atelier 2-mind/factory \
+         3-playbook/role 3-playbook/cue 3-playbook/act/skill 3-playbook/act/script \
+         4-control/principle 4-control/rule 4-control/runtime 4-control/external; do
+  [[ -d "${d}" ]] && ok "folder ${d}/ (present)" || log "skip: ${d}/ (optional, absent)"
 done
 
 # Canonical symlinks

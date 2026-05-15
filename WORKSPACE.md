@@ -23,9 +23,10 @@ One approach, not *the* approach.
 
 ## Layout
 
-Five top-level folders. Layers 0–3 form a content lifecycle; layer 4 is
-the orthogonal control axis (how the workspace itself is configured and
-governed).
+**Five top-level folders are mandated.** Sub-folder structure is
+*recommended* but optional — apply *lazy structure*: create
+sub-folders only when content arrives. Layers 0–3 form a content
+lifecycle; layer 4 is the orthogonal control axis.
 
 The structure is designed to **accumulate value with use** — each
 working session can leave knowledge in `2-mind/`, automation in
@@ -33,31 +34,28 @@ working session can leave knowledge in `2-mind/`, automation in
 workspace becomes a higher-leverage substrate over time. See
 `4-control/principle/principle.md` §Core design values.
 
-    0-storage/    raw assets / inputs
-    1-active/     main work area
-    2-mind/       curated knowledge
-      atelier/    user-authored, agent-assisted
-      factory/    agent-authored, user-audited
-    3-playbook/   automation
-      role/       agent specs (who acts)
-      cue/        triggers (when / where) — hooks, schedules, CI workflows
-      act/skill/  natural-language procedures (agent reads + follows)
-      act/script/ executable code (deterministic; no agent judgment)
-    4-control/    workspace configuration & governance
+    0-storage/    raw assets / inputs                       [mandated, may be empty]
+    1-active/     main work area                            [mandated, may be empty]
+    2-mind/       curated knowledge                         [mandated]
+      atelier/    user-authored, agent-assisted             (optional — when user-stance content exists)
+      factory/    agent-authored, user-audited              (recommended — most active workspaces accumulate here)
+    3-playbook/   automation                                [mandated, may be empty initially]
+      role/       agent specs (who acts)                    (optional — when you have agent specs)
+      cue/        triggers (hooks, schedules, CI workflows) (optional — when you have triggers)
+      act/skill/  natural-language procedures               (optional — when you have skills)
+      act/script/ executable code                           (optional — when you have scripts)
+    4-control/    workspace configuration & governance      [mandated]
                   (reading order: principle → runtime → external → rule)
-      principle/  workspace operating principles / philosophy
-      runtime/    configs for runtimes lacking a native repo-level
-                  convention (local LLMs: Ollama Modelfile, LM Studio
-                  presets, MLX scripts). Hosted CLIs (Claude Code,
-                  Codex, Gemini) use their native `.<runtime>/` at
-                  repo root directly — no externalization.
-      external/   LLM-agnostic external connections — MCP servers,
-                  OpenAPI specs, webhooks. Canonical here under neutral
-                  names (e.g., `mcp/registry.json`); each runtime's
-                  native config references via symlink (format-compatible
-                  case) or merge (format-incompatible case).
-      rule/       enforceable workspace rules + document conventions
-      .env        environment variables (optional; secrets stay outside)
+      principle/  workspace operating principles            (recommended — most workspaces benefit)
+      rule/       enforceable rules + document conventions  (optional — when constraints to enforce)
+      runtime/    canonical for runtimes lacking native     (optional — when using local LLMs:
+                  repo-level convention                       Ollama Modelfile, LM Studio presets, MLX)
+      external/   LLM-agnostic external connections —       (optional — when you have MCP servers,
+                  MCP, OpenAPI, webhooks                      OpenAPI specs, webhooks)
+      .env        environment variables                     (optional; secrets stay outside)
+
+Hosted CLIs (Claude Code, Codex, Gemini) use their native
+`.<runtime>/` at repo root directly — no externalization needed.
 
 **Separability principle**: content that is *inseparable* from a
 specific runtime (settings.json, config.toml, hooks tied to a runtime's

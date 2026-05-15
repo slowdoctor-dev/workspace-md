@@ -82,41 +82,41 @@ Forks are first-class.
 
 ### Per-layer operation
 
-**0-storage/** — Raw inputs only. Never edit in place. Long-term
-retention; never delete casually. Source-of-truth for anything that
-originated elsewhere (received documents, original media, archived
-snapshots).
+Only the 5 top-level folders are mandated. Sub-folder structure
+follows lazy-structure: create only when content arrives.
 
-**1-active/** — Disposable working space. High churn, no preservation
-guarantee. Drafts, scratch, in-progress work, candidate skills before
-ratification. If something matters to keep, graduate it to `2-mind/`.
+**0-storage/** [mandated] — Raw inputs only. Never edit in place.
+Long-term retention. Source-of-truth for anything that originated
+elsewhere (received documents, original media, archived snapshots).
 
-**2-mind/atelier/** — User-authored, agent-assisted. User's declared
-stance preserved verbatim — agents may scribe, organize, cross-link,
-but must not paraphrase the user's words. Brand identity, persona
-definitions, principles, curated reference.
+**1-active/** [mandated] — Disposable working space. High churn, no
+preservation guarantee. Drafts, scratch, work-in-progress. If
+something matters to keep, graduate it to `2-mind/`.
 
-**2-mind/factory/** — Agent-authored, user-audited. Synthesized
-observations, operational bookkeeping, logs, help, research synthesis.
-Updated regularly without asking; audited periodically by the user.
+**2-mind/atelier/** (optional) — User-authored, agent-assisted.
+Owner's declared stance preserved verbatim. Brand identity, persona,
+principles, curated reference. Create only when user-stance content
+exists; otherwise all 2-mind content lives in `factory/`.
 
-**3-playbook/role/** — Per-agent specs. Each agent uses single-file
-form (`role/<agent>.md`) or expanded subfolder form
-(`role/<agent>/{AGENTS.md, rules/, ...}`) when state is non-trivial.
-The tool whitelist in the agent's `AGENTS.md` is the only mechanism
-for tool restriction.
+**2-mind/factory/** (recommended) — Agent-authored, user-audited.
+Synthesized observations, operational bookkeeping, logs, help,
+research synthesis. Updated without asking; audited periodically.
 
-**3-playbook/cue/** — Event-driven triggers (hooks, schedules, CI
-workflows). Hook implementations are runtime-specific (Claude Code
-hooks ≠ Gemini hooks); not portable across runtimes without rewrite.
+**3-playbook/role/** (optional) — Per-agent specs. Each agent uses
+single-file (`role/<agent>.md`) or expanded subfolder form
+(`role/<agent>/{AGENTS.md, rules/, ...}`). Tool whitelist in the
+agent's `AGENTS.md` is the only mechanism for tool restriction.
 
-**3-playbook/act/skill/** — Natural-language procedures. One folder
-per skill containing `SKILL.md`. Agent reads and follows with judgment
-along the way.
+**3-playbook/cue/** (optional) — Event-driven triggers (hooks,
+schedules, CI workflows). Hook implementations are runtime-specific;
+not portable across runtimes without rewrite.
 
-**3-playbook/act/script/** — Deterministic executable code (bash,
-python, etc.). No agent judgment at runtime. Idempotent and testable
-where possible.
+**3-playbook/act/skill/** (optional) — Natural-language procedures.
+One folder per skill containing `SKILL.md`. Agent reads + follows
+with judgment.
+
+**3-playbook/act/script/** (optional) — Deterministic executable
+code. No agent judgment at runtime. Idempotent and testable.
 
 ### Runtime attachment (`4-control/runtime/`)
 

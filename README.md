@@ -29,34 +29,29 @@ own dog food.
     .mcp.json                 → 4-control/external/mcp/registry.json
                               (only externalized config — MCP server list is
                               LLM-agnostic; JSON format coincides with Claude's)
-    0-storage/                (empty in spec repo; raw inputs slot)
-    1-active/                 (empty in spec repo; working area slot)
-    2-mind/
-      atelier/                (empty in v0.1; user-stance content)
-      factory/                version log + getting-started walkthrough
-    3-playbook/
-      act/script/             check-workspace.sh, ollama-up.sh, lmstudio-up.sh
-      act/skill/              session-init/, session-start/, session-end/,
-                              session-retro/, workspace-audit/
-                              (lifecycle skills — session boundaries +
-                              accumulation (session-retro) + maintenance
-                              (workspace-audit). Pattern lineage: Anthropic
-                              Auto Dream, Nous Hermes Agent, hookify,
-                              claude-md-improver.)
-      (role, cue)             (empty in spec repo; spec is documentation)
-    4-control/
-      principle/              operating principles + runtime-integration
-      rule/                   contribution rules
-      runtime/                (reserved for local LLM canonicals —
-                              Ollama Modelfile, LM Studio presets, MLX scripts.
-                              Hosted CLIs use their native .<runtime>/ above.)
-      external/mcp/
-        registry.json         LLM-agnostic MCP server registry
-                              (symlink target for .mcp.json)
+    0-storage/                [mandated, empty in spec repo]
+    1-active/                 [mandated, empty in spec repo]
+    2-mind/                   [mandated]
+      factory/                version log + getting-started
+      (atelier/ omitted — no Owner-stance content; optional per spec)
+    3-playbook/               [mandated]
+      act/script/             check-workspace.sh, mcp-sync.sh,
+                              ollama-up.{sh,ps1}, lmstudio-up.{sh,ps1}
+      act/skill/              session-{init,start,end,retro}/, workspace-audit/
+                              (lifecycle skills; Hermes / Auto Dream lineage)
+      (role/, cue/ omitted — no agent specs or triggers; optional per spec)
+    4-control/                [mandated]
+      principle/              principle.md + runtime-integration.md
+      rule/                   contribution.md
+      external/mcp/           registry.json (canonical) + codex.toml / gemini.json
+                              (derivations from mcp-sync.sh)
+      (runtime/ omitted — no local LLM configs; optional per spec)
+    .github/workflows/        CI: check-workspace.sh on push/PR
 
-Empty folders are intentional in v0.1 — the spec repo is
-documentation-shaped, not operational. They demonstrate the spec's
-shape and populate when adopted operationally.
+Per workspace.md spec, 5 top-level folders are mandated; sub-folders
+are optional (*lazy-structure*: create on content arrival). This spec
+repo demonstrates by example — empty optional sub-folders are not
+pre-created.
 
 ## Reading order
 
