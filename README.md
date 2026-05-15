@@ -41,13 +41,29 @@ shape and populate when adopted operationally.
 3. `4-control/principle/principle.md` — how to operate the workspace
 4. `4-control/rule/contribution.md` — how to propose changes
 
-## Quick start for adopters
+## Getting started for adopters
+
+Full walkthrough: **`2-mind/factory/getting-started.md`**.
+
+TL;DR:
 
     git clone <this-repo>.git my-workspace
     cd my-workspace
-    rm -rf .git
-    # Edit README.md to describe your workspace.
-    # Fill in folders per WORKSPACE.md.
+    rm -rf .git && git init -q
+
+Then in `2-mind/factory/getting-started.md`:
+
+1. Replace spec-repo-only files (`README.md`, `LICENSE`, `AGENTS.md`,
+   `4-control/rule/contribution.md`, `2-mind/factory/version-log.md`).
+2. Attach your runtime (`4-control/runtime/<your-runtime>/` + symlink).
+3. Add your first content per layer.
+4. (Optional) Attach MCP servers and hooks.
+
+### Spec-repo-only files vs your workspace
+
+Files marked **replace** in the walkthrough describe THIS spec repo —
+they are not part of the workspace.md spec itself. Customize them for
+your workspace.
 
 ## License
 

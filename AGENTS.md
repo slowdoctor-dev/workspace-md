@@ -7,8 +7,9 @@ human-agent collaboration.
 ## Reading order
 
 1. `WORKSPACE.md` — the spec
-2. `4-control/principle/principle.md` — operating principles
-3. `4-control/rule/contribution.md` — contribution rules
+2. `2-mind/factory/getting-started.md` — adoption walkthrough
+3. `4-control/principle/principle.md` — operating principles
+4. `4-control/rule/contribution.md` — contribution rules (this spec only)
 
 ## Conventions for working in this repo
 
