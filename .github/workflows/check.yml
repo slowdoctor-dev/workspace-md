@@ -1,0 +1,21 @@
+name: workspace.md integrity
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run integrity check
+        run: ./3-playbook/act/script/check-workspace.sh
+
+      - name: Verify shell scripts parse
+        run: |
+          for f in 3-playbook/act/script/*.sh; do
+            bash -n "$f" || exit 1
+          done

@@ -103,10 +103,34 @@ Filename: `{YYYY-MM-DD}_{slug}.md` recommended.
 
 Detailed writing/naming conventions live in `4-control/rule/`.
 
+## Known limitations (v0.1)
+
+- **Empirical basis is small (n=2)**: this spec converged from two
+  independently-designed workspaces (LEAD clinic + a personal Life-OS),
+  both authored by the same person. Universality across domains and
+  authors is hypothesized, not proven.
+- **Use-driven evolution unverified empirically**: the *use compounds
+  usability* claim rests on the design, not on multi-month field data.
+- **Windows native fragility**: the three committed symlinks
+  (`CLAUDE.md`, `GEMINI.md`, `.mcp.json`) require
+  `git config --global core.symlinks true` + admin terminal to
+  materialize after clone on Windows native. Linux / macOS / WSL work
+  out of the box.
+- **No multi-user / team model**: Owner is assumed singular.
+  Team-shared workspaces with multiple humans are not addressed.
+- **Authorization / per-agent permission semantics**: not modeled in
+  the spec. Adopters should encode their own in `4-control/rule/`
+  and per-agent `AGENTS.md`.
+- **Heavy first-time read** (~1900 lines across spec docs): mitigated
+  by reading order, but not eliminated.
+
+These are acknowledged limits, not bugs. v0.x is pre-stable; spec
+matures with usage. See `4-control/rule/contribution.md`.
+
 ## See also
 
 - `AGENTS.md` — agent-behavior spec (sibling to this file).
 
 ---
 
-*Version: v0.1 — 2026-05-15*
+*Version: v0.1 — 2026-05-16 (pre-stable)*

@@ -73,7 +73,8 @@ separability: runtime-native configs (`.claude/`, `.codex/`,
 | Individual atelier stance file | ~100–150 lines |
 | Individual factory notes file | ~200 lines |
 | Individual `act/rule/<topic>.md` | ~100 lines |
-| Skill `SKILL.md` | ~200 lines |
+| Skill `SKILL.md` (procedural) | ~200 lines |
+| Skill `SKILL.md` (reference-density: lineage + multi-pattern guidance) | ~300 lines |
 | `README.md` | ~150 lines |
 
   When a file exceeds its limit, propose splitting by sub-topic (lazy
