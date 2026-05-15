@@ -8,8 +8,16 @@ A directory-topology convention for workspaces shared between human
 users and AI agents. Sits alongside `AGENTS.md` (which describes agent
 behavior); this file describes the *workspace they operate within*.
 
-Drop-in compatible with any LLM runtime (Claude Code, Gemini CLI,
-Codex, local LLMs like Ollama / LM Studio).
+Drop-in compatible with any LLM runtime:
+
+- *Hosted agent CLIs* — Claude Code, Gemini CLI, Codex CLI
+- *Local LLM backends* — Ollama, LM Studio, MLX (Apple Silicon)
+
+Hosted CLIs provide the agent loop and read instruction files; local
+backends provide token generation. The two are commonly paired
+(hosted CLI pointed at a local backend's HTTP endpoint).
+See `4-control/principle/runtime-integration.md` for per-runtime
+specs verified against official documentation.
 
 One approach, not *the* approach.
 
