@@ -37,11 +37,12 @@ own dog food.
     3-playbook/
       act/script/             check-workspace.sh, ollama-up.sh, lmstudio-up.sh
       act/skill/              session-init/, session-start/, session-end/,
-                              session-retro/
-                              (lifecycle skills — natural-language procedures
-                              that agents read and follow with judgment;
-                              session-retro consolidates session learnings
-                              into durable workspace assets)
+                              session-retro/, workspace-audit/
+                              (lifecycle skills — session boundaries +
+                              accumulation (session-retro) + maintenance
+                              (workspace-audit). Pattern lineage: Anthropic
+                              Auto Dream, Nous Hermes Agent, hookify,
+                              claude-md-improver.)
       (role, cue)             (empty in spec repo; spec is documentation)
     4-control/
       principle/              operating principles + runtime-integration

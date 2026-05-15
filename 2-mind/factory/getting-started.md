@@ -467,28 +467,56 @@ checks for accidentally committed secrets.
 Use `--quick` for a folder-presence-only check, `--repair` to recreate
 broken canonical symlinks, `--quiet` to suppress non-error output.
 
-## 8. Session lifecycle skills (optional but recommended)
+## 8. Lifecycle skills (optional but recommended)
 
-Four skills under `3-playbook/act/skill/` guide an agent through
-session lifecycle:
+Five skills under `3-playbook/act/skill/` guide an agent through the
+workspace lifecycle. Three handle session boundaries; two handle the
+*use-driven evolution* + *maintenance* loop.
+
+### Session-boundary skills
 
 | Skill | When | Role |
 |---|---|---|
 | `session-init` | Once after `git clone` | Verify structure, detect runtimes, brief reading order |
 | `session-start` | Every working-session start | Report state, surface stale ephemerals, bring backend up |
 | `session-end` | Before disconnecting | Summarize changes, suggest commits, update session log, prune |
-| `session-retro` | After `session-end` (or mid-session) | **Use-driven evolution** — extract session learnings into durable assets across all 5 layers: successes → skills, failures → rules/hooks, declared preferences → atelier (verbatim), observations → factory, orientation refinements → principle. User ratifies each proposed change. |
+
+### Evolution + maintenance skills
+
+| Skill | When | Role |
+|---|---|---|
+| `session-retro` | After `session-end`, mid-session at Hermes-style triggers, or on explicit request | **Accumulation** — extract session learnings into durable assets across all 5 layers. User ratifies each proposed change. |
+| `workspace-audit` | Periodically (monthly / quarterly) or on structural-limit trigger or explicit request | **Maintenance** — audit accumulated content for staleness, duplicates, contradictions, orphans, over-growth, low utility. Propose merges / splits / archives / prunes; user ratifies. |
+
+The two are complementary: `session-retro` *grows* the workspace
+(accumulation); `workspace-audit` *keeps it sharp* (consolidation /
+pruning). Without `workspace-audit`, the workspace drifts toward
+clutter; without `session-retro`, the workspace doesn't accumulate
+durable value from each session.
+
+### Pattern lineage
+
+Both skills draw from established patterns:
+
+- **Anthropic Auto Dream** (Claude Code background memory
+  consolidation) — surgical transcript grep, sandboxed write scope,
+  consolidation phases.
+- **Nous Research Hermes Agent** — periodic nudges, bounded memory
+  with consolidate-before-append, explicit skill-creation triggers
+  (≥ 5 tool calls / error recovery / user correction / non-trivial
+  workflow), standard SKILL.md sections (When to Use / Quick
+  Reference / Procedure / Pitfalls / Verification), compatibility
+  metadata (`requires_tools`, `fallback_for_tools`).
+- **`retrospective` (LobeHub)** — per-skill `learnings.md` /
+  `failures.md` accumulation.
+- **`summarize-session` + `claude-md-improver`** (Anthropic) — CLAUDE.md
+  compaction + audit.
+- **`hookify`** — problematic behavior → blocking hook.
 
 Each SKILL.md is a natural-language procedure the agent reads and
-follows with judgment. Invoke explicitly (e.g., `/session-start` in
-Claude Code) or rely on autonomous invocation when the agent decides
-the context matches.
-
-`session-retro` is the operational instance of the *use-driven
-evolution* core design value (`4-control/principle/principle.md`).
-Pattern lineage: Anthropic's Auto Dream + community skills
-(`retrospective`, `summarize-session`, `hookify`) — but layer-aware
-for the workspace.md 5-folder topology.
+follows with judgment. Invoke explicitly (`/session-retro`,
+`/workspace-audit`) or via autonomous invocation when description
+matches.
 
 ## Troubleshooting
 

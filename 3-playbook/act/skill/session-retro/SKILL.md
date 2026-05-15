@@ -7,9 +7,16 @@ description: Reflect on the just-completed working session and propose durable u
 
 ## When to use
 
-Run after `session-end` to convert session experience into durable
-workspace assets. Also useful mid-session when significant work has
-accumulated and the user wants to consolidate before continuing.
+Three invocation modes:
+
+- **Session-end chaining** — after `session-end`, convert just-closed
+  session into durable assets.
+- **Mid-session periodic nudge** — Hermes-style internal nudge: after
+  a substantial sub-task (e.g., ≥ 5 tool calls completed, or an error
+  was recovered from, or the user corrected an approach), reflect
+  before continuing.
+- **Explicit user invocation** — user types `/session-retro` to force
+  a consolidation pass.
 
 This skill is the operational instance of workspace.md's Core design
 value of **use-driven evolution** (see
@@ -17,10 +24,22 @@ value of **use-driven evolution** (see
 *more* `2-mind/` knowledge and `3-playbook/` automation than it
 started with.
 
-Related exemplars: Anthropic's *Auto Dream* (background memory
-consolidation), `retrospective` skill on LobeHub (per-skill learnings
-logs), `summarize-session` on Awesome Skills (CLAUDE.md compaction),
-`hookify` plugin (problematic behavior → hooks).
+Pattern lineage:
+
+- Anthropic's *Auto Dream* — background memory consolidation;
+  surgical transcript grep; sandboxed write scope.
+- Nous Research's *Hermes Agent* — periodic nudges, bounded prompt
+  memory with consolidation, autonomous skill creation from
+  trajectories with explicit triggers, standard skill SKILL.md
+  sections, three-layer separation (identity / facts / procedures).
+- `retrospective` (LobeHub az9713) — per-skill `learnings.md` /
+  `failures.md` accumulation.
+- `summarize-session` (Awesome Skills) — `CLAUDE.md` compaction
+  with reuse / non-obviousness criteria.
+- `hookify` (Anthropic plugin) — problematic behavior → blocking hook.
+
+This skill *layer-aware* maps these patterns onto workspace.md's
+5-folder topology.
 
 ## Steps
 
@@ -44,6 +63,21 @@ wasteful. Target:
   do Z" (Owner emic content)
 - **Verified facts** — research findings, source citations, anything
   the agent looked up and confirmed
+
+#### Hermes-style skill-creation triggers (sharp criteria)
+
+Borrowed from Hermes Agent. A *skill* should be proposed when one of
+these is true:
+
+- The agent used **≥ 5 tool calls** to complete a non-trivial workflow
+- The agent **recovered from an error / dead end** to find a working path
+- The **user corrected** the agent's initial approach
+- The session **discovered a non-trivial workflow** (multi-step
+  procedure with decision points)
+
+If none of the above triggers fire, the session probably produced
+factory notes / atelier stance / rule refinements — not a new skill.
+Resist creating thin skills.
 
 ### 2. Categorize each signal across the 5 layers
 
@@ -125,10 +159,23 @@ For each accepted item:
 - Resolve contradictions: prefer the more recent / corrected
   information; remove or annotate the older.
 - Stay within structural limits (e.g.,
-  `4-control/principle/principle.md` ≤ ~200 lines suggested).
-- For skills and scripts, ensure they are *self-contained*: SKILL.md
-  with frontmatter + clear steps, scripts with shebang + set -euo
-  pipefail + help.
+  `4-control/principle/principle.md` ≤ ~200 lines suggested,
+  individual atelier stance file ≤ ~100 lines).
+- **Consolidate-before-append** (Hermes pattern): if a target file is
+  approaching its structural limit (≥ 80% of suggested size), perform
+  a consolidation pass — merge near-duplicate entries, shorten
+  verbose-but-repetitive material — *before* adding the new entry.
+  Avoid letting files grow unbounded.
+- For skills, follow the **standard SKILL.md section structure**
+  (Hermes convention): `When to Use` / `Quick Reference` (one-screen
+  command/API table) / `Procedure` (numbered steps) / `Pitfalls` /
+  `Verification` (how the agent knows it's done). YAML frontmatter
+  includes `name`, `description`, and optionally
+  `requires_tools` / `fallback_for_tools` (Hermes compatibility
+  metadata so the skill is hidden when prerequisites are absent and
+  surfaces as a fallback when primary tools are missing).
+- For scripts, ensure they are *self-contained*: shebang +
+  `set -euo pipefail` + brief help text in header.
 
 ### 6. Append to session log
 
@@ -182,11 +229,31 @@ ratify and promote them to `3-playbook/act/skill/`.
 - Skill candidates parked in `1-active/skill-candidates/` for next
   session's potential graduation
 
+## Companion skill — `workspace-audit`
+
+`session-retro` (this skill) handles **accumulation** — adding new
+durable artifacts from session experience. Over time the workspace
+accumulates content that needs **maintenance** (pruning, consolidating,
+resolving contradictions, removing orphans).
+
+Maintenance is a separate skill: `workspace-audit`. Run it
+periodically (monthly / quarterly) or after bulk additions. The two
+skills are complementary — accumulation grows the workspace,
+maintenance keeps it sharp.
+
 ## References
 
 - Auto Dream (Anthropic Claude Code) —
   <https://claudefa.st/blog/guide/mechanics/auto-dream> +
   <https://www.mindstudio.ai/blog/what-is-claude-code-autodream-memory-consolidation/>
+- Hermes Agent (Nous Research) — self-improving agent framework with
+  periodic nudges, bounded memory, autonomous skill creation, and
+  standard SKILL.md sections —
+  <https://hermes-agent.nousresearch.com/docs/> + memory architecture
+  explained at <https://vectorize.io/articles/hermes-agent-memory-explained>
+- Hermes skill creation triggers + compatibility metadata —
+  <https://hermes-agent.nousresearch.com/docs/developer-guide/creating-skills> +
+  <https://hermes-agent.nousresearch.com/docs/user-guide/features/skills>
 - `retrospective` skill (per-skill learnings.md / failures.md) —
   <https://lobehub.com/skills/az9713-claude-code-continual-learning-skills-retrospective>
 - `summarize-session` (CLAUDE.md compaction) —
