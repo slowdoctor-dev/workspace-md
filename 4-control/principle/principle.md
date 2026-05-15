@@ -4,8 +4,90 @@ Principles that guide how this workspace operates. Distinct from rules
 (`../rule/`) that constrain specific actions: principles shape
 judgment, rules constrain action.
 
-Two sections — operational principles for any workspace.md adopter,
-and spec-evolution principles for proposing changes to WORKSPACE.md.
+Three sections — **core design values** (the philosophy behind the
+workspace.md pattern, runtime-independent), **operational principles**
+(how to operate each layer in day-to-day work), and **spec-evolution
+principles** (for proposing changes to WORKSPACE.md itself).
+
+---
+
+## Core design values
+
+These describe *why* the workspace.md pattern is shaped the way it is.
+They are runtime-independent — true regardless of which LLM CLI or
+local backend you attach.
+
+### Use-driven evolution
+
+The workspace is designed to *accumulate value with use*. Each working
+session leaves behind:
+
+- new knowledge in `2-mind/` — synthesized observations in `factory/`,
+  declared stance in `atelier/`
+- refined automation in `3-playbook/` — codified procedures in
+  `act/skill/`, mechanized tasks in `act/script/`, agent specs in
+  `role/`, triggers in `cue/`
+- distilled constraints in `4-control/rule/` and orientation in
+  `4-control/principle/`
+
+Over many sessions the workspace knows more, automates more, and
+requires less re-explanation. The structure deliberately rewards
+investment in `2-mind/` and `3-playbook/` — *use compounds usability*.
+This is the central reason for the 5-layer topology: each layer holds
+a different kind of accumulation, with clear graduation paths between
+them.
+
+A workspace that has not been used grows nothing. A workspace used
+across many sessions becomes a high-leverage substrate.
+
+### Separability
+
+Content tightly tied to one runtime (settings, permissions, hooks
+written against a runtime's event model) lives at that runtime's
+native location; the workspace.md spec does not over-manage it.
+
+Content that *can* exist independently of any specific runtime — MCP
+server lists, OpenAPI specs, webhook configs, business rules,
+documents, agent personas — lives runtime-independently in
+`4-control/external/`, `2-mind/`, etc.
+
+Separability defines where each piece of content belongs.
+
+### Lazy structure
+
+Subfolders are created on the *second* occurrence of a content kind,
+not preemptively. Empty placeholders (`.gitkeep`) wait until the
+content arrives. The spec does not predict the future; it accommodates
+growth.
+
+### One canonical home
+
+Each rule, each external resource, each operating principle has
+exactly one canonical location. Cross-domain references link directly
+to that path. Content that legitimately bridges multiple categories
+splits into separate pages; the spec forbids duplication.
+
+This is what enables `2-mind/` and `3-playbook/` accumulation without
+drift — there is always a single source of truth.
+
+### Native conventions where they exist; neutral where they don't
+
+The spec does not fight runtime-native conventions. Claude Code's
+`.claude/`, Codex's `.codex/`, Gemini's `.gemini/` — all used directly
+at the workspace root. The spec only invents convention
+(`4-control/runtime/<name>/`) where the runtime offers none (local LLM
+runtimes like Ollama and LM Studio).
+
+The spec accommodates reality rather than imposing artificial
+uniformity.
+
+### Open standard ethos
+
+This is one approach to workspace topology, not *the* approach.
+workspace.md is a sibling to agents.md, complementary, AAIF-aligned.
+Conventions proposed by this spec are marked as such; conventions
+borrowed from established standards are cited. Forks and divergent
+implementations are first-class.
 
 ---
 

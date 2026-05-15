@@ -27,6 +27,12 @@ Five top-level folders. Layers 0–3 form a content lifecycle; layer 4 is
 the orthogonal control axis (how the workspace itself is configured and
 governed).
 
+The structure is designed to **accumulate value with use** — each
+working session can leave knowledge in `2-mind/`, automation in
+`3-playbook/`, and distilled constraints in `4-control/`. The
+workspace becomes a higher-leverage substrate over time. See
+`4-control/principle/principle.md` §Core design values.
+
     0-storage/    raw assets / inputs
     1-active/     main work area
     2-mind/       curated knowledge
