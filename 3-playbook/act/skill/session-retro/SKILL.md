@@ -95,8 +95,18 @@ runtime's native config. Otherwise, route:
 | Constraint to enforce | `4-control/rule/<topic>.md` |
 | Trigger (hook, schedule, CI event) | `3-playbook/cue/<...>` (runtime-specific implementation) |
 | Per-agent behavior refinement | `3-playbook/role/<agent>/AGENTS.md` |
+| **Universal agent instruction** (applies to ANY agent in this workspace) | root `AGENTS.md` (AAIF universal entry) |
 | Workspace orientation / philosophy refinement | `4-control/principle/principle.md` Core design values |
+| Repo-level intro / adopter-facing change | `README.md` |
 | One-off note that doesn't fit anywhere | `2-mind/factory/session-log.md` only |
+
+All durable workspace files are in scope — `2-mind/`, `3-playbook/`,
+`4-control/`, plus root-level files (`AGENTS.md`, `README.md`,
+`.gitignore`) that are not runtime-specific. Files explicitly *out of
+scope* by separability principle: runtime-native configs
+(`.claude/`, `.codex/`, `.gemini/`), forwarder symlinks (`CLAUDE.md`,
+`GEMINI.md`, `.mcp.json`), and `WORKSPACE.md` (governed by
+`4-control/rule/contribution.md`; spec changes use that process).
 
 Default to **NOT** creating new subfolders. Lazy structure: a new
 subfolder appears only on the *second* occurrence of a content kind.
@@ -208,12 +218,19 @@ ratify and promote them to `3-playbook/act/skill/`.
 
 ## Safety / scope constraints
 
-- **Write only** to: `2-mind/atelier/`, `2-mind/factory/`,
-  `3-playbook/role/`, `3-playbook/cue/`, `3-playbook/act/`,
-  `4-control/rule/`, `4-control/principle/`, `1-active/skill-candidates/`.
-  *Do not* edit runtime-native configs (`.claude/`, `.codex/`,
-  `.gemini/`, root `.mcp.json`) — those are runtime-specific concerns
-  outside this skill's separability scope.
+- **Write only** to: durable workspace content layers
+  (`2-mind/atelier/`, `2-mind/factory/`, `3-playbook/role/`,
+  `3-playbook/cue/`, `3-playbook/act/`, `4-control/rule/`,
+  `4-control/principle/`, `1-active/skill-candidates/`) plus
+  *non-runtime-specific* root files (`AGENTS.md`, `README.md`,
+  `.gitignore`) when those genuinely need refinement.
+- **Do not edit** runtime-native configs (`.claude/`, `.codex/`,
+  `.gemini/`, root `.mcp.json`) — separability principle.
+- **Do not edit** `WORKSPACE.md` or `LICENSE` without explicit user
+  direction — `WORKSPACE.md` changes follow `4-control/rule/contribution.md`;
+  `LICENSE` changes are legal decisions.
+- **Do not edit** forwarder symlinks (`CLAUDE.md`, `GEMINI.md`,
+  `.mcp.json`) — they point at canonical targets already.
 - **Never auto-commit**. Stage edits; let the user commit (consistent
   with `session-end`).
 - **Never delete** — only add, append, or modify. Deletion requires

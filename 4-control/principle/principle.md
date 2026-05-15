@@ -29,13 +29,21 @@ session leaves behind:
   `role/`, triggers in `cue/`
 - distilled constraints in `4-control/rule/` and orientation in
   `4-control/principle/`
+- refined universal agent instructions in root `AGENTS.md` and
+  per-agent `AGENTS.md` files
+- evolved repo-level docs (`README.md`)
 
 Over many sessions the workspace knows more, automates more, and
 requires less re-explanation. The structure deliberately rewards
-investment in `2-mind/` and `3-playbook/` — *use compounds usability*.
-This is the central reason for the 5-layer topology: each layer holds
-a different kind of accumulation, with clear graduation paths between
-them.
+investment across these layers — *use compounds usability*.
+
+**Universality**: every durable workspace file is in scope for
+evolution and maintenance, not only the 4-layer content folders. Root
+`AGENTS.md` (universal agent instructions), per-agent `AGENTS.md`,
+`README.md`, and `.gitignore` all evolve over sessions. Out of scope:
+runtime-native configs (separability principle) and forwarder
+symlinks. `WORKSPACE.md` evolves through the spec's own contribution
+process (`4-control/rule/contribution.md`), not session-retro.
 
 A workspace that has not been used grows nothing. A workspace used
 across many sessions becomes a high-leverage substrate.

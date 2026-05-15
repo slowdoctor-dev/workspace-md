@@ -27,8 +27,13 @@ stays *sharp and relevant* (Hermes consolidation principle).
 
 ## What it audits
 
-Six classes of issue, each across the durable layers (`2-mind/`,
-`3-playbook/`, `4-control/`):
+Six classes of issue, across **all durable workspace files** —
+content layers (`2-mind/`, `3-playbook/`, `4-control/`) AND root-level
+files that are not runtime-specific (`AGENTS.md`, per-agent and
+per-runtime `AGENTS.md`, `README.md`, `.gitignore`). Out of scope per
+separability: runtime-native configs (`.claude/`, `.codex/`,
+`.gemini/`), forwarder symlinks, and `WORKSPACE.md` itself
+(governed by `contribution.md`).
 
 ### 1. Stale content
 
@@ -62,15 +67,25 @@ Six classes of issue, each across the durable layers (`2-mind/`,
 
 | File | Suggested limit |
 |---|---|
+| Root `AGENTS.md` | ~200 lines |
+| Per-agent `AGENTS.md` (`role/<agent>/AGENTS.md`) | ~150 lines |
 | `4-control/principle/principle.md` | ~200 lines |
 | Individual atelier stance file | ~100–150 lines |
 | Individual factory notes file | ~200 lines |
 | Individual `act/rule/<topic>.md` | ~100 lines |
 | Skill `SKILL.md` | ~200 lines |
+| `README.md` | ~150 lines |
 
   When a file exceeds its limit, propose splitting by sub-topic (lazy
   structure activation: now the second occurrence justifies a
   subfolder).
+
+  For root `AGENTS.md` specifically: per AAIF / Anthropic guidance,
+  keep it concise (under 200 lines is the soft target Anthropic
+  recommends for instruction-file adherence). When it grows beyond
+  that, extract topic-specific guidance into `4-control/rule/<topic>.md`
+  or per-agent `role/<agent>/AGENTS.md` and leave only the universal
+  index in root `AGENTS.md`.
 
 ### 5. Orphaned / broken references
 
@@ -210,9 +225,16 @@ files came close, limits could tighten.
 
 ## Safety / scope constraints
 
-- **Write only** to: durable workspace layers (`2-mind/`,
+- **Write only** to: durable workspace content layers (`2-mind/`,
   `3-playbook/`, `4-control/`) + `0-storage/_archive/` (for archived
-  content). *Do not* edit runtime-native configs.
+  content) + *non-runtime-specific* root files (`AGENTS.md`,
+  `README.md`, `.gitignore`) when audit findings justify edits.
+- **Do not edit** runtime-native configs (`.claude/`, `.codex/`,
+  `.gemini/`, root `.mcp.json`) — separability principle.
+- **Do not edit** `WORKSPACE.md` (spec; follows `contribution.md`)
+  or `LICENSE` (legal) without explicit user direction.
+- **Do not edit** forwarder symlinks (`CLAUDE.md`, `GEMINI.md`,
+  `.mcp.json`) — they already point at canonical targets.
 - **Never auto-commit**. Stage; user commits.
 - **Deletion requires explicit ratification** per item.
 - **Preserve history** — archive (`git mv`) is the default for any
