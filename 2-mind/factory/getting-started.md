@@ -1,136 +1,442 @@
 # Getting started
 
-A walkthrough for adopting workspace.md as your own workspace. Assumes
-you have just cloned this repo.
+A walkthrough for adopting workspace.md as your own workspace.
 
-## 1. Reset the repo as yours
+## 0. Pick your adoption path
 
-    cd <your-clone>
+### Path A — clone this repo as starter template
+
+Best when you want our skeleton + principle.md + helper docs immediately.
+
+    git clone <this-repo>.git my-workspace
+    cd my-workspace
     rm -rf .git
     git init -q
-    git add -A
-    git commit -q -m "<YYYY-MM-DD> initial commit"
 
-## 2. Replace spec-repo-only files
+(Continue with step 1 below.)
 
-These describe THIS spec repo, not your workspace. Replace or remove:
+### Path B — apply the spec manually to your own repo
 
-| File | Action |
-|---|---|
-| `README.md` | **Replace** with your workspace intro |
-| `LICENSE` | **Replace** with your license |
-| `AGENTS.md` | **Replace** — see [agents.md](https://agents.md) for the format |
-| `4-control/rule/contribution.md` | **Delete** or replace with your own contribution rules |
-| `2-mind/factory/version-log.md` | **Delete** or repurpose for your workspace's release log |
-| `2-mind/factory/getting-started.md` (this file) | **Delete** once you've finished onboarding |
+Best when you have an existing repo and want to retrofit the structure
+without inheriting our files.
+
+    cd <your-existing-repo>
+    mkdir -p 0-storage 1-active \
+             2-mind/{atelier,factory} \
+             3-playbook/{role,cue,act/{skill,script}} \
+             4-control/{principle,runtime,external,rule}
+    touch 0-storage/.gitkeep 1-active/.gitkeep \
+          2-mind/{atelier,factory}/.gitkeep \
+          3-playbook/{role,cue,act/{skill,script}}/.gitkeep \
+          4-control/{principle,runtime,external,rule}/.gitkeep
+    curl -sL <raw-url>/WORKSPACE.md > WORKSPACE.md
+    curl -sL <raw-url>/AGENTS.md.example > AGENTS.md   # optional
+
+(Skip step 2; jump to step 3.)
+
+## 1. Replace spec-repo-only files (Path A only)
+
+These describe THIS spec repo, not your workspace. Replace, remove, or
+customize:
+
+| File | Action | Template below |
+|---|---|---|
+| `README.md` | **Replace** | §1.1 |
+| `LICENSE` | **Replace** with your license | §1.2 |
+| `AGENTS.md` | **Replace** | §1.3 |
+| `4-control/rule/contribution.md` | **Delete** or replace | §1.4 |
+| `2-mind/factory/version-log.md` | **Delete** or repurpose | — |
+| `2-mind/factory/getting-started.md` (this file) | **Delete** after onboarding | — |
 
 Files to keep:
 
 | File | Action |
 |---|---|
 | `WORKSPACE.md` | **Keep** as your spec reference |
-| `4-control/principle/principle.md` | **Keep the operational section**; remove the "Spec-evolution principles" section (it applies only to evolving the spec itself) |
+| `4-control/principle/principle.md` | **Keep operational section**; delete "Spec-evolution principles" section |
 | All `.gitkeep` files | Keep until you fill the folder |
+
+### 1.1 README.md template
+
+    # <your-workspace>
+
+    Brief description of what this workspace is and who uses it.
+
+    Conforms to [workspace.md](https://github.com/<author>/workspace-md) v0.1.
+
+    ## Layout
+
+    See `WORKSPACE.md`.
+
+    ## Getting around
+
+    - `2-mind/atelier/<...>.md` — declared values / brand / persona
+    - `3-playbook/role/<...>` — agent specs
+    - `4-control/principle/principle.md` — operating principles
+
+### 1.2 LICENSE selection
+
+Pick what fits your workspace:
+
+- **MIT** — permissive, widely understood
+- **Apache 2.0** — permissive + patent grant
+- **CC-BY-SA 4.0** — for documentation/content workspaces (this spec uses this)
+- **Proprietary** — `Copyright (c) <year> <holder>. All rights reserved.`
+- **None** — delete the LICENSE file (full copyright by default; not recommended for public repos)
+
+### 1.3 AGENTS.md template
+
+    # AGENTS.md
+
+    <one-line workspace description>
+
+    ## Reading order
+
+    1. `README.md`
+    2. `WORKSPACE.md`
+    3. `4-control/principle/principle.md`
+    4. `<your workspace-specific docs>`
+
+    ## Conventions
+
+    - Vocabulary: <user-defined>
+    - Filename: `{YYYY-MM-DD}_{slug}.md`
+    - Rule scope: see `WORKSPACE.md` §Rules and principles
+
+### 1.4 contribution.md template (optional)
+
+Delete `4-control/rule/contribution.md` if your workspace is private.
+For shared workspaces:
+
+    # Contribution rules
+
+    ## Process
+    - <how proposals are reviewed>
+
+    ## Versioning
+    - <your scheme>
+
+## 2. (Skipped if Path B)
 
 ## 3. Attach your first runtime
 
-`4-control/runtime/` binds your LLM CLI to the workspace. One subfolder
-per runtime; canonical config files live inside; symlinks bind them to
-the runtime's expected location.
+`4-control/runtime/` binds your LLM CLI / runtime to the workspace.
+One subfolder per runtime; canonical config files inside; symlinks
+bind them to the runtime's expected location.
 
-### Claude Code
+### 3.1 Claude Code (multi-file directory)
+
+Claude Code's `~/.claude/` is a *directory* containing `settings.json`,
+`agents/`, `commands/`, `hooks/`, `mcp.json`, and more. Two options:
+
+**Option A — symlink the whole directory** (recommended for new
+adopters; preserves all Claude Code state in the workspace):
+
+    # Backup first
+    cp -a ~/.claude ~/.claude.backup-$(date +%Y%m%d)
+
+    # Move .claude content into runtime/claude/
+    mkdir -p 4-control/runtime/claude
+    mv ~/.claude/* ~/.claude/.[!.]* 4-control/runtime/claude/ 2>/dev/null
+    rmdir ~/.claude
+
+    # Symlink the whole directory
+    ln -s "$(pwd)/4-control/runtime/claude" ~/.claude
+
+    # Verify
+    readlink ~/.claude
+    # → expected: /your/workspace/4-control/runtime/claude
+
+**Option B — symlink individual files** (lower risk; some files stay
+in `~/.claude/` outside the workspace):
 
     mkdir -p 4-control/runtime/claude
-    mv ~/.claude/settings.json 4-control/runtime/claude/settings.json
-    ln -s "$(pwd)/4-control/runtime/claude/settings.json" ~/.claude/settings.json
+    for f in settings.json mcp.json; do
+      if [ -f ~/.claude/$f ]; then
+        mv ~/.claude/$f 4-control/runtime/claude/$f
+        ln -s "$(pwd)/4-control/runtime/claude/$f" ~/.claude/$f
+      fi
+    done
 
-### Gemini CLI
+If `~/.claude/` doesn't exist yet (Claude Code not yet installed):
+
+    mkdir -p 4-control/runtime/claude
+    echo '{}' > 4-control/runtime/claude/settings.json
+    mkdir -p ~/.claude && ln -s "$(pwd)/4-control/runtime/claude/settings.json" ~/.claude/settings.json
+
+### 3.2 Gemini CLI
 
     mkdir -p 4-control/runtime/gemini
-    mv ~/.gemini/config.json 4-control/runtime/gemini/config.json
-    ln -s "$(pwd)/4-control/runtime/gemini/config.json" ~/.gemini/config.json
+    [ -f ~/.gemini/config.json ] && \
+      mv ~/.gemini/config.json 4-control/runtime/gemini/config.json || \
+      echo '{}' > 4-control/runtime/gemini/config.json
+    mkdir -p ~/.gemini
+    ln -sf "$(pwd)/4-control/runtime/gemini/config.json" ~/.gemini/config.json
 
-### Codex
+### 3.3 Codex
 
     mkdir -p 4-control/runtime/codex
-    mv ~/.codex/config.toml 4-control/runtime/codex/config.toml
-    ln -s "$(pwd)/4-control/runtime/codex/config.toml" ~/.codex/config.toml
+    [ -f ~/.codex/config.toml ] && \
+      mv ~/.codex/config.toml 4-control/runtime/codex/config.toml || \
+      touch 4-control/runtime/codex/config.toml
+    mkdir -p ~/.codex
+    ln -sf "$(pwd)/4-control/runtime/codex/config.toml" ~/.codex/config.toml
 
-### Local LLM (Ollama)
+### 3.4 Local LLM (Ollama)
 
     mkdir -p 4-control/runtime/ollama
-    cat > 4-control/runtime/ollama/Modelfile <<EOF
+    cat > 4-control/runtime/ollama/Modelfile <<'EOF'
     FROM llama3.1
     PARAMETER temperature 0.7
     EOF
+    # Load into Ollama
+    ollama create my-llama -f 4-control/runtime/ollama/Modelfile
 
-### Platform notes
+### 3.5 Platform notes
 
-- **macOS / Linux / WSL**: `ln -s` as shown above.
-- **Windows native**: use `mklink` in `cmd.exe` (admin) or
-  `New-Item -ItemType SymbolicLink` in PowerShell.
+- **macOS / Linux / WSL**: `ln -s` as shown.
+- **Windows native**: use `mklink /D` (directory) or `mklink` (file) in
+  `cmd.exe` as administrator, or `New-Item -ItemType SymbolicLink` in
+  PowerShell.
 - **Secrets never go inside the workspace.** Use the runtime's own
-  credential mechanism or `~/.config/<workspace>-secrets/`.
+  credential mechanism, environment variables outside `.env`, or
+  `~/.config/<workspace>-secrets/`.
 
-## 4. Add your first content
+### 3.6 Verify
 
-Common first additions, by layer:
+    # All symlinks under .claude or .gemini point inside the workspace
+    ls -la ~/.claude/ ~/.gemini/ 2>/dev/null | grep '^l'
 
-- `2-mind/atelier/<stance>.md` — your design values, persona, principles
-- `2-mind/factory/<topic>-notes.md` — synthesis your agent maintains
-- `3-playbook/role/<agent>/AGENTS.md` — a custom agent spec
-- `3-playbook/act/skill/<task>/SKILL.md` — a natural-language procedure
-- `4-control/rule/<topic>.md` — a workspace-wide constraint
+    # The runtime starts up normally
+    claude --version  # or gemini, codex, ollama
 
-Refer to `WORKSPACE.md` for the canonical layout and
-`4-control/principle/principle.md` for per-layer operational guidance.
+## 4. Add your first content (with examples)
 
-## 5. (Optional) Attach an MCP server
+Each layer has a typical first file. Examples below are minimum-viable
+shapes you can copy and adapt.
 
-### Self-owned MCP server
+### 4.1 First atelier file
 
-    mkdir -p 4-control/external/mcp/<server-name>
-    # Put server source code + connection config inside this folder.
-    # Code and config travel together.
+`2-mind/atelier/<stance>.md` — user-authored stance, kept verbatim.
 
-### 3rd-party MCP server
+    ---
+    # Workspace voice
 
-    mkdir -p 4-control/external/mcp
-    # Add a registry file with server entries. Format depends on the
-    # runtime — check the runtime's MCP documentation.
+    Direct over polite. Concrete over abstract. Numbers when available.
 
-## 6. (Optional) Add a hook or scheduled trigger
+    ## Vocabulary preferences
 
-Hooks live in `3-playbook/cue/`. Implementation is runtime-specific
-(Claude Code hooks ≠ Gemini hooks). Example for Claude Code:
+    - "user" not "customer"
+    - "agent" not "AI assistant"
+
+    ## Things we don't do
+
+    - No marketing fluff.
+    - No fabricated examples.
+
+### 4.2 First factory file
+
+`2-mind/factory/<topic>-notes.md` — agent-maintained synthesis.
+
+    ---
+    # Notes — <topic>
+
+    > Maintained by: agent. Audited: <date>.
+
+    ## Sources
+    - <link / file path>
+
+    ## Synthesis
+    <bullet observations the agent collected>
+
+    ## Open questions
+    <items needing user audit>
+
+### 4.3 First agent spec
+
+`3-playbook/role/<agent>/AGENTS.md` — agent's behavioral spec.
+
+    ---
+    # <agent-name>
+
+    ## Scope
+    <one-line description of what this agent handles>
+
+    ## Tools
+    <whitelist; format depends on runtime>
+
+    ## System prompt
+    <the prompt the runtime gives this agent>
+
+    ## Invocation conditions
+    <when this agent is spawned vs. another>
+
+    ## Last reviewed
+    <date>
+
+### 4.4 First skill
+
+`3-playbook/act/skill/<task>/SKILL.md` — natural-language procedure.
+
+    ---
+    # <task-name>
+
+    ## When to use
+    <trigger description>
+
+    ## Steps
+
+    1. <first step in natural language>
+    2. <second step>
+    3. <verification>
+
+    ## Done criteria
+    <how the agent knows it's complete>
+
+### 4.5 First rule
+
+`4-control/rule/<topic>.md` — enforceable workspace constraint.
+
+    ---
+    # <topic>
+
+    ## Rule
+    <one-line constraint>
+
+    ## Rationale
+    <why this rule exists>
+
+    ## Scope
+    <which layers / which agents this binds>
+
+    ## Enforcement
+    <hook, lint, or convention>
+
+### 4.6 Adding your own principles
+
+`4-control/principle/principle.md` (kept from spec) covers
+*operational principles* universal across workspaces. Add your own
+workspace's orientation alongside:
+
+- **Append**: add sections to the existing `principle.md` under a new
+  heading `## <your workspace> principles`.
+- **Or split**: create `4-control/principle/<your-workspace>.md`
+  alongside the operational one.
+
+## 5. Attach an MCP server (optional)
+
+### 5.1 Self-owned MCP server (you maintain the code)
+
+    mkdir -p 4-control/external/mcp/my-server
+    cd 4-control/external/mcp/my-server
+    # Initialize your MCP server here (Node, Python, etc.)
+    npm init -y
+    # Source code + package.json + README.md live in this folder.
+
+### 5.2 3rd-party MCP server (referenced by config only)
+
+Format depends on your runtime. For Claude Code:
+
+    cat > 4-control/external/mcp/registry.json <<'EOF'
+    {
+      "mcpServers": {
+        "filesystem": {
+          "command": "npx",
+          "args": ["-y", "@modelcontextprotocol/server-filesystem", "/path/to/dir"]
+        }
+      }
+    }
+    EOF
+    # Import into Claude Code:
+    ln -sf "$(pwd)/4-control/external/mcp/registry.json" 4-control/runtime/claude/mcp.json
+
+For Gemini / Codex / others: consult the runtime's MCP docs and follow
+the same canonical-and-symlinked pattern.
+
+## 6. Add a hook (optional)
+
+Hooks live in `3-playbook/cue/hooks/`. Implementation is
+runtime-specific.
+
+### 6.1 Claude Code example (PreToolUse hook on Write)
 
     mkdir -p 3-playbook/cue/hooks
-    cat > 3-playbook/cue/hooks/pre-write.sh <<'EOF'
+    cat > 3-playbook/cue/hooks/block-secrets-write.sh <<'EOF'
     #!/usr/bin/env bash
-    # Runs before any Write tool call. Customize per your needs.
+    # Block writes containing common secret patterns.
+    set -e
+    input=$(cat)
+    if echo "$input" | grep -qE '(AKIA[0-9A-Z]{16}|sk-[a-zA-Z0-9]{32,})'; then
+      echo "blocked: looks like a credential" >&2
+      exit 2
+    fi
     exit 0
     EOF
-    chmod +x 3-playbook/cue/hooks/pre-write.sh
+    chmod +x 3-playbook/cue/hooks/block-secrets-write.sh
 
-Then reference the hook from `4-control/runtime/claude/settings.json`.
+Then register in `4-control/runtime/claude/settings.json`:
+
+    {
+      "hooks": {
+        "PreToolUse": [
+          {
+            "matcher": "Write",
+            "hooks": [
+              { "type": "command",
+                "command": "$CLAUDE_PROJECT_DIR/3-playbook/cue/hooks/block-secrets-write.sh" }
+            ]
+          }
+        ]
+      }
+    }
+
+## 7. Verify the workspace
+
+A minimum-conformance check (manual):
+
+    # All 5 top-level folders present
+    for d in 0-storage 1-active 2-mind 3-playbook 4-control; do
+      [ -d "$d" ] && echo "OK: $d/" || echo "MISSING: $d/"
+    done
+
+    # 2-mind and 4-control subfolders
+    for d in 2-mind/{atelier,factory} \
+             4-control/{principle,runtime,external,rule}; do
+      [ -d "$d" ] && echo "OK: $d/" || echo "MISSING: $d/"
+    done
+
+    # No secrets accidentally committed
+    git grep -nE '(AKIA[0-9A-Z]{16}|sk-[a-zA-Z0-9]{32,}|password\s*=)' \
+      && echo "WARNING: possible secret in tree" \
+      || echo "OK: no obvious secrets"
 
 ## Troubleshooting
 
-**Symlink breaks after moving the workspace?** Symlinks store absolute
-paths. Recreate with `ln -sf` after moving.
+**Symlink breaks after moving the workspace?**
+Symlinks store absolute paths. Recreate with `ln -sf` after moving, or
+use `realpath`-relative symlinks: `ln -sr <target> <link>`.
 
-**Runtime overwrites the symlinked config?** Some runtimes resolve
-symlinks on write. Either bind-mount the directory, or configure the
-runtime to import from your workspace path instead of replacing the
-config.
+**Claude Code overwrites the symlinked config?**
+Claude Code preserves symlinks on most writes. If yours is overwriting,
+upgrade Claude Code, or use Option B (file-level symlinks) instead of
+Option A (directory symlink).
 
-**Need all 5 top-level folders?** Yes — they are the spec. But
-subfolders can stay empty (`.gitkeep`) until you have content for them.
+**Runtime can't find the symlinked config?**
+Verify with `readlink ~/.claude/settings.json`. The target must be an
+absolute path that exists. WSL → Windows path translation is a common
+source of breakage; keep symlinks within one filesystem.
 
-**Can I rename folders or change the numeric prefix?** No. Top-level
-folder names + the `0-` to `4-` prefix are part of the spec. Renaming
-makes your workspace non-conformant.
+**Need all 5 top-level folders?**
+Yes — they're part of the spec. Subfolders may stay empty
+(`.gitkeep`) until populated.
 
-**Where do credentials and API keys go?** Outside the workspace.
-Recommended: `~/.config/<workspace>-secrets/`. Never commit a credential
-to a workspace.md-compliant repo.
+**Can I rename folders or change the numeric prefix?**
+No. Top-level folder names + `0-` to `4-` prefix are part of the spec.
+Renaming makes your workspace non-conformant to workspace.md.
+
+**Where do credentials and API keys go?**
+Outside the workspace. Recommended: `~/.config/<workspace>-secrets/`.
+Never commit a credential.
+
+**How do I know my workspace is conformant?**
+Run the verification script in §7. (A formal linter is on the roadmap.)
