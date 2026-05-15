@@ -62,12 +62,10 @@ shape and populate when adopted operationally.
 
 1. This `README.md`
 2. `WORKSPACE.md` — the spec itself
-3. `4-control/principle/principle.md` — how to operate the workspace
-4. `4-control/principle/runtime-integration.md` — per-runtime
-   integration (Claude Code, Gemini CLI, Codex CLI; verified against
-   official docs)
+3. `4-control/principle/principle.md` — operating principles + core design values
+4. `4-control/principle/runtime-integration.md` — per-runtime integration (verified against official docs)
 5. `2-mind/factory/getting-started.md` — adoption walkthrough
-6. `4-control/rule/contribution.md` — how to propose changes
+6. `4-control/rule/contribution.md` — contribution rules (this spec only)
 
 ## Getting started for adopters
 

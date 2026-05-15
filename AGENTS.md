@@ -7,10 +7,24 @@ human-agent collaboration.
 ## Reading order
 
 1. `WORKSPACE.md` — the spec
-2. `2-mind/factory/getting-started.md` — adoption walkthrough
-3. `4-control/principle/principle.md` — operating principles
-4. `4-control/principle/runtime-integration.md` — per-runtime integration spec (Claude Code, Gemini CLI, Codex CLI; verified against official docs)
+2. `4-control/principle/principle.md` — operating principles + core design values
+3. `4-control/principle/runtime-integration.md` — per-runtime integration (verified against official docs)
+4. `2-mind/factory/getting-started.md` — adoption walkthrough
 5. `4-control/rule/contribution.md` — contribution rules (this spec only)
+
+## Lifecycle skills
+
+Five skills under `3-playbook/act/skill/` codify session and
+maintenance lifecycle:
+
+- `session-init` — once after `git clone`
+- `session-start` — every working-session start
+- `session-end` — before disconnecting (chains to `session-retro`)
+- `session-retro` — accumulation: extract session learnings into
+  durable assets across all 5 layers + non-runtime root files
+  (`AGENTS.md`, `README.md`)
+- `workspace-audit` — periodic maintenance: prune / merge / refactor
+  accumulated content (the *groundskeeper*)
 
 ## Per-runtime entry
 

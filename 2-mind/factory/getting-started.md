@@ -411,11 +411,12 @@ Format depends on your runtime. For Claude Code:
       }
     }
     EOF
-    # Import into Claude Code:
-    ln -sf "$(pwd)/4-control/external/mcp/registry.json" 4-control/runtime/claude/mcp.json
 
-For Gemini / Codex / others: consult the runtime's MCP docs and follow
-the same canonical-and-symlinked pattern.
+The above writes directly to `.mcp.json` content via its symlink to
+`4-control/external/mcp/registry.json`. Claude Code reads `.mcp.json`
+at the repo root automatically. For Gemini, merge entries into
+`.gemini/settings.json` `mcpServers` key. For Codex, merge into
+`.codex/config.toml` `[mcp_servers]` table (TOML format).
 
 ## 6. Add a hook (optional)
 
@@ -520,19 +521,12 @@ matches.
 
 ## Troubleshooting
 
-**Symlink breaks after moving the workspace?**
-Symlinks store absolute paths. Recreate with `ln -sf` after moving, or
-use `realpath`-relative symlinks: `ln -sr <target> <link>`.
-
-**Claude Code overwrites the symlinked config?**
-Claude Code preserves symlinks on most writes. If yours is overwriting,
-upgrade Claude Code, or use Option B (file-level symlinks) instead of
-Option A (directory symlink).
-
-**Runtime can't find the symlinked config?**
-Verify with `readlink ~/.claude/settings.json`. The target must be an
-absolute path that exists. WSL → Windows path translation is a common
-source of breakage; keep symlinks within one filesystem.
+**Symlink breaks after clone (Windows native, copied without `-a`, etc.)?**
+The three committed symlinks (`CLAUDE.md`, `GEMINI.md`, `.mcp.json`)
+should materialize on Unix-family filesystems after `git clone`. On
+Windows native: `git config --global core.symlinks true` + admin
+terminal. To repair after the fact:
+`./3-playbook/act/script/check-workspace.sh --repair`.
 
 **Need all 5 top-level folders?**
 Yes — they're part of the spec. Subfolders may stay empty

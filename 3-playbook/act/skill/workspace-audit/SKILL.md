@@ -252,23 +252,12 @@ files came close, limits could tighten.
 - `audit-log.md` (or `session-log.md`) appended with summary
 - Optionally: next-audit-trigger date or condition noted
 
-## Pattern lineage
-
-- Anthropic's *Auto Dream* — consolidation phase: merge near-duplicates,
-  delete or archive stale, resolve contradictions, structural-limit
-  enforcement.
-- Hermes Agent *bounded memory + consolidation* — when memory hits
-  ~80% capacity, consolidate before adding new entries.
-- Anthropic's `claude-md-improver` — audit CLAUDE.md across a
-  codebase, propose improvements.
-- General software-engineering "groundskeeper" pattern — periodic
-  refactor / dead-code removal to keep the workspace navigable.
-
 ## References
 
-- Auto Dream consolidation —
-  <https://claudefa.st/blog/guide/mechanics/auto-dream>
-- Hermes Agent memory consolidation —
-  <https://vectorize.io/articles/hermes-agent-memory-explained>
-- `claude-md-improver` —
-  <https://github.com/anthropics/claude-plugins-official/blob/main/plugins/claude-md-management/skills/claude-md-improver/SKILL.md>
+Pattern lineage: Auto Dream consolidation phase + Hermes bounded
+memory (consolidate-before-append at 80%) + `claude-md-improver` +
+software-engineering "groundskeeper" practice.
+
+- Auto Dream — <https://claudefa.st/blog/guide/mechanics/auto-dream>
+- Hermes memory architecture — <https://vectorize.io/articles/hermes-agent-memory-explained>
+- `claude-md-improver` — <https://github.com/anthropics/claude-plugins-official/blob/main/plugins/claude-md-management/skills/claude-md-improver/SKILL.md>

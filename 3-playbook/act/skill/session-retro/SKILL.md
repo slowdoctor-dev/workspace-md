@@ -18,28 +18,14 @@ Three invocation modes:
 - **Explicit user invocation** — user types `/session-retro` to force
   a consolidation pass.
 
-This skill is the operational instance of workspace.md's Core design
-value of **use-driven evolution** (see
-`4-control/principle/principle.md`): each session should leave behind
-*more* `2-mind/` knowledge and `3-playbook/` automation than it
-started with.
+Operational instance of workspace.md's Core design value of
+**use-driven evolution** (`4-control/principle/principle.md`): each
+session should leave behind more durable assets than it started with.
 
-Pattern lineage:
-
-- Anthropic's *Auto Dream* — background memory consolidation;
-  surgical transcript grep; sandboxed write scope.
-- Nous Research's *Hermes Agent* — periodic nudges, bounded prompt
-  memory with consolidation, autonomous skill creation from
-  trajectories with explicit triggers, standard skill SKILL.md
-  sections, three-layer separation (identity / facts / procedures).
-- `retrospective` (LobeHub az9713) — per-skill `learnings.md` /
-  `failures.md` accumulation.
-- `summarize-session` (Awesome Skills) — `CLAUDE.md` compaction
-  with reuse / non-obviousness criteria.
-- `hookify` (Anthropic plugin) — problematic behavior → blocking hook.
-
-This skill *layer-aware* maps these patterns onto workspace.md's
-5-folder topology.
+Pattern lineage (full citations in References): Anthropic's *Auto
+Dream*, Nous *Hermes Agent*, community `retrospective` /
+`summarize-session` / `hookify` — *layer-aware* mapping onto
+workspace.md's 5-folder topology.
 
 ## Steps
 
@@ -260,26 +246,10 @@ maintenance keeps it sharp.
 
 ## References
 
-- Auto Dream (Anthropic Claude Code) —
-  <https://claudefa.st/blog/guide/mechanics/auto-dream> +
-  <https://www.mindstudio.ai/blog/what-is-claude-code-autodream-memory-consolidation/>
-- Hermes Agent (Nous Research) — self-improving agent framework with
-  periodic nudges, bounded memory, autonomous skill creation, and
-  standard SKILL.md sections —
-  <https://hermes-agent.nousresearch.com/docs/> + memory architecture
-  explained at <https://vectorize.io/articles/hermes-agent-memory-explained>
-- Hermes skill creation triggers + compatibility metadata —
-  <https://hermes-agent.nousresearch.com/docs/developer-guide/creating-skills> +
-  <https://hermes-agent.nousresearch.com/docs/user-guide/features/skills>
-- `retrospective` skill (per-skill learnings.md / failures.md) —
-  <https://lobehub.com/skills/az9713-claude-code-continual-learning-skills-retrospective>
-- `summarize-session` (CLAUDE.md compaction) —
-  <https://awesomeskill.ai/skill/ettsted2-summarize-session>
-- `session-memory` v2.0 (save/recall/consolidate CLI) —
-  <https://mcp.directory/skills/session-memory>
-- `hookify` (problematic-behavior → hook) —
-  <https://www.claudepluginhub.com/commands/ericgrill-hookify-plugins-anthropic-hookify/commands/hookify>
-- `claude-md-improver` (audit/improve CLAUDE.md, Anthropic official) —
-  <https://github.com/anthropics/claude-plugins-official/blob/main/plugins/claude-md-management/skills/claude-md-improver/SKILL.md>
-- Reflexion (verbal self-critique in episodic memory) —
-  <https://arxiv.org/abs/2303.11366>
+- Auto Dream (Anthropic) — <https://claudefa.st/blog/guide/mechanics/auto-dream>
+- Hermes Agent (Nous Research) — <https://hermes-agent.nousresearch.com/docs/> + memory architecture <https://vectorize.io/articles/hermes-agent-memory-explained> + skill triggers <https://hermes-agent.nousresearch.com/docs/developer-guide/creating-skills>
+- `retrospective` — <https://lobehub.com/skills/az9713-claude-code-continual-learning-skills-retrospective>
+- `summarize-session` — <https://awesomeskill.ai/skill/ettsted2-summarize-session>
+- `hookify` — <https://www.claudepluginhub.com/commands/ericgrill-hookify-plugins-anthropic-hookify/commands/hookify>
+- `claude-md-improver` — <https://github.com/anthropics/claude-plugins-official/blob/main/plugins/claude-md-management/skills/claude-md-improver/SKILL.md>
+- Reflexion (verbal self-critique) — <https://arxiv.org/abs/2303.11366>

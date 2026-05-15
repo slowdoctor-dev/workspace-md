@@ -19,54 +19,39 @@ local backend you attach.
 
 ### Use-driven evolution
 
-The workspace is designed to *accumulate value with use*. Each working
-session leaves behind:
-
-- new knowledge in `2-mind/` — synthesized observations in `factory/`,
-  declared stance in `atelier/`
-- refined automation in `3-playbook/` — codified procedures in
-  `act/skill/`, mechanized tasks in `act/script/`, agent specs in
-  `role/`, triggers in `cue/`
-- distilled constraints in `4-control/rule/` and orientation in
-  `4-control/principle/`
-- refined universal agent instructions in root `AGENTS.md` and
-  per-agent `AGENTS.md` files
-- evolved repo-level docs (`README.md`)
+The workspace *accumulates value with use*. Each session leaves
+behind: knowledge in `2-mind/` (factory synthesis + atelier stance),
+automation in `3-playbook/` (skill / script / role / cue), constraints
+and orientation in `4-control/` (rule + principle), refined universal
+or per-agent `AGENTS.md`, and evolved `README.md`.
 
 Over many sessions the workspace knows more, automates more, and
-requires less re-explanation. The structure deliberately rewards
-investment across these layers — *use compounds usability*.
+requires less re-explanation. Use compounds usability.
 
 **Universality**: every durable workspace file is in scope for
-evolution and maintenance, not only the 4-layer content folders. Root
-`AGENTS.md` (universal agent instructions), per-agent `AGENTS.md`,
-`README.md`, and `.gitignore` all evolve over sessions. Out of scope:
-runtime-native configs (separability principle) and forwarder
-symlinks. `WORKSPACE.md` evolves through the spec's own contribution
-process (`4-control/rule/contribution.md`), not session-retro.
+evolution and maintenance — not only the 4-layer content folders. Out
+of scope: runtime-native configs (separability), forwarder symlinks,
+and `WORKSPACE.md` (governed by `4-control/rule/contribution.md`).
 
 A workspace that has not been used grows nothing. A workspace used
 across many sessions becomes a high-leverage substrate.
 
 ### Separability
 
-Content tightly tied to one runtime (settings, permissions, hooks
-written against a runtime's event model) lives at that runtime's
-native location; the workspace.md spec does not over-manage it.
+Content tightly tied to one runtime (settings, permissions,
+runtime-specific hooks) lives at that runtime's native location;
+the spec does not over-manage it.
 
-Content that *can* exist independently of any specific runtime — MCP
-server lists, OpenAPI specs, webhook configs, business rules,
-documents, agent personas — lives runtime-independently in
-`4-control/external/`, `2-mind/`, etc.
-
-Separability defines where each piece of content belongs.
+Content that exists independently of any specific runtime — MCP server
+lists, OpenAPI specs, webhook configs, business rules, documents,
+agent personas — lives runtime-independently in `4-control/external/`,
+`2-mind/`, etc.
 
 ### Lazy structure
 
 Subfolders are created on the *second* occurrence of a content kind,
-not preemptively. Empty placeholders (`.gitkeep`) wait until the
-content arrives. The spec does not predict the future; it accommodates
-growth.
+not preemptively. The spec accommodates growth rather than predicting
+it.
 
 ### One canonical home
 
@@ -80,22 +65,16 @@ drift — there is always a single source of truth.
 
 ### Native conventions where they exist; neutral where they don't
 
-The spec does not fight runtime-native conventions. Claude Code's
-`.claude/`, Codex's `.codex/`, Gemini's `.gemini/` — all used directly
-at the workspace root. The spec only invents convention
-(`4-control/runtime/<name>/`) where the runtime offers none (local LLM
-runtimes like Ollama and LM Studio).
-
-The spec accommodates reality rather than imposing artificial
-uniformity.
+The spec does not fight runtime-native conventions. `.claude/`,
+`.codex/`, `.gemini/` are used directly at the workspace root. The
+spec only invents convention (`4-control/runtime/<name>/`) where the
+runtime offers none (Ollama, LM Studio, MLX).
 
 ### Open standard ethos
 
-This is one approach to workspace topology, not *the* approach.
-workspace.md is a sibling to agents.md, complementary, AAIF-aligned.
-Conventions proposed by this spec are marked as such; conventions
-borrowed from established standards are cited. Forks and divergent
-implementations are first-class.
+One approach, not *the* approach. Sibling to agents.md, AAIF-aligned.
+Proposed conventions are marked as such; borrowed ones are cited.
+Forks are first-class.
 
 ---
 
