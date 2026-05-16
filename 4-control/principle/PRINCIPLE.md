@@ -100,7 +100,7 @@ does not treat its contents as primary working material.
 **1-active/** [mandated] — Disposable working space. Drafts, scratch,
 work-in-progress. Graduate to `2-mind/` if it matters to keep.
 
-`2-mind/` holds the workspace's **knowledge systems** — two of them,
+**2-mind/** [mandated] — Knowledge systems. Two sub-folders,
 differentiated by *who authors* the knowledge.
 
 **2-mind/atelier/** [mandated] — Owner-authored knowledge. Identity,
@@ -117,7 +117,7 @@ it. Read at session start; injected verbatim into agent context.
 **2-mind/factory/** [mandated, may be empty initially] —
 Agent-authored knowledge. Synthesized observations, operational
 bookkeeping, session logs, research synthesis. Updated continuously
-without asking; Owner audits periodically. The accumulation slot for
+without asking; user audits periodically. The accumulation slot for
 use-driven evolution.
 
 **3-playbook/** [mandated, may be empty initially] — Automation:

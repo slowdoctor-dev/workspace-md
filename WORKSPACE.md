@@ -39,8 +39,8 @@ workspace becomes a higher-leverage substrate over time. See
 `4-control/principle/PRINCIPLE.md` §Core design values.
 
     0-storage/    general file storage (LLM-passive)        [mandated]
-    1-active/     main work area (LLM-active)               [mandated]
-    2-mind/       knowledge systems (LLM-active)            [mandated]
+    1-active/     main work area                            [mandated]
+    2-mind/       knowledge systems                         [mandated]
       atelier/    Owner-authored knowledge                  [mandated]
         SOUL.md   workspace identity / animating principles [mandated — every workspace has identity, even minimal]
         ...       additional Owner-stance files             (optional)
@@ -51,15 +51,15 @@ workspace becomes a higher-leverage substrate over time. See
       act/skill/  natural-language procedures               (optional — when you have skills)
       act/script/ executable code                           (optional — when you have scripts)
     4-control/    workspace configuration & governance      [mandated]
-                  (reading order: principle → external)
+                  (reading order: principle → external → runtime → rule)
       principle/    workspace operating principles            [mandated]
         PRINCIPLE.md  runtime-independent operating discipline [mandated]
         ...           additional principle files              (optional)
-      rule/       enforceable rules + document conventions  (optional — when constraints to enforce)
-      runtime/    canonical for runtimes lacking native     (optional — when using local LLMs:
-                  repo-level convention                       Ollama Modelfile, LM Studio presets, MLX)
       external/   LLM-agnostic external connections —       (optional — when you have MCP servers,
                   MCP, OpenAPI, webhooks                      OpenAPI specs, webhooks)
+      runtime/    canonical for runtimes lacking native     (optional — when using local LLMs:
+                  repo-level convention                       Ollama Modelfile, LM Studio presets, MLX)
+      rule/       enforceable rules + document conventions  (optional — when constraints to enforce)
 
 Secrets and credentials never live inside the workspace — see
 `4-control/principle/PRINCIPLE.md` §Runtime attachment for the
