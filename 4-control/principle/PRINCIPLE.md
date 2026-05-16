@@ -13,19 +13,22 @@ principles** (how to operate each layer in day-to-day work).
 ## Core design values
 
 These describe *why* the workspace.md pattern is shaped the way it is.
-Runtime-independent.
+Runtime-independent. Each value below states its core goal first,
+then the mechanism that enables it.
 
 ### Use-driven evolution *(coined by this spec)*
 
-The workspace *accumulates value with use*. Each session leaves
-behind: knowledge in `2-mind/`, automation in `3-playbook/`,
-constraints and orientation in `4-control/`, refined `AGENTS.md`.
+**The core goal**: the workspace accumulates value with use — it
+becomes a higher-leverage substrate the more it is used. Each
+session leaves behind durable assets so the next session knows more,
+automates more, and requires less re-explanation. Use compounds
+usability.
 
-Over many sessions the workspace knows more, automates more, and
-requires less re-explanation. Use compounds usability.
-
-A workspace that has not been used grows nothing. A workspace used
-across many sessions becomes a high-leverage substrate.
+Each session deposits knowledge into `2-mind/`, automation into
+`3-playbook/`, constraints and orientation into `4-control/`, refined
+`AGENTS.md`. A workspace that has not been used grows nothing. A
+workspace used across many sessions becomes a high-leverage
+substrate.
 
 ### Separability *(general SW vocabulary; framing here is spec-specific)*
 
@@ -36,20 +39,27 @@ content, identity, and operating discipline carry over unchanged.
 Separability is what turns "LLM-agnostic" from a label into an
 operational property.
 
-The placement rule that enables this: content tightly tied to one
-runtime (settings, permissions, runtime-specific hooks) lives at
-that runtime's native location. Content that exists independently
-of any specific runtime — MCP server lists, OpenAPI specs, webhook
-configs, business rules, documents, agent personas — lives
-runtime-independently in `4-control/external/`, `2-mind/`, etc.
+Content tightly tied to one runtime (settings, permissions,
+runtime-specific hooks) lives at that runtime's native location.
+Content that exists independently of any specific runtime — MCP
+server lists, OpenAPI specs, webhook configs, business rules,
+documents, agent personas — lives runtime-independently in
+`4-control/external/`, `2-mind/`, etc.
 
 ### Lazy structure *(borrowed from programming "lazy evaluation"; application to directory topology proposed by this spec)*
 
+**The core goal**: structure follows actual content, not anticipated
+content. The spec accommodates growth rather than predicting it,
+avoiding premature classification overhead.
+
 Subfolders are created on the *second* occurrence of a content kind,
-not preemptively. The spec accommodates growth rather than predicting
-it.
+not preemptively.
 
 ### One canonical home *(adapted from DRY; "canonical home" phrasing proposed by this spec)*
+
+**The core goal**: every piece of content has one source of truth so
+the workspace can grow without drift. Cross-domain references link
+directly to the canonical path.
 
 Each rule, each external resource, each operating principle has
 exactly one canonical location. Content that legitimately bridges
@@ -58,15 +68,20 @@ duplication.
 
 ### Native conventions where they exist; neutral where they don't *(framing proposed by this spec)*
 
-The spec does not fight runtime-native conventions. `.claude/`,
-`.codex/`, `.gemini/` are used directly at the workspace root. The
-spec only invents convention (`4-control/runtime/<name>/`) where the
-runtime offers none (Ollama, LM Studio, MLX).
+**The core goal**: minimize friction with runtimes. Use what runtimes
+already provide; invent convention only where no native exists.
+
+`.claude/`, `.codex/`, `.gemini/` are used directly at the workspace
+root. The spec only invents convention (`4-control/runtime/<name>/`)
+where the runtime offers none (Ollama, LM Studio, MLX).
 
 ### Open standard ethos *(general open-standards practice; AAIF-alignment cited)*
 
-One approach, not *the* approach. Sibling to agents.md, AAIF-aligned.
-Proposed conventions are marked as such; borrowed ones are cited.
+**The core goal**: workspace.md is one approach among many —
+forkable, extensible, AAIF-aligned. No claim of universality.
+
+Sibling to agents.md. Proposed conventions are marked as such;
+borrowed ones are cited.
 
 ---
 
