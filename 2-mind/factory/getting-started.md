@@ -31,6 +31,7 @@ customize:
 | `README.md` | **Replace** | §1.1 |
 | `LICENSE` | **Replace** with your license | §1.2 |
 | `AGENTS.md` | **Replace** | §1.3 |
+| `2-mind/atelier/soul.md` | **Replace** with your workspace's identity / animating principles (mandated; the universal Owner-stance file) | — |
 | `4-control/rule/contribution.md` | **Delete** or replace | §1.4 |
 | `2-mind/factory/version-log.md` | **Delete** or repurpose | — |
 | `2-mind/factory/getting-started.md` (this file) | **Delete** after onboarding | — |

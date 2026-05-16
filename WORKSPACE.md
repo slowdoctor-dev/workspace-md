@@ -23,10 +23,11 @@ One approach, not *the* approach.
 
 ## Layout
 
-**Five top-level folders are mandated.** Sub-folder structure is
-*recommended* but optional — apply *lazy structure*: create
-sub-folders only when content arrives. Layers 0–3 form a content
-lifecycle; layer 4 is the orthogonal control axis.
+**Five top-level folders are mandated, plus `2-mind/atelier/soul.md`**
+(the workspace's identity / animating principles — universal). Other
+sub-folder structure is *recommended* but optional — apply *lazy
+structure*: create only when content arrives. Layers 0–3 form a
+content lifecycle; layer 4 is the orthogonal control axis.
 
 The structure is designed to **accumulate value with use** — each
 working session can leave knowledge in `2-mind/`, automation in
@@ -37,7 +38,9 @@ workspace becomes a higher-leverage substrate over time. See
     0-storage/    raw assets / inputs                       [mandated, may be empty]
     1-active/     main work area                            [mandated, may be empty]
     2-mind/       curated knowledge                         [mandated]
-      atelier/    user-authored, agent-assisted             (optional — when user-stance content exists)
+      atelier/    user-authored, agent-assisted             [mandated — every workspace
+        soul.md   workspace identity / animating principles  has identity, even minimal]
+        ...       additional Owner-stance files             (optional)
       factory/    agent-authored, user-audited              (recommended — most active workspaces accumulate here)
     3-playbook/   automation                                [mandated, may be empty initially]
       role/       agent specs (who acts)                    (optional — when you have agent specs)

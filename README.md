@@ -32,8 +32,10 @@ own dog food.
     0-storage/                [mandated, empty in spec repo]
     1-active/                 [mandated, empty in spec repo]
     2-mind/                   [mandated]
+      atelier/                [mandated subfolder]
+        soul.md               workspace identity / animating principles
+                              (mandated; universal canonical Owner-stance)
       factory/                version log + getting-started
-      (atelier/ omitted — no Owner-stance content; optional per spec)
     3-playbook/               [mandated]
       act/script/             check-workspace.sh, mcp-sync.sh,
                               ollama-up.{sh,ps1}, lmstudio-up.{sh,ps1}

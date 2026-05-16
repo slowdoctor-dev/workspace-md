@@ -40,14 +40,27 @@ for d in 0-storage 1-active 2-mind 3-playbook 4-control; do
   [[ -d "${d}" ]] && ok "folder ${d}/" || fail "missing folder ${d}/"
 done
 
+# Mandated sub-folder + canonical content: 2-mind/atelier/soul.md
+# (workspace identity — universal per workspace.md spec)
+if [[ -d "2-mind/atelier" ]]; then
+  ok "folder 2-mind/atelier/ (mandated)"
+  if [[ -f "2-mind/atelier/soul.md" ]]; then
+    ok "file 2-mind/atelier/soul.md (canonical workspace identity)"
+  else
+    fail "missing 2-mind/atelier/soul.md (mandated workspace identity file)"
+  fi
+else
+  fail "missing 2-mind/atelier/ (mandated; must contain soul.md)"
+fi
+
 if [[ "${QUICK}" -eq 1 ]]; then
   [[ "${errors}" -eq 0 ]] && log "workspace ok" || echo "workspace has ${errors} error(s)"
   exit "${errors}"
 fi
 
-# Sub-folders are optional per workspace.md (lazy-structure); only
-# report which ones exist. Missing optional sub-folders are not errors.
-for d in 2-mind/atelier 2-mind/factory \
+# Other sub-folders are optional per workspace.md (lazy-structure);
+# only report which ones exist. Missing optional sub-folders are not errors.
+for d in 2-mind/factory \
          3-playbook/role 3-playbook/cue 3-playbook/act/skill 3-playbook/act/script \
          4-control/principle 4-control/rule 4-control/runtime 4-control/external; do
   [[ -d "${d}" ]] && ok "folder ${d}/ (present)" || log "skip: ${d}/ (optional, absent)"

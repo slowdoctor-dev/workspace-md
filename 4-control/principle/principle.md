@@ -93,10 +93,14 @@ elsewhere (received documents, original media, archived snapshots).
 preservation guarantee. Drafts, scratch, work-in-progress. If
 something matters to keep, graduate it to `2-mind/`.
 
-**2-mind/atelier/** (optional) — User-authored, agent-assisted.
+**2-mind/atelier/** [mandated] — User-authored, agent-assisted.
 Owner's declared stance preserved verbatim. Brand identity, persona,
-principles, curated reference. Create only when user-stance content
-exists; otherwise all 2-mind content lives in `factory/`.
+principles, curated reference. **`atelier/soul.md` is the universal
+canonical first file** — the workspace's animating identity / "what
+this workspace IS and stands for". Even a minimal workspace has
+identity (Hermes Agent's SOUL.md pattern, generalized). Edit
+frequency may be low; what matters is *Owner authorship*, not churn.
+Additional stance files (brand, persona, values) optional.
 
 **2-mind/factory/** (recommended) — Agent-authored, user-audited.
 Synthesized observations, operational bookkeeping, logs, help,
