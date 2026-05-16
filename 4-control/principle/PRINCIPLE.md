@@ -26,9 +26,7 @@ usability.
 
 Each session deposits knowledge into `2-mind/`, automation into
 `3-playbook/`, constraints and orientation into `4-control/`, refined
-`AGENTS.md`. A workspace that has not been used grows nothing. A
-workspace used across many sessions becomes a high-leverage
-substrate.
+`AGENTS.md`. A workspace that has not been used grows nothing.
 
 ### Separability *(general SW vocabulary; framing here is spec-specific)*
 
@@ -58,13 +56,12 @@ not preemptively.
 ### One canonical home *(adapted from DRY; "canonical home" phrasing proposed by this spec)*
 
 **The core goal**: every piece of content has one source of truth so
-the workspace can grow without drift. Cross-domain references link
-directly to the canonical path.
+the workspace can grow without drift.
 
 Each rule, each external resource, each operating principle has
-exactly one canonical location. Content that legitimately bridges
-multiple categories splits into separate pages; the spec forbids
-duplication.
+exactly one canonical location. Cross-domain references link directly
+to the canonical path. Content that legitimately bridges multiple
+categories splits into separate pages; the spec forbids duplication.
 
 ### Native conventions where they exist; neutral where they don't *(framing proposed by this spec)*
 
@@ -89,13 +86,11 @@ borrowed ones are cited.
 
 ### Per-layer operation
 
-**0-storage/** [mandated] — General file storage. LLM-passive area —
-the LLM does not actively curate content here. Binary assets,
-archives, received files, original media, anything that doesn't need
-to live in an LLM-active layer. Internal structure is free-form; the
-spec imposes no discipline (no canonical-home rule, no lazy structure)
-inside this folder. The LLM may reference paths from `0-storage/` but
-does not treat its contents as primary working material.
+**0-storage/** [mandated] — General file storage. LLM-passive —
+binary assets, archives, received files, original media. Internal
+structure free-form; no spec discipline applies inside. The LLM may
+reference paths but does not treat contents as primary working
+material.
 
 **1-active/** [mandated] — Disposable working space. Drafts, scratch,
 work-in-progress. Graduate to `2-mind/` if it matters to keep.
@@ -112,7 +107,7 @@ words preserved verbatim; agent may help with wrapper structure
 workspace's animating identity. Per the Hermes Agent SOUL.md pattern
 this spec generalizes from: SOUL.md is **strictly Owner-authored
 verbatim** — the agent does not paraphrase, rewrite, or re-section
-it. Read at session start; injected verbatim into agent context.
+it. Read first at session start.
 
 **2-mind/factory/** [mandated, may be empty initially] —
 Agent-authored knowledge. Synthesized observations, operational
@@ -130,18 +125,6 @@ Sub-paths: `principle/PRINCIPLE.md` [mandated — runtime-independent
 operating discipline], `external/` (optional, LLM-agnostic connections
 like MCP), `runtime/` (optional, local LLM adapters), `rule/`
 (optional, enforceable rules).
-
-### Hosted CLI attach
-
-Hosted CLIs (Claude Code, Codex CLI, Gemini CLI) auto-discover their
-native paths at the workspace root:
-
-    <repo>/.claude/settings.json     Claude Code project settings
-    <repo>/.codex/config.toml        Codex CLI project config (trust required)
-    <repo>/.gemini/settings.json     Gemini CLI project settings
-
-No symlinks, no bootstrap. Secrets stay outside the workspace
-regardless of runtime.
 
 ### External connections (`4-control/external/`)
 

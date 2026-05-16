@@ -6,8 +6,8 @@ human-agent collaboration.
 
 ## Reading order
 
-1. `2-mind/atelier/SOUL.md` — workspace identity (verbatim Owner
-   stance; injected at session start per Hermes pattern)
+1. `2-mind/atelier/SOUL.md` — workspace identity (Owner stance,
+   verbatim; read first)
 2. `WORKSPACE.md` — the spec
 3. `4-control/principle/PRINCIPLE.md` — operating principles
 

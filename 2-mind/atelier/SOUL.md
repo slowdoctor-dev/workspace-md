@@ -4,11 +4,11 @@ The animating identity of this workspace. Read at session start;
 injected verbatim into agent context.
 
 Borrowed from Nous Research's Hermes Agent SOUL.md pattern (verbatim
-system-prompt injection of Owner's voice; never paraphrased by the
-agent) and generalized from Hermes' single-global `~/.hermes/SOUL.md`
-to per-workspace `2-mind/atelier/SOUL.md`. Section structure
-(Identity / Style / Values / Avoid / Defaults) follows the Hermes
-canonical shape.
+Owner stance, never paraphrased by the agent) and generalized from
+Hermes' single-global `~/.hermes/SOUL.md` to per-workspace
+`2-mind/atelier/SOUL.md`. Section structure follows Hermes' canonical
+shape (Identity / Style / Avoid / Defaults), extended here with
+§Values for spec-specific articulation.
 
 Hermes boundary preserved: identity / voice / values live here;
 project-execution rules (paths, commands, conventions) live in
@@ -47,8 +47,7 @@ approach.
 
 ## Values
 
-What this workspace values, in order of frequency of conflict (top
-items override lower ones when they pull against each other):
+Ordered by override priority — top items win when values conflict:
 
 - *Clarity over comprehensiveness*
 - *Native conventions over invented ones*

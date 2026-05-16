@@ -5,8 +5,9 @@
 ## What this is
 
 A directory-topology convention for workspaces shared between human
-users and AI agents. Sits alongside `AGENTS.md` (which describes agent
-behavior); this file describes the *workspace they operate within*.
+users and AI agents. Sibling to [agents.md](https://agents.md) (which
+describes agent behavior); this file describes the *workspace they
+operate within*.
 
 Compatible with any LLM runtime:
 
@@ -22,20 +23,16 @@ One approach, not *the* approach.
 ## Layout
 
 **Five top-level folders are mandated**, plus three mandated leaf
-paths inside them: `2-mind/atelier/SOUL.md` (identity),
-`2-mind/factory/` (knowledge accumulation slot — may be empty), and
-`4-control/principle/PRINCIPLE.md` (operating principles). The
-containing `2-mind/atelier/` and `4-control/principle/` folders are
-implied by their mandated leaves. All other sub-folder structure is
-*recommended* but optional — apply *lazy structure*: create only when
-content arrives. Layer 0 is general file storage (LLM-passive);
-layers 1–3 are LLM-active content layers; layer 4 is the orthogonal
-control axis.
+paths: `2-mind/atelier/SOUL.md` (identity), `2-mind/factory/`
+(knowledge accumulation slot, may be empty), and
+`4-control/principle/PRINCIPLE.md` (operating principles). Containing
+`2-mind/atelier/` and `4-control/principle/` folders are implied. All
+other sub-folder structure is *optional* — apply *lazy structure*:
+create only when content arrives.
 
-The structure is designed to **accumulate value with use** — each
-working session can leave knowledge in `2-mind/`, automation in
-`3-playbook/`, and distilled constraints in `4-control/`. The
-workspace becomes a higher-leverage substrate over time. See
+Layer 0 is general file storage (LLM-passive); layers 1–3 are
+LLM-active content layers; layer 4 is the orthogonal control axis.
+The 1–4 design enables *use-driven evolution* — see
 `4-control/principle/PRINCIPLE.md` §Core design values.
 
     0-storage/    general file storage (LLM-passive)        [mandated]
@@ -46,40 +43,35 @@ workspace becomes a higher-leverage substrate over time. See
         ...       additional Owner-stance files             (optional)
       factory/    agent-authored knowledge                  [mandated, may be empty initially — synthesis accumulates here]
     3-playbook/   automation                                [mandated, may be empty initially]
-      role/       agent specs (who acts)                    (optional — when you have agent specs)
-      cue/        triggers (hooks, schedules, CI workflows) (optional — when you have triggers)
-      act/skill/  natural-language procedures               (optional — when you have skills)
-      act/script/ executable code                           (optional — when you have scripts)
+      role/       agent specs (who acts)                    (optional)
+      cue/        triggers (hooks, schedules, CI workflows) (optional)
+      act/skill/  natural-language procedures               (optional)
+      act/script/ executable code                           (optional)
     4-control/    workspace configuration & governance      [mandated]
                   (reading order: principle → external → runtime → rule)
       principle/    workspace operating principles            [mandated]
         PRINCIPLE.md  runtime-independent operating discipline [mandated]
         ...           additional principle files              (optional)
-      external/   LLM-agnostic external connections —       (optional — when you have MCP servers,
-                  MCP, OpenAPI, webhooks                      OpenAPI specs, webhooks)
-      runtime/    canonical for runtimes lacking native     (optional — when using local LLMs:
-                  repo-level convention                       Ollama Modelfile, LM Studio presets, MLX)
-      rule/       enforceable rules + document conventions  (optional — when constraints to enforce)
+      external/   LLM-agnostic external connections         (optional — MCP, OpenAPI, webhooks)
+      runtime/    canonical for runtimes lacking native     (optional — local LLM configs:
+                  repo-level convention                       Ollama / LM Studio / MLX)
+      rule/       enforceable rules + document conventions  (optional)
 
-Secrets and credentials never live inside the workspace — see
-`4-control/principle/PRINCIPLE.md` §Runtime attachment for the
-recommended out-of-workspace location.
+Secrets and credentials never live inside the workspace; keep them
+outside (e.g., `~/.config/<workspace>-secrets/`).
 
-**Separability principle**: content that is *inseparable* from a
-specific runtime (settings.json, config.toml, hooks tied to a runtime's
-event model) lives at the runtime's native location — workspace.md
-does not over-manage it. Content that *can* exist independently of any
-specific runtime (MCP server list, OpenAPI specs, webhook configs,
-business rules, documents) lives runtime-independently under
-`4-control/external/`, `2-mind/`, etc.
+Layout reflects the *separability* principle — runtime-tied content
+lives at runtime-native paths, runtime-independent content under
+`4-control/external/`, `2-mind/`, etc. Full articulation:
+`PRINCIPLE.md` §Separability.
 
 Hosted CLIs' native discovery paths live at repo root and are
 committed directly **when settings exist** (lazy structure — empty
 configs are not pre-created):
 
-    .claude/settings.json     Claude Code project settings (runtime-specific)
-    .codex/config.toml        Codex CLI project config (runtime-specific; trust required)
-    .gemini/settings.json     Gemini CLI project settings (runtime-specific)
+    .claude/settings.json     Claude Code project settings
+    .codex/config.toml        Codex CLI project config (trust required)
+    .gemini/settings.json     Gemini CLI project settings
     .mcp.json                 → 4-control/external/mcp/registry.json
 
 ## Rule placement
