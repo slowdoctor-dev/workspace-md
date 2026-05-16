@@ -89,8 +89,13 @@ borrowed ones are cited.
 
 ### Per-layer operation
 
-**0-storage/** [mandated] — Raw inputs only. Received content
-preserved as-received; derived assets go in `1-active/` or `2-mind/`.
+**0-storage/** [mandated] — General file storage. LLM-passive area —
+the LLM does not actively curate content here. Binary assets,
+archives, received files, original media, anything that doesn't need
+to live in an LLM-active layer. Internal structure is free-form; the
+spec imposes no discipline (no canonical-home rule, no lazy structure)
+inside this folder. The LLM may reference paths from `0-storage/` but
+does not treat its contents as primary working material.
 
 **1-active/** [mandated] — Disposable working space. Drafts, scratch,
 work-in-progress. Graduate to `2-mind/` if it matters to keep.

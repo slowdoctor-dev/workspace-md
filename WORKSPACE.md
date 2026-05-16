@@ -28,8 +28,9 @@ paths inside them: `2-mind/atelier/SOUL.md` (identity),
 containing `2-mind/atelier/` and `4-control/principle/` folders are
 implied by their mandated leaves. All other sub-folder structure is
 *recommended* but optional — apply *lazy structure*: create only when
-content arrives. Layers 0–3 form a content lifecycle; layer 4 is the
-orthogonal control axis.
+content arrives. Layer 0 is general file storage (LLM-passive);
+layers 1–3 are LLM-active content layers; layer 4 is the orthogonal
+control axis.
 
 The structure is designed to **accumulate value with use** — each
 working session can leave knowledge in `2-mind/`, automation in
@@ -37,9 +38,9 @@ working session can leave knowledge in `2-mind/`, automation in
 workspace becomes a higher-leverage substrate over time. See
 `4-control/principle/PRINCIPLE.md` §Core design values.
 
-    0-storage/    raw assets / inputs                       [mandated]
-    1-active/     main work area                            [mandated]
-    2-mind/       knowledge                                 [mandated]
+    0-storage/    general file storage (LLM-passive)        [mandated]
+    1-active/     main work area (LLM-active)               [mandated]
+    2-mind/       knowledge (LLM-active)                    [mandated]
       atelier/    user-authored, agent-assisted             [mandated]
         SOUL.md   workspace identity / animating principles [mandated — every workspace has identity, even minimal]
         ...       additional Owner-stance files             (optional)
