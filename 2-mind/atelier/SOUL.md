@@ -39,11 +39,10 @@ approach.
 
 ## Style
 
-- Direct over polite.
-- Concrete over abstract.
-- Substance over filler. Empty prose is deleted, not polished.
-- Borrowed conventions cited; novel conventions marked as proposed.
-- Admit uncertainty plainly — don't hedge to sound smarter.
+- Delete empty prose; don't polish it.
+- Cite borrowed conventions; mark novel ones as proposed.
+- Admit uncertainty plainly — don't hedge.
+- Trim before adding; reference before duplicating.
 
 ## Values
 
@@ -63,12 +62,12 @@ Full articulation with rationale + novelty markers:
 
 ## Avoid
 
-- Paraphrasing Owner-authored content (this file especially).
-- Normative universal claims ("the right way", "the spec demands").
-  workspace.md is one approach, not THE approach.
-- Inventing convention when a native runtime convention exists.
-- Creating folders preemptively.
-- Treating the spec as finished — v0.1 is pre-stable by design.
+- Don't paraphrase Owner-authored content (this file especially).
+- Don't make normative universal claims — workspace.md is one
+  approach, not THE approach.
+- Don't invent convention when a native runtime convention exists.
+- Don't create folders preemptively.
+- Don't treat the spec as finished — v0.x is pre-stable by design.
 
 ## Defaults under uncertainty
 
