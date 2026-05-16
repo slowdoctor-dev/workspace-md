@@ -8,7 +8,7 @@ A directory-topology convention for workspaces shared between human
 users and AI agents. Sits alongside `AGENTS.md` (which describes agent
 behavior); this file describes the *workspace they operate within*.
 
-Drop-in compatible with any LLM runtime:
+Compatible with any LLM runtime:
 
 - *Hosted agent CLIs* — Claude Code, Gemini CLI, Codex CLI
 - *Local LLM backends* — Ollama, LM Studio, MLX (Apple Silicon)
@@ -16,8 +16,6 @@ Drop-in compatible with any LLM runtime:
 Hosted CLIs provide the agent loop and read instruction files; local
 backends provide token generation. The two are commonly paired
 (hosted CLI pointed at a local backend's HTTP endpoint).
-See `4-control/principle/runtime-integration.md` for per-runtime
-specs verified against official documentation.
 
 One approach, not *the* approach.
 
@@ -35,30 +33,30 @@ working session can leave knowledge in `2-mind/`, automation in
 workspace becomes a higher-leverage substrate over time. See
 `4-control/principle/principle.md` §Core design values.
 
-    0-storage/    raw assets / inputs                       [mandated, may be empty]
-    1-active/     main work area                            [mandated, may be empty]
-    2-mind/       curated knowledge                         [mandated]
-      atelier/    user-authored, agent-assisted             [mandated — every workspace
-        soul.md   workspace identity / animating principles  has identity, even minimal]
+    0-storage/    raw assets / inputs                       [mandated]
+    1-active/     main work area                            [mandated]
+    2-mind/       knowledge                                 [mandated]
+      atelier/    user-authored, agent-assisted             [mandated]
+        soul.md   workspace identity / animating principles [mandated — every workspace has identity, even minimal]
         ...       additional Owner-stance files             (optional)
-      factory/    agent-authored, user-audited              (recommended — most active workspaces accumulate here)
+      factory/    agent-authored, user-audited              [mandated, may be empty initially — extracted knowledge from work accumulates here]
     3-playbook/   automation                                [mandated, may be empty initially]
       role/       agent specs (who acts)                    (optional — when you have agent specs)
       cue/        triggers (hooks, schedules, CI workflows) (optional — when you have triggers)
       act/skill/  natural-language procedures               (optional — when you have skills)
       act/script/ executable code                           (optional — when you have scripts)
     4-control/    workspace configuration & governance      [mandated]
-                  (reading order: principle → runtime → external → rule)
+                  (reading order: principle → external)
       principle/  workspace operating principles            (recommended — most workspaces benefit)
       rule/       enforceable rules + document conventions  (optional — when constraints to enforce)
       runtime/    canonical for runtimes lacking native     (optional — when using local LLMs:
                   repo-level convention                       Ollama Modelfile, LM Studio presets, MLX)
       external/   LLM-agnostic external connections —       (optional — when you have MCP servers,
                   MCP, OpenAPI, webhooks                      OpenAPI specs, webhooks)
-      .env        environment variables                     (optional; secrets stay outside)
 
-Hosted CLIs (Claude Code, Codex, Gemini) use their native
-`.<runtime>/` at repo root directly — no externalization needed.
+Secrets and credentials never live inside the workspace — see
+`4-control/principle/principle.md` §Runtime attachment for the
+recommended out-of-workspace location.
 
 **Separability principle**: content that is *inseparable* from a
 specific runtime (settings.json, config.toml, hooks tied to a runtime's
@@ -69,17 +67,15 @@ business rules, documents) lives runtime-independently under
 `4-control/external/`, `2-mind/`, etc.
 
 Hosted CLIs' native discovery paths live at repo root and are
-committed directly:
+committed directly **when settings exist** (lazy structure — empty
+configs are not pre-created):
 
     .claude/settings.json     Claude Code project settings (runtime-specific)
     .codex/config.toml        Codex CLI project config (runtime-specific; trust required)
     .gemini/settings.json     Gemini CLI project settings (runtime-specific)
     .mcp.json                 → 4-control/external/mcp/registry.json
-                              (Claude's MCP discovery path; symlink to the
-                              LLM-agnostic canonical because the format
-                              happens to match Claude's native schema)
 
-## Rules and principles
+## Rule placement
 
 Three rule homes by scope:
 
@@ -88,45 +84,42 @@ Three rule homes by scope:
 - **Agent-local rules** → `3-playbook/role/<agent>/AGENTS.md` or
   `3-playbook/role/<agent>/rules/`
 
-Workspace operating principles (orientation, philosophy) live separately
-in `4-control/principle/` — these shape *how* the workspace is operated,
-distinct from rules that constrain *what* may be done.
+(Three-home convention proposed by this spec; not borrowed from an
+established standard.)
 
-(Convention proposed by this spec; not borrowed from an established
-standard.)
+Workspace operating *principles* — distinct from rules — live in
+`4-control/principle/`. Principles shape *how* the workspace is
+operated; rules constrain *what* may be done. See
+`4-control/principle/principle.md`.
 
 ## Conventions
 
 Vocabulary: *user* (the human), *agent* (the AI), *workspace* (the
 5-folder tree rooted at the repo).
 
-Filename: `{YYYY-MM-DD}_{slug}.md` recommended.
+Filename:
+
+- **Dated content** (logs, drafts, archived spec versions, queue
+  items): `{YYYY-MM-DD}_{slug}.md`.
+- **Durable named documents** (`WORKSPACE.md`, `principle.md`,
+  per-agent `AGENTS.md`, individual rule files, skill `SKILL.md`):
+  no date prefix; named by topic.
 
 Detailed writing/naming conventions live in `4-control/rule/`.
 
 ## Known limitations (v0.1)
 
-- **Empirical basis is small (n=2)**: this spec converged from two
-  independently-designed workspaces (LEAD clinic + a personal Life-OS),
-  both authored by the same person. Universality across domains and
-  authors is hypothesized, not proven.
-- **Use-driven evolution unverified empirically**: the *use compounds
-  usability* claim rests on the design, not on multi-month field data.
 - **Windows native fragility**: the three committed symlinks
   (`CLAUDE.md`, `GEMINI.md`, `.mcp.json`) require
   `git config --global core.symlinks true` + admin terminal to
   materialize after clone on Windows native. Linux / macOS / WSL work
   out of the box.
-- **No multi-user / team model**: Owner is assumed singular.
-  Team-shared workspaces with multiple humans are not addressed.
 - **Authorization / per-agent permission semantics**: not modeled in
-  the spec. Adopters should encode their own in `4-control/rule/`
-  and per-agent `AGENTS.md`.
-- **Heavy first-time read** (~1900 lines across spec docs): mitigated
-  by reading order, but not eliminated.
+  the spec. Encode your own in `4-control/rule/` and per-agent
+  `AGENTS.md` when needed.
 
 These are acknowledged limits, not bugs. v0.x is pre-stable; spec
-matures with usage. See `4-control/rule/contribution.md`.
+matures with usage.
 
 ## See also
 
