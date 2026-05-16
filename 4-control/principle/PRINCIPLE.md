@@ -100,8 +100,13 @@ does not treat its contents as primary working material.
 **1-active/** [mandated] — Disposable working space. Drafts, scratch,
 work-in-progress. Graduate to `2-mind/` if it matters to keep.
 
-**2-mind/atelier/** [mandated] — User-authored, agent-assisted.
-Owner's declared stance preserved verbatim.
+`2-mind/` holds the workspace's **knowledge systems** — two of them,
+differentiated by *who authors* the knowledge.
+
+**2-mind/atelier/** [mandated] — Owner-authored knowledge. Identity,
+declared stance, brand, persona, values, curated reference. Owner's
+words preserved verbatim; agent may help with wrapper structure
+(indexing, cross-refs) but not content.
 
 `atelier/SOUL.md` is the universal canonical first file — the
 workspace's animating identity. Per the Hermes Agent SOUL.md pattern
@@ -110,8 +115,10 @@ verbatim** — the agent does not paraphrase, rewrite, or re-section
 it. Read at session start; injected verbatim into agent context.
 
 **2-mind/factory/** [mandated, may be empty initially] —
-Agent-authored, user-audited. Synthesized observations, operational
-bookkeeping, logs. The accumulation slot for use-driven evolution.
+Agent-authored knowledge. Synthesized observations, operational
+bookkeeping, session logs, research synthesis. Updated continuously
+without asking; Owner audits periodically. The accumulation slot for
+use-driven evolution.
 
 **3-playbook/** [mandated, may be empty initially] — Automation:
 agent specs (`role/`), triggers (`cue/`), procedures (`act/skill/`),

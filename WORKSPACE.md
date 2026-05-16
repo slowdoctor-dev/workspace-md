@@ -40,11 +40,11 @@ workspace becomes a higher-leverage substrate over time. See
 
     0-storage/    general file storage (LLM-passive)        [mandated]
     1-active/     main work area (LLM-active)               [mandated]
-    2-mind/       knowledge (LLM-active)                    [mandated]
-      atelier/    user-authored, agent-assisted             [mandated]
+    2-mind/       knowledge systems (LLM-active)            [mandated]
+      atelier/    Owner-authored knowledge                  [mandated]
         SOUL.md   workspace identity / animating principles [mandated — every workspace has identity, even minimal]
         ...       additional Owner-stance files             (optional)
-      factory/    agent-authored, user-audited              [mandated, may be empty initially — extracted knowledge from work accumulates here]
+      factory/    agent-authored knowledge                  [mandated, may be empty initially — synthesis accumulates here]
     3-playbook/   automation                                [mandated, may be empty initially]
       role/       agent specs (who acts)                    (optional — when you have agent specs)
       cue/        triggers (hooks, schedules, CI workflows) (optional — when you have triggers)
