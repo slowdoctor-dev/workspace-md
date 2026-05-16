@@ -106,9 +106,16 @@ words preserved verbatim; agent may help with wrapper structure
 
 `atelier/SOUL.md` is the universal canonical first file — the
 workspace's animating identity. Per the Hermes Agent SOUL.md pattern
-this spec generalizes from: SOUL.md is **strictly Owner-authored
-verbatim** — the agent does not paraphrase, rewrite, or re-section
-it. Read first at session start.
+this spec generalizes from
+([personality](https://hermes-agent.nousresearch.com/docs/user-guide/features/personality)
++ [use-soul-with-hermes](https://hermes-agent.nousresearch.com/docs/guides/use-soul-with-hermes)):
+SOUL.md is **strictly Owner-authored verbatim** — the agent does not
+paraphrase, rewrite, or re-section it. Read first at session start.
+Identity / Style / Values / Avoid / Defaults section structure
+follows Hermes' canonical shape (extended with §Values for
+spec-specific articulation). Boundary: identity / voice / values
+live in SOUL.md; project-execution rules (paths, commands,
+conventions) live in `AGENTS.md`.
 
 **2-mind/factory/** [mandated, may be empty initially] —
 Agent-authored knowledge. Synthesized observations, operational
