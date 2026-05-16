@@ -29,12 +29,19 @@ across many sessions becomes a high-leverage substrate.
 
 ### Separability *(general SW vocabulary; framing here is spec-specific)*
 
-Content tightly tied to one runtime (settings, permissions,
-runtime-specific hooks) lives at that runtime's native location.
-Content that exists independently of any specific runtime — MCP
-server lists, OpenAPI specs, webhook configs, business rules,
-documents, agent personas — lives runtime-independently in
-`4-control/external/`, `2-mind/`, etc.
+**The core goal**: the workspace works as intended regardless of which
+runtime is brought in. Swap Claude Code for Codex CLI, Gemini for
+Claude, or point a hosted CLI at a local LLM — the workspace's
+content, identity, and operating discipline carry over unchanged.
+Separability is what turns "LLM-agnostic" from a label into an
+operational property.
+
+The placement rule that enables this: content tightly tied to one
+runtime (settings, permissions, runtime-specific hooks) lives at
+that runtime's native location. Content that exists independently
+of any specific runtime — MCP server lists, OpenAPI specs, webhook
+configs, business rules, documents, agent personas — lives
+runtime-independently in `4-control/external/`, `2-mind/`, etc.
 
 ### Lazy structure *(borrowed from programming "lazy evaluation"; application to directory topology proposed by this spec)*
 
