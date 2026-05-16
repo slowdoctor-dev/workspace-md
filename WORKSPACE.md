@@ -39,9 +39,9 @@ This structure enables *use-driven evolution* — see
     1-active/     main work area                            [mandated]
     2-mind/       knowledge systems                         [mandated]
       atelier/    Owner-authored knowledge                  [mandated]
-        SOUL.md   workspace identity / animating principles [mandated — every workspace has identity, even minimal]
+        SOUL.md   workspace identity / animating principles [mandated]
         ...       additional Owner-stance files             (optional)
-      factory/    agent-authored knowledge                  [mandated, may be empty initially — synthesis accumulates here]
+      factory/    agent-authored knowledge                  [mandated, may be empty initially]
     3-playbook/   automation                                [mandated, may be empty initially]
       role/       agent specs (who acts)                    (optional)
       cue/        triggers (hooks, schedules, CI workflows) (optional)
