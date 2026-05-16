@@ -6,7 +6,7 @@ injected verbatim into agent context.
 Borrowed from Nous Research's Hermes Agent SOUL.md pattern (verbatim
 system-prompt injection of Owner's voice; never paraphrased by the
 agent) and generalized from Hermes' single-global `~/.hermes/SOUL.md`
-to per-workspace `2-mind/atelier/soul.md`. Section structure
+to per-workspace `2-mind/atelier/SOUL.md`. Section structure
 (Identity / Style / Values / Avoid / Defaults) follows the Hermes
 canonical shape.
 
@@ -20,13 +20,13 @@ Owner-authored verbatim. The agent does not paraphrase, rewrite, or
 re-section this file — only the Owner does. Future edits replace or
 append verbatim; no agent-side wordsmithing.
 
-**Note on this v0.1 draft.** This particular soul.md was *drafted by
+**Note on this v0.1 draft.** This particular SOUL.md was *drafted by
 the agent and ratified by the Owner* during v0.1 spec development —
 not dictated verbatim from scratch. This is an honest exception, not
 the steady state. The verbatim-preservation contract binds all
-subsequent revisions: from v0.2 onward, soul.md is Owner-only.
+subsequent revisions: from v0.2 onward, SOUL.md is Owner-only.
 Adopters cloning this spec repo should treat their own
-`2-mind/atelier/soul.md` as Owner-authored from first commit
+`2-mind/atelier/SOUL.md` as Owner-authored from first commit
 (strict Hermes pattern).
 
 ---
@@ -60,7 +60,7 @@ items override lower ones when they pull against each other):
 - *Separability*
 
 Full articulation with rationale + novelty markers:
-`4-control/principle/principle.md` §Core design values.
+`4-control/principle/PRINCIPLE.md` §Core design values.
 
 ## Avoid
 

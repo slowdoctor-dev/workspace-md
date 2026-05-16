@@ -76,9 +76,9 @@ work-in-progress. Graduate to `2-mind/` if it matters to keep.
 **2-mind/atelier/** [mandated] — User-authored, agent-assisted.
 Owner's declared stance preserved verbatim.
 
-`atelier/soul.md` is the universal canonical first file — the
+`atelier/SOUL.md` is the universal canonical first file — the
 workspace's animating identity. Per the Hermes Agent SOUL.md pattern
-this spec generalizes from: soul.md is **strictly Owner-authored
+this spec generalizes from: SOUL.md is **strictly Owner-authored
 verbatim** — the agent does not paraphrase, rewrite, or re-section
 it. Read at session start; injected verbatim into agent context.
 
@@ -92,7 +92,7 @@ deterministic code (`act/script/`). All sub-folders optional per
 lazy-structure.
 
 **4-control/** [mandated] — Configuration and governance.
-Sub-paths: `principle/principle.md` [mandated — runtime-independent
+Sub-paths: `principle/PRINCIPLE.md` [mandated — runtime-independent
 operating discipline], `external/` (optional, LLM-agnostic connections
 like MCP), `runtime/` (optional, local LLM adapters), `rule/`
 (optional, enforceable rules).

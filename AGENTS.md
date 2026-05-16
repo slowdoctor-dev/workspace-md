@@ -7,7 +7,7 @@ human-agent collaboration.
 ## Reading order
 
 1. `WORKSPACE.md` — the spec
-2. `4-control/principle/principle.md` — operating principles
+2. `4-control/principle/PRINCIPLE.md` — operating principles
 
 ## Per-runtime entry
 

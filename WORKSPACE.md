@@ -22,9 +22,9 @@ One approach, not *the* approach.
 ## Layout
 
 **Five top-level folders are mandated**, plus three sub-paths:
-`2-mind/atelier/soul.md` (identity), `2-mind/factory/` (knowledge
+`2-mind/atelier/SOUL.md` (identity), `2-mind/factory/` (knowledge
 accumulation slot — may be empty), and
-`4-control/principle/principle.md` (operating principles). Other
+`4-control/principle/PRINCIPLE.md` (operating principles). Other
 sub-folder structure is *recommended* but optional — apply *lazy
 structure*: create only when content arrives. Layers 0–3 form a
 content lifecycle; layer 4 is the orthogonal control axis.
@@ -33,13 +33,13 @@ The structure is designed to **accumulate value with use** — each
 working session can leave knowledge in `2-mind/`, automation in
 `3-playbook/`, and distilled constraints in `4-control/`. The
 workspace becomes a higher-leverage substrate over time. See
-`4-control/principle/principle.md` §Core design values.
+`4-control/principle/PRINCIPLE.md` §Core design values.
 
     0-storage/    raw assets / inputs                       [mandated]
     1-active/     main work area                            [mandated]
     2-mind/       knowledge                                 [mandated]
       atelier/    user-authored, agent-assisted             [mandated]
-        soul.md   workspace identity / animating principles [mandated — every workspace has identity, even minimal]
+        SOUL.md   workspace identity / animating principles [mandated — every workspace has identity, even minimal]
         ...       additional Owner-stance files             (optional)
       factory/    agent-authored, user-audited              [mandated, may be empty initially — extracted knowledge from work accumulates here]
     3-playbook/   automation                                [mandated, may be empty initially]
@@ -50,7 +50,7 @@ workspace becomes a higher-leverage substrate over time. See
     4-control/    workspace configuration & governance      [mandated]
                   (reading order: principle → external)
       principle/    workspace operating principles            [mandated]
-        principle.md  runtime-independent operating discipline [mandated]
+        PRINCIPLE.md  runtime-independent operating discipline [mandated]
         ...           additional principle files              (optional)
       rule/       enforceable rules + document conventions  (optional — when constraints to enforce)
       runtime/    canonical for runtimes lacking native     (optional — when using local LLMs:
@@ -59,7 +59,7 @@ workspace becomes a higher-leverage substrate over time. See
                   MCP, OpenAPI, webhooks                      OpenAPI specs, webhooks)
 
 Secrets and credentials never live inside the workspace — see
-`4-control/principle/principle.md` §Runtime attachment for the
+`4-control/principle/PRINCIPLE.md` §Runtime attachment for the
 recommended out-of-workspace location.
 
 **Separability principle**: content that is *inseparable* from a
@@ -94,7 +94,7 @@ established standard.)
 Workspace operating *principles* — distinct from rules — live in
 `4-control/principle/`. Principles shape *how* the workspace is
 operated; rules constrain *what* may be done. See
-`4-control/principle/principle.md`.
+`4-control/principle/PRINCIPLE.md`.
 
 ## Conventions
 
@@ -105,7 +105,7 @@ Filename:
 
 - **Dated content** (logs, drafts, archived spec versions, queue
   items): `{YYYY-MM-DD}_{slug}.md`.
-- **Durable named documents** (`WORKSPACE.md`, `principle.md`,
+- **Durable named documents** (`WORKSPACE.md`, `PRINCIPLE.md`,
   per-agent `AGENTS.md`, individual rule files, skill `SKILL.md`):
   no date prefix; named by topic.
 
