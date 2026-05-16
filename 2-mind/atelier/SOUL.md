@@ -15,8 +15,6 @@ delete before you add.
 
 ## Values
 
-Ordered by override priority — top items win when values conflict:
-
 - *Clarity over comprehensiveness*
 - *Native conventions over invented ones*
 - *Honest about novelty* — proposed conventions marked; borrowed ones

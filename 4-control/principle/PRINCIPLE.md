@@ -111,11 +111,10 @@ this spec generalizes from
 + [use-soul-with-hermes](https://hermes-agent.nousresearch.com/docs/guides/use-soul-with-hermes)):
 SOUL.md is **strictly Owner-authored verbatim** — the agent does not
 paraphrase, rewrite, or re-section it. Read first at session start.
-Identity / Style / Values / Avoid / Defaults section structure
-follows Hermes' canonical shape (extended with §Values for
-spec-specific articulation). Boundary: identity / voice / values
-live in SOUL.md; project-execution rules (paths, commands,
-conventions) live in `AGENTS.md`.
+Section structure follows Hermes' canonical shape (Identity / Style /
+Avoid / Defaults), extended here with §Values for spec-specific
+articulation. SOUL.md's own §Avoid owns the full content-type
+exclusion list.
 
 **2-mind/factory/** [mandated, may be empty initially] —
 Agent-authored knowledge. Synthesized observations, operational
