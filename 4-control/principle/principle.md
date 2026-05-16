@@ -91,9 +91,11 @@ agent specs (`role/`), triggers (`cue/`), procedures (`act/skill/`),
 deterministic code (`act/script/`). All sub-folders optional per
 lazy-structure.
 
-**4-control/** [mandated] — Configuration and governance: external
-connections (`external/`), runtime adapters for local LLMs
-(`runtime/`), principles (`principle/`), enforceable rules (`rule/`).
+**4-control/** [mandated] — Configuration and governance.
+Sub-paths: `principle/principle.md` [mandated — runtime-independent
+operating discipline], `external/` (optional, LLM-agnostic connections
+like MCP), `runtime/` (optional, local LLM adapters), `rule/`
+(optional, enforceable rules).
 
 ### Hosted CLI attach
 

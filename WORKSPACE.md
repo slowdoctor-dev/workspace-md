@@ -21,8 +21,10 @@ One approach, not *the* approach.
 
 ## Layout
 
-**Five top-level folders are mandated, plus `2-mind/atelier/soul.md`**
-(the workspace's identity / animating principles — universal). Other
+**Five top-level folders are mandated**, plus three sub-paths:
+`2-mind/atelier/soul.md` (identity), `2-mind/factory/` (knowledge
+accumulation slot — may be empty), and
+`4-control/principle/principle.md` (operating principles). Other
 sub-folder structure is *recommended* but optional — apply *lazy
 structure*: create only when content arrives. Layers 0–3 form a
 content lifecycle; layer 4 is the orthogonal control axis.
@@ -47,7 +49,9 @@ workspace becomes a higher-leverage substrate over time. See
       act/script/ executable code                           (optional — when you have scripts)
     4-control/    workspace configuration & governance      [mandated]
                   (reading order: principle → external)
-      principle/  workspace operating principles            (recommended — most workspaces benefit)
+      principle/    workspace operating principles            [mandated]
+        principle.md  runtime-independent operating discipline [mandated]
+        ...           additional principle files              (optional)
       rule/       enforceable rules + document conventions  (optional — when constraints to enforce)
       runtime/    canonical for runtimes lacking native     (optional — when using local LLMs:
                   repo-level convention                       Ollama Modelfile, LM Studio presets, MLX)
