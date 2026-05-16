@@ -6,8 +6,10 @@ human-agent collaboration.
 
 ## Reading order
 
-1. `WORKSPACE.md` — the spec
-2. `4-control/principle/PRINCIPLE.md` — operating principles
+1. `2-mind/atelier/SOUL.md` — workspace identity (verbatim Owner
+   stance; injected at session start per Hermes pattern)
+2. `WORKSPACE.md` — the spec
+3. `4-control/principle/PRINCIPLE.md` — operating principles
 
 ## Per-runtime entry
 

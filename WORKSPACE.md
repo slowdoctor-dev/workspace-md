@@ -21,13 +21,15 @@ One approach, not *the* approach.
 
 ## Layout
 
-**Five top-level folders are mandated**, plus three sub-paths:
-`2-mind/atelier/SOUL.md` (identity), `2-mind/factory/` (knowledge
-accumulation slot — may be empty), and
-`4-control/principle/PRINCIPLE.md` (operating principles). Other
-sub-folder structure is *recommended* but optional — apply *lazy
-structure*: create only when content arrives. Layers 0–3 form a
-content lifecycle; layer 4 is the orthogonal control axis.
+**Five top-level folders are mandated**, plus three mandated leaf
+paths inside them: `2-mind/atelier/SOUL.md` (identity),
+`2-mind/factory/` (knowledge accumulation slot — may be empty), and
+`4-control/principle/PRINCIPLE.md` (operating principles). The
+containing `2-mind/atelier/` and `4-control/principle/` folders are
+implied by their mandated leaves. All other sub-folder structure is
+*recommended* but optional — apply *lazy structure*: create only when
+content arrives. Layers 0–3 form a content lifecycle; layer 4 is the
+orthogonal control axis.
 
 The structure is designed to **accumulate value with use** — each
 working session can leave knowledge in `2-mind/`, automation in
@@ -98,16 +100,18 @@ operated; rules constrain *what* may be done. See
 
 ## Conventions
 
-Vocabulary: *user* (the human), *agent* (the AI), *workspace* (the
-5-folder tree rooted at the repo).
+Vocabulary: *user* (the human), *Owner* (the user in their
+identity-authoring capacity, especially for atelier content;
+Hermes-borrowed term), *agent* (the AI), *workspace* (the 5-folder
+tree rooted at the repo).
 
 Filename:
 
 - **Dated content** (logs, drafts, archived spec versions, queue
   items): `{YYYY-MM-DD}_{slug}.md`.
-- **Durable named documents** (`WORKSPACE.md`, `PRINCIPLE.md`,
-  per-agent `AGENTS.md`, individual rule files, skill `SKILL.md`):
-  no date prefix; named by topic.
+- **Durable named documents** (`WORKSPACE.md`, `SOUL.md`,
+  `PRINCIPLE.md`, per-agent `AGENTS.md`, individual rule files, skill
+  `SKILL.md`): no date prefix; named by topic.
 
 Detailed writing/naming conventions live in `4-control/rule/`.
 
