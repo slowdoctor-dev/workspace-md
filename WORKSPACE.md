@@ -4,9 +4,9 @@
 
 ## What this is
 
-A directory-topology convention for workspaces shared between human
-users and AI agents. Sibling to [agents.md](https://agents.md) (which
-describes agent behavior); this file describes the *workspace they
+A workspace-topology specification for workspaces shared between
+human users and AI agents. While [agents.md](https://agents.md)
+describes agent behavior, this file describes the *workspace they
 operate within*.
 
 Compatible with any LLM runtime:
@@ -32,7 +32,7 @@ create only when content arrives.
 
 Layer 0 is general file storage (LLM-passive); layers 1–3 are
 LLM-active content layers; layer 4 is the orthogonal control axis.
-The 1–4 design enables *use-driven evolution* — see
+This structure enables *use-driven evolution* — see
 `4-control/principle/PRINCIPLE.md` §Core design values.
 
     0-storage/    general file storage (LLM-passive)        [mandated]
@@ -63,7 +63,7 @@ outside (e.g., `~/.config/<workspace>-secrets/`).
 Layout reflects the *separability* principle — runtime-tied content
 lives at runtime-native paths, runtime-independent content under
 `4-control/external/`, `2-mind/`, etc. Full articulation:
-`PRINCIPLE.md` §Separability.
+`4-control/principle/PRINCIPLE.md` §Separability.
 
 Hosted CLIs' native discovery paths live at repo root and are
 committed directly **when settings exist** (lazy structure — empty
@@ -124,7 +124,7 @@ matures with usage.
 
 ## See also
 
-- `AGENTS.md` — agent-behavior spec (sibling to this file).
+- `AGENTS.md` — workspace AAIF entry: reading order + per-runtime mapping.
 
 ---
 

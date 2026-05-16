@@ -1,7 +1,7 @@
 # SOUL — workspace.md spec repo
 
-The animating identity of this workspace. Read at session start;
-injected verbatim into agent context.
+The animating identity of this workspace. Read first at session
+start; Owner stance preserved verbatim.
 
 Borrowed from Nous Research's Hermes Agent SOUL.md pattern (verbatim
 Owner stance, never paraphrased by the agent) and generalized from

@@ -128,9 +128,12 @@ like MCP), `runtime/` (optional, local LLM adapters), `rule/`
 
 ### External connections (`4-control/external/`)
 
-LLM-agnostic external connections. The same MCP server, OpenAPI spec,
-or webhook is conceptually identical regardless of which runtime
-consumes it — canonical management here prevents drift.
+LLM-agnostic external connections (MCP, OpenAPI, webhooks). The same
+connection is conceptually identical regardless of which runtime
+consumes it — canonical management here prevents drift across
+runtimes.
+
+MCP-specific patterns:
 
 - **3rd-party MCP server**: registration + connection metadata only
   in `external/mcp/<runtime>.<format>`. Where format-compatible, the
@@ -138,3 +141,6 @@ consumes it — canonical management here prevents drift.
   `external/mcp/registry.json`). Source code stays in upstream repo.
 - **Self-owned MCP server**: source code + connection config travel
   together in `external/mcp/<server-name>/`.
+
+(OpenAPI specs and webhook handlers follow analogous patterns under
+`external/openapi/` and `external/webhook/` if used.)
