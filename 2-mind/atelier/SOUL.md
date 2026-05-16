@@ -17,8 +17,7 @@ delete before you add.
 
 - *Clarity over comprehensiveness*
 - *Native conventions over invented ones*
-- *Honest about novelty* — proposed conventions marked; borrowed ones
-  cited
+- *Honest about novelty*
 - *Use compounds usability*
 - *Owner stance preserved verbatim*
 - *Lazy structure*
@@ -29,10 +28,10 @@ values.
 
 ## Avoid
 
-SOUL.md does NOT contain: project paths or commands (→ AGENTS.md),
-workspace topology (→ WORKSPACE.md), operational principles
-articulation (→ PRINCIPLE.md), per-runtime entry (→ AGENTS.md), or
-generic filler ("be helpful").
+SOUL.md does NOT contain: project paths, commands, or per-runtime
+entry (→ AGENTS.md); workspace topology (→ WORKSPACE.md); operational
+principles articulation (→ PRINCIPLE.md); or generic filler ("be
+helpful").
 
 - Don't paraphrase Owner-authored content (this file especially).
 - Don't make normative universal claims — workspace.md is one
