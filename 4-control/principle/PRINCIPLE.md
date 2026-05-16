@@ -25,14 +25,15 @@ automates more, and requires less re-explanation. Use compounds
 usability.
 
 Each session deposits knowledge into `2-mind/`, automation into
-`3-playbook/`, constraints and orientation into `4-control/`, refined
-`AGENTS.md`. A workspace that has not been used grows nothing.
+`3-playbook/`, constraints and orientation into `4-control/`, and
+refinements into `AGENTS.md`. A workspace that has not been used
+grows nothing.
 
 ### Separability *(general SW vocabulary; framing here is spec-specific)*
 
 **The core goal**: the workspace works as intended regardless of which
-runtime is brought in. Swap Claude Code for Codex CLI, Gemini for
-Claude, or point a hosted CLI at a local LLM — the workspace's
+runtime is brought in. Swap Claude Code for Codex CLI, Codex CLI for
+Gemini CLI, or point a hosted CLI at a local LLM — the workspace's
 content, identity, and operating discipline carry over unchanged.
 Separability is what turns "LLM-agnostic" from a label into an
 operational property.
