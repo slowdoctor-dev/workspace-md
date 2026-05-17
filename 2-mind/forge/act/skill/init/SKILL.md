@@ -42,9 +42,10 @@ Run the `detect-runtime` skill
 (`2-mind/forge/act/skill/detect-runtime/SKILL.md`) in bootstrap
 mode. It produces a proposed profile with 6 fields populated:
 `harness`, `backend_provider`, `backend_endpoint`, `backend_model`,
-`effective_context`, `active_tier` (derived per
-`runtime-flexibility.md`'s canonical rule), plus any
-`signal_disagreements` flagged.
+`effective_context`, `recommended_tier` (derived per
+`runtime-flexibility.md`'s canonical rule — becomes `active_tier`
+in profile.md on Owner ratify), plus any `signal_disagreements`
+flagged.
 
 Optional helper available at
 `2-mind/forge/act/script/detect-runtime.sh` when shell is available;
