@@ -43,18 +43,13 @@ default). Wait for Owner confirm before committing.
 Path: `2-mind/garden/essential/journal/<YYYY-MM-DD>-<runtime>-<NNN>.md`
 - `YYYY-MM-DD` = today
 - `<runtime>` = `claude` / `codex` / `gemini` / `cron` / etc.
-- `<NNN>` = zero-padded ordinal within day-runtime combo (`001`,
-  `002`, etc. — check existing entries today to determine)
+- `<NNN>` = zero-padded ordinal within day+runtime (`001`, `002`,
+  …; check existing entries to determine)
 
-Use the structure in `garden/essential/journal/ENTRY-TEMPLATE.md`:
-- Header (Started / Closed / Runtime / Working dir)
-- Summary (2-3 sentences)
-- Decisions (architecture / naming / design choices)
-- Learnings (new insights / surprising findings / corrections)
-- Procedural changes (new skills / scripts / rules)
-- Open / NEXT (transfer to fresh NEXT.md too)
-- Owner-signals (Owner preferences observed; for `learn` to graduate)
-- Consolidations applied (left empty; filled by `learn` if it runs)
+Fill the structure from `garden/essential/journal/ENTRY-TEMPLATE.md`.
+Two sections need cross-action: *Open / NEXT* items also transfer to
+fresh NEXT.md (step 4); *Consolidations applied* stays empty until
+`learn` runs (step 5).
 
 ### 4. Write fresh NEXT.md
 

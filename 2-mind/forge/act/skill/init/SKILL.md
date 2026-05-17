@@ -18,10 +18,9 @@ routine sessions (use `session-start`).
 |---|---|---|
 | 1. Verify structure | `WORKSPACE.md`, repo file tree | — |
 | 2. Detect runtimes | shell `command -v` checks | — |
-| 3. Recommend cap tier | detected-runtime list + R1 tier table | — |
-| 4. Propose runtime profile | (Owner-ratified) | `3-control/runtime/profile.md` (T2) |
-| 5. Brief read order | `AGENTS.md` (reading order section) | — |
-| 6. (Optional) modify seeds | template files in `garden/essential/` | minor edits only |
+| 3. Recommend + ratify cap tier | detected list + R1 tier table | `3-control/runtime/profile.md` (T2) |
+| 4. Brief read order | `AGENTS.md` § Reading order | — |
+| 5. (Optional) modify seeds | template files in `garden/essential/` | minor edits only |
 
 ## Procedure
 
@@ -40,30 +39,24 @@ missing files — they should be in the spec repo.
 ### 2. Detect installed LLM runtimes
 
 For each of `claude`, `codex`, `gemini`, `ollama`, `lms`, `mlx_lm`,
-run `command -v <name>` and report:
-- `detected:` list
-- `missing:` list (informational; install separately if desired)
+run `command -v <name>`. Report `detected:` and `missing:` lists.
 
-For each detected local runtime (`ollama` / `lms` / `mlx_lm`),
-attempt to enumerate installed models (e.g., `ollama list`) and
-record the largest available — this informs tier recommendation.
+### 3. Recommend + ratify cap tier
 
-### 3. Recommend cap tier
+For each detected local runtime, enumerate installed models (e.g.,
+`ollama list`) to find the largest available — informs tier choice.
 
-Map detected runtime(s) to a cap tier per
-`3-control/foundation/use-driven-memory.md §R1`:
+Map to a cap tier per `use-driven-memory.md §R1`:
 
 | Detected runtime | Recommended tier |
 |---|---|
 | Only hosted CLI(s) (claude / codex / gemini) | `extended` |
 | Local runtime running 30B+ model, OR hosted-modest pairing | `standard` |
-| Local runtime running ≤13B model (most common single-GPU setup) | `lean` |
+| Local runtime running ≤13B model | `lean` |
 | Mixed (hosted + local) | **most constrained** of the set |
 | Nothing detected | `lean` (safe floor) |
 
-### 4. Propose runtime profile to Owner
-
-Draft `3-control/runtime/profile.md` content:
+Draft `3-control/runtime/profile.md`:
 
 ```markdown
 # Runtime profile
@@ -74,13 +67,12 @@ Draft `3-control/runtime/profile.md` content:
 **notes**: <recommendation rationale; Owner may amend>
 ```
 
-Present diff to Owner: "Detected runtimes X, Y. Recommending tier T
-because Z. Accept / adjust?". On accept (T2 ratify), write the file.
-On adjust, write Owner's chosen tier.
+Present to Owner ("Detected X, Y → recommend tier T because Z.
+Accept / adjust?"); write the file on ratify.
 
-### 5. Brief the Owner on read order
+### 4. Brief the Owner on read order
 
-From `AGENTS.md` § Reading order:
+From `AGENTS.md` § Reading order (7 items):
 1. `AGENTS.md`
 2. `WORKSPACE.md`
 3. `3-control/foundation/PRINCIPLE.md`
@@ -89,13 +81,12 @@ From `AGENTS.md` § Reading order:
 6. `2-mind/garden/essential/NEXT.md` (consume + clear)
 7. `2-mind/garden/essential/journal/<most-recent>.md`
 
-### 6. (Optional) Modify template seeds with workspace-specific info
+### 5. (Optional) Modify template seeds
 
-If template files (`garden/essential/{USER,NEXT,SOUL}.md`,
-`journal/ENTRY-TEMPLATE.md`) have placeholder slots that benefit from
-runtime-detection results (e.g., "Runtime: <detected runtimes>"),
-edit those slots in-place. Don't add substantive content — templates
-fill via use.
+If templates (`garden/essential/{USER,NEXT,SOUL}.md`,
+`journal/ENTRY-TEMPLATE.md`) have placeholder slots that benefit
+from runtime info (e.g., "Runtime: <detected>"), edit in place.
+Don't add substantive content — templates fill via use.
 
 ## Pitfalls
 

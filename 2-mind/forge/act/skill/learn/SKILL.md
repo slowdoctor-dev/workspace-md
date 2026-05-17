@@ -105,18 +105,14 @@ Append to today's journal *Consolidations applied* section:
 
 - **Full-rescan instead of surgical grep**: wasteful, blurs signal.
   Narrow to patterns first.
-- **Creating thin skills**: <5 tool calls = note in USER.md or
-  journal-only. Resist premature codification.
-- **Writing to 3-control/ without ratify**: T2 violation. All
-  3-control/ paths (foundation/, rule/, external/, runtime/) need
-  the ratify gate.
-- **Skipping source citations**: a synthesized claim without
-  traceable source breaks R3.
-- **Overflowing USER.md without consolidate-on-error**: must
-  consolidate at 80% of the active tier's hard cap before append
-  (see `3-control/runtime/profile.md`).
-- **Loading garden/essential/SOUL.md at session-start**: not in the
-  read order; only `learn` reads it. Avoid cache-invalidating loads.
+- **Premature codification**: <5 tool calls or single-shot pattern =
+  note, not skill. Resist new skill files until the pattern recurs.
+- **T2 boundary violations**: writing 3-control/ without ratify,
+  skipping `(journal …)` citations, or loading
+  `garden/essential/SOUL.md` at session-start — each breaks a rule
+  (R4 / R3 / R4 respectively).
+- **Skipping consolidate-on-error**: USER.md must consolidate at 80%
+  of active tier cap before append (R1).
 
 ## Verification
 

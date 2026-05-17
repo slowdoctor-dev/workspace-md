@@ -49,27 +49,22 @@ read only by `learn`.
 
 ### 3. Consume + clear NEXT.md
 
-- Read NEXT.md content (Outstanding, Open questions, Next-session
-  priorities)
-- Integrate into working context
-- **Clear the file**: rewrite NEXT.md to empty template (sections
-  retained, content removed). The next `session-end` writes fresh
-  content.
-
-This single-consumption pattern matches Baddeley episodic-buffer
-discipline — handoff is consumed, not retained.
+Read NEXT.md, integrate into working context, then rewrite the file
+to the empty template (sections retained, content removed). Single-
+consumption per Baddeley episodic-buffer discipline — `session-end`
+writes fresh content for the next session.
 
 ### 4. Brief the Owner
 
-Compile a brief (3-5 lines):
+Compile a 3-5 line brief:
 - Where last session paused (from consumed NEXT)
-- Anything stale or open (from USER patterns, recent journal entry)
-- Any structural changes since (git log since last session)
+- Anything stale or open (USER patterns, recent journal)
+- Structural changes since (`git log` since last session)
 
 ### 5. Confirm direction
 
-Ask: "What do we work on this session?" Wait for Owner's direction
-before starting work.
+Ask "What do we work on this session?" — wait for Owner's reply
+before starting.
 
 ## Pitfalls
 

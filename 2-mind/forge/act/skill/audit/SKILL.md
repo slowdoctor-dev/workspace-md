@@ -74,34 +74,20 @@ annotate older.
 
 ### 5. Over-grown scan
 
-Caps are runtime-tier-dependent for memory files; fixed for spec
-files. Read `3-control/runtime/profile.md` for the active tier
-(default `lean` if absent). Full tier table at
-`3-control/foundation/use-driven-memory.md §R1`.
+All caps live in `3-control/foundation/use-driven-memory.md §R1`:
+**memory caps** (USER, NEXT, journal entry, garden topic) are
+runtime-tier-dependent — read `3-control/runtime/profile.md` for
+active tier (default `lean`); **spec caps** (AGENTS, WORKSPACE,
+PRINCIPLE, canonical SOUL, use-driven-memory) are fixed advisory
+flags.
 
-**Memory caps** (hard — apply by tier):
+For each file, look up its cap and compare current line count.
+Working `SOUL.md` (in garden) has no cap but prune *Graduated*
+section once ≥30 entries.
 
-| File | lean | standard | extended |
-|---|---|---|---|
-| `USER.md` | 60 | 100 | 200 |
-| `NEXT.md` | 20 | 30 | 50 |
-| journal entry | 100 soft | 200 soft | 400 soft |
-| garden `<topic>.md` flag | 200 | 300 | 500 |
-
-**Spec caps** (advisory flags — same all tiers):
-
-| File | Flag at |
-|---|---|
-| `AGENTS.md` | 80 |
-| `WORKSPACE.md` | 200 |
-| `PRINCIPLE.md` | 250 |
-| `SOUL.md` (canonical) | 100 |
-| `use-driven-memory.md` | 300 |
-| `SOUL.md` (working, in garden) | no cap; Graduated section ≥30 entries → prune |
-
-Splits / consolidations in 2-mind/ → apply directly (T1). In
-3-control/ → propose (T2). Spec-cap flags → report-only (Owner
-decides whether to trim the spec doc).
+Memory-cap breach in 2-mind/ → split or consolidate directly (T1).
+Spec-cap breach → flag only; Owner decides whether to trim (3-control/
+content is T2).
 
 ### 6. Orphan + broken-ref scan
 
