@@ -92,11 +92,16 @@ issues are surfaced for Owner since they cross-cut tier boundaries.
   `rules/` (if exists in `forge/role/<agent>/rules/`)
 - Scan USER.md for repeated entries
 - Scan `forge/act/skill/` for skills with overlapping scope
-- **Convenience-summary drift**: check that `3-control/runtime/profile.md`'s
-  Tier reference summary matches the canonical tier table in
-  `3-control/foundation/runtime-flexibility.md`. Numbers must match;
-  the summary's existence is an acknowledged exception to one-canonical-home
-  for convenience, but drift is unacceptable.
+- **Convenience-summary drift**: check that acknowledged duplicate
+  tables match their canonical sources. Two known pairs (single-
+  canonical-home exceptions for operator convenience):
+  - `3-control/runtime/profile.md` *Tier reference* summary ↔
+    `3-control/foundation/runtime-flexibility.md` *Tier system* canonical
+  - `2-mind/forge/act/skill/detect-runtime/SKILL.md` §Sub-step 4
+    tier-derivation table ↔ `runtime-flexibility.md` *Tier-derivation
+    rule* canonical
+  Numbers + rows must match the canonical source byte-for-byte.
+  Drift is unacceptable.
 
 In 2-mind/ → merge directly (T1). In 3-control/ → propose (T2).
 
