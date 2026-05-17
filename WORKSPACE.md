@@ -56,8 +56,8 @@ This structure enables *use-driven evolution* — see
         role/     agent specs (who acts)                    (optional)
         cue/      triggers (hooks, schedules, CI workflows) (optional)
         act/skill/  natural-language procedures             (optional — init/session-start/
-                                                             session-end/learn/audit)
-        act/script/ executable code                         (optional)
+                                                             session-end/learn/audit/detect-runtime)
+        act/script/ executable code                         (optional — e.g. detect-runtime.sh)
     3-control/    workspace configuration & governance (T2) [mandated]
                   (reading order: foundation → external → runtime → rule)
       foundation/                                           [mandated]
@@ -137,6 +137,13 @@ Detailed writing/naming conventions live in `3-control/rule/`.
 - **Authorization / per-agent permission semantics**: not modeled in
   the spec. Encode your own in `3-control/rule/` and per-agent
   `AGENTS.md` when needed.
+- **Hook availability varies by harness**: the three major CLIs
+  (Claude Code, Codex CLI, Gemini CLI) support SessionStart hooks
+  for stronger R2 enforcement; hook-less harnesses (Hermes Agent,
+  OpenCode, Continue.dev) rely on declarative `profile.md` +
+  adaptive capability detection (per `runtime-flexibility.md` +
+  `detect-runtime` skill). The spec degrades gracefully —
+  declarative + adaptive is the universal floor.
 
 These are acknowledged limits, not bugs. v0.x is pre-stable; spec
 matures with usage.

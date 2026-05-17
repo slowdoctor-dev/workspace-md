@@ -195,15 +195,16 @@ Not loaded at session-start (read on demand):
 - garden `<topic>.md` content (loaded by relevance)
 - skills (invoked by description match)
 
-## 5 lifecycle skills
+## 6 lifecycle skills
 
 | Skill | When | Role |
 |---|---|---|
-| `init` | Once after clone (or major restructure) | Workspace bootstrap — verify structure + detect runtime + propose tier profile |
-| `session-start` | Every session begin | Load 7-item read order; consume + clear `NEXT.md` |
+| `init` | Once after clone (or major restructure) | Workspace bootstrap — verify structure; invoke `detect-runtime`; ratify profile.md |
+| `session-start` | Every session begin | Load 7-item read order; invoke `detect-runtime` for drift check; consume + clear `NEXT.md` |
 | `session-end` | Every session close | Write journal entry + fresh `NEXT.md`; chain `learn` for substantive sessions |
 | `learn` | Chain from `session-end`, mid-session triggers, or `/learn` | Consolidation pass — **R1 primary enforcer** (consolidate-on-error at write-time); distill journal → T1 writes; propose T2 graduations |
 | `audit` | Monthly, limit-breach, or `/audit` | General-purpose maintenance — cross-cutting enforcement: One canonical home (duplicates/contradictions/orphans), Use-driven evolution (low-utility prune + journal archival), **R1 backstop** (over-grown scan), R3 source-trail |
+| `detect-runtime` | From `init`, `session-start`, or `/detect-runtime` | Detect (harness, backend, effective_context); derive recommended tier per `runtime-flexibility.md` rule |
 
 Detail per skill at `2-mind/forge/act/skill/<name>/SKILL.md`.
 

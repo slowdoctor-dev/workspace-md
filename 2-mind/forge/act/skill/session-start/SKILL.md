@@ -14,7 +14,7 @@ bootstrap (use `init` for that).
 
 | Step | Reads | Writes |
 |---|---|---|
-| 1. Quick integrity | repo structure + `3-control/runtime/profile.md` | — |
+| 1. Quick integrity + runtime drift check | repo structure + `3-control/runtime/profile.md` + `detect-runtime` result | — |
 | 2. Load read order | 7 files (see Procedure §2) | — |
 | 3. Consume NEXT | `garden/essential/NEXT.md` | clears NEXT.md content |
 | 4. Brief Owner | (compiled from loaded files) | — |
@@ -22,15 +22,24 @@ bootstrap (use `init` for that).
 
 ## Procedure
 
-### 1. Lightweight integrity check
+### 1. Lightweight integrity check + runtime drift detection
 
 Confirm 4 top folders + `2-mind/garden/` + `2-mind/forge/` +
 `3-control/foundation/{SOUL,PRINCIPLE}.md` are present. If broken,
 escalate to `init`.
 
-If `3-control/runtime/profile.md` is absent, default `active_tier =
-standard` (R1 baseline applies as-is) for this session and remind
-Owner that `init` should run to ratify the proper tier.
+Invoke `detect-runtime` skill in drift-check mode (cheap re-detect
+using cached self-introspection where possible). Compare against
+`3-control/runtime/profile.md`:
+
+- **profile.md present + detection matches** → silent pass; use
+  profile.md's active_tier
+- **profile.md present + `harness` or `backend_model` differs** →
+  surface diff to Owner + propose re-ratify; default behavior =
+  continue with profile.md's tier for this session
+- **profile.md absent** → default `active_tier = standard` (R1
+  baseline) for this session; remind Owner to run `/init` to
+  ratify the proper tier
 
 ### 2. Load read order (7 items, in sequence)
 

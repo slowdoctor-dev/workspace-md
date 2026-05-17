@@ -1,20 +1,46 @@
 # Runtime profile
 
-Active runtime profile for this workspace. Implements R2 Part B
-(session-start load fits runtime budget) — overrides R1 natural
-caps for constrained or expanded runtimes. Written by `init` skill
-on first run (or on runtime change) and ratified by the Owner.
-Read by `learn` and `audit` to look up active memory caps.
+**Purpose**: T2-ratification record of the active runtime tier for
+this workspace. Tier governs USER / NEXT / journal / garden caps
+used by `learn` and `audit`. Written by `init` after Owner ratifies
+detection results from `detect-runtime`; read by all memory skills.
+Drift between this file and a fresh `detect-runtime` run triggers a
+re-ratify prompt at `session-start`.
 
-T2 (Owner-ratified). Default if this file is absent: `standard`
-(R1 baseline applies as-is).
+T2 (Owner-ratified). Default if absent: `standard` (R1 baseline
+applies as-is). See `3-control/foundation/runtime-flexibility.md`
+for the full mechanism (tier system, derivation rule, detection,
+graceful degradation).
 
 ---
 
+**harness**: (unfilled — `init` writes after detection)
+**backend_provider**: (unfilled — `init` writes after detection)
+**backend_endpoint**: (unfilled — `init` writes after detection)
+**backend_model**: (unfilled — `init` writes after detection)
+**effective_context**: (unfilled — `init` writes after detection)
 **active_tier**: standard
-**detected_runtimes**: (unfilled — `init` writes after detection)
 **last_updated**: (unfilled)
 **notes**: (template — `init` will replace on first run)
+
+Field reference:
+- `harness` — agent CLI / UI wrapping the agent loop (`claude-code` |
+  `codex-cli` | `gemini-cli` | `cursor` | `hermes` | `opencode` |
+  `continue` | `custom`; open enum)
+- `backend_provider` — LLM token generator (`anthropic` | `openai` |
+  `google` | `ollama` | `lm-studio` | `mlx` | `llama-cpp` | `vllm` |
+  `custom`; open enum)
+- `backend_endpoint` — URL (hosted SDK default OR e.g.
+  `http://localhost:11434/v1`)
+- `backend_model` — model id (e.g. `claude-sonnet-4-6`,
+  `qwen2.5-coder:32b`)
+- `effective_context` — integer tokens (from `/v1/models` query or
+  known constant; see `detect-runtime/SKILL.md` §3)
+- `active_tier` — `lean` | `standard` | `extended` (Owner-ratified;
+  may differ from detection's recommendation)
+- `last_updated` — `YYYY-MM-DD` of most recent ratification
+- `notes` — Owner annotations: rationale, exceptions, declared
+  attention-quality observations
 
 ---
 

@@ -27,7 +27,7 @@ procedural skills into `2-mind/forge/`, constraints and orientation
 into `3-control/`. An unused workspace grows nothing.
 
 Operationalized by a cognitive-architecture memory spec — 7 stores +
-2 write-tiers (T1 / T2) + 4 operating rules (R1–R4) + 5 lifecycle
+2 write-tiers (T1 / T2) + 4 operating rules (R1–R4) + 6 lifecycle
 skills — grounded in Schacter-Tulving, Conway, Baddeley, McGaugh,
 Miller, Ebbinghaus, Loftus, Johnson. Detail:
 `3-control/foundation/use-driven-memory.md`.

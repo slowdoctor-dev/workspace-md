@@ -17,8 +17,8 @@ routine sessions (use `session-start`).
 | Step | Reads | Writes |
 |---|---|---|
 | 1. Verify structure | `WORKSPACE.md`, repo file tree | — |
-| 2. Detect runtimes | shell `command -v` checks | — |
-| 3. Recommend + ratify cap tier | detected list + runtime-flexibility tier table | `3-control/runtime/profile.md` (T2) |
+| 2. Invoke `detect-runtime` (bootstrap mode) | runtime self-introspection + env/config/endpoint signals | — (skill returns proposed profile) |
+| 3. Ratify profile.md | detect-runtime result | `3-control/runtime/profile.md` (T2) |
 | 4. Brief read order | `AGENTS.md` § Reading order | — |
 | 5. (Optional) modify seeds | template files in `garden/essential/` | minor edits only |
 
@@ -36,44 +36,31 @@ Confirm presence:
 If anything missing: restore from git or re-clone. Do NOT create
 missing files — they should be in the spec repo.
 
-### 2. Detect installed LLM runtimes
+### 2. Invoke `detect-runtime` (bootstrap mode)
 
-For each of `claude`, `codex`, `gemini`, `ollama`, `lms`, `mlx_lm`,
-run `command -v <name>`. Report `detected:` and `missing:` lists.
+Run the `detect-runtime` skill
+(`2-mind/forge/act/skill/detect-runtime/SKILL.md`) in bootstrap
+mode. It produces a proposed profile with 6 fields populated:
+`harness`, `backend_provider`, `backend_endpoint`, `backend_model`,
+`effective_context`, `active_tier` (derived per
+`runtime-flexibility.md`'s canonical rule), plus any
+`signal_disagreements` flagged.
 
-### 3. Recommend + ratify cap tier
+Optional helper available at
+`2-mind/forge/act/script/detect-runtime.sh` when shell is available;
+otherwise execute the skill's procedure manually.
 
-For each detected local runtime, enumerate installed models (e.g.,
-`ollama list`) to find the largest available — informs tier choice.
+### 3. Ratify profile.md
 
-Map to a cap tier per `3-control/foundation/runtime-flexibility.md`
-(R2 runtime adjustment over R1 natural caps):
+Present the detect-runtime result to Owner field-by-field. For each
+field: accept detection's value, override with Owner's choice, or
+mark `(uncertain — <reason>)`. On accept, write
+`3-control/runtime/profile.md` per its schema; set `last_updated`
+to today.
 
-| Detected runtime | Recommended tier |
-|---|---|
-| Hosted CLI(s) pointing at hosted-large model (Claude Sonnet/Opus, GPT-4, Gemini Pro) | `extended` |
-| Hosted CLI(s) pointing at hosted-modest model (Claude Haiku, GPT-4o-mini) | `standard` (= R1 baseline) |
-| Local runtime, 30B+ model | `standard` (= R1 baseline) |
-| Local runtime, ≤13B model | `lean` |
-| Mixed runtimes | **most constrained** of the set |
-| Nothing detected | `standard` (R1 baseline as-is) |
-
-CLI detection alone doesn't reveal which model the CLI is pointing
-at — confirm with Owner. Default to `standard` if uncertain.
-
-Draft `3-control/runtime/profile.md`:
-
-```markdown
-# Runtime profile
-
-**active_tier**: <recommended>
-**detected_runtimes**: <list>
-**last_updated**: <YYYY-MM-DD>
-**notes**: <recommendation rationale; Owner may amend>
-```
-
-Present to Owner ("Detected X, Y → recommend tier T because Z.
-Accept / adjust?"); write the file on ratify.
+If signal_disagreements were flagged (e.g., agent self-says "Claude
+Sonnet 4.6" but `/v1/models` returns `qwen2.5-coder:32b` →
+proxy-mismatch), surface them explicitly before ratify.
 
 ### 4. Brief the Owner on read order
 
