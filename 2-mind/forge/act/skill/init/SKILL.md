@@ -18,17 +18,18 @@ filesystem reorganization. Not for routine sessions (use
 | 1. Verify structure | `WORKSPACE.md`, repo file tree | — |
 | 2. Detect runtimes | shell `command -v` checks | — |
 | 3. Brief read order | `AGENTS.md` (reading order section) | — |
-| 4. (Optional) modify seeds | template files in `factory/essential/` | minor edits only |
+| 4. (Optional) modify seeds | template files in `garden/essential/` | minor edits only |
 
 ## Procedure
 
 ### 1. Verify mandated structure
 
 Confirm presence:
-- 5 top folders: `0-storage/ 1-active/ 2-mind/ 3-playbook/ 4-control/`
-- `4-control/foundation/SOUL.md`
-- `4-control/foundation/PRINCIPLE.md`
-- `2-mind/factory/`
+- 4 top folders: `0-storage/ 1-active/ 2-mind/ 3-control/`
+- `2-mind/garden/` (mandated — declarative memory)
+- `2-mind/forge/` (mandated — procedural memory)
+- `3-control/foundation/SOUL.md` (canonical identity)
+- `3-control/foundation/PRINCIPLE.md` (operating principles)
 
 If anything missing: restore from git or re-clone. Do NOT create
 missing files — they should be in the spec repo.
@@ -45,15 +46,15 @@ run `command -v <name>` and report:
 From `AGENTS.md` § Reading order:
 1. `AGENTS.md`
 2. `WORKSPACE.md`
-3. `4-control/foundation/PRINCIPLE.md`
-4. `4-control/foundation/SOUL.md`
-5. `2-mind/factory/essential/USER.md`
-6. `2-mind/factory/essential/NEXT.md` (consume + clear)
-7. `2-mind/factory/essential/journal/<most-recent>.md`
+3. `3-control/foundation/PRINCIPLE.md`
+4. `3-control/foundation/SOUL.md`
+5. `2-mind/garden/essential/USER.md`
+6. `2-mind/garden/essential/NEXT.md` (consume + clear)
+7. `2-mind/garden/essential/journal/<most-recent>.md`
 
 ### 4. (Optional) Modify template seeds with workspace-specific info
 
-If template files (`factory/essential/{USER,NEXT,SOUL}.md`,
+If template files (`garden/essential/{USER,NEXT,SOUL}.md`,
 `journal/ENTRY-TEMPLATE.md`) have placeholder slots that benefit from
 runtime-detection results (e.g., "Runtime: <detected runtimes>"),
 edit those slots in-place. Don't add substantive content — templates

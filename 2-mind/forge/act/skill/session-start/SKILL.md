@@ -16,7 +16,7 @@ bootstrap (use `init` for that).
 |---|---|---|
 | 1. Quick integrity | repo structure | — |
 | 2. Load read order | 7 files (see Procedure §2) | — |
-| 3. Consume NEXT | `factory/essential/NEXT.md` | clears NEXT.md content |
+| 3. Consume NEXT | `garden/essential/NEXT.md` | clears NEXT.md content |
 | 4. Brief Owner | (compiled from loaded files) | — |
 | 5. Confirm direction | (Owner reply) | — |
 
@@ -24,22 +24,23 @@ bootstrap (use `init` for that).
 
 ### 1. Lightweight integrity check
 
-Confirm 5 top folders + `4-control/foundation/{SOUL,PRINCIPLE}.md` +
-`2-mind/factory/` are present. If broken, escalate to `init`.
+Confirm 4 top folders + `2-mind/garden/` + `2-mind/forge/` +
+`3-control/foundation/{SOUL,PRINCIPLE}.md` are present. If broken,
+escalate to `init`.
 
 ### 2. Load read order (7 items, in sequence)
 
 1. `AGENTS.md` — workspace entry + per-runtime mapping
 2. `WORKSPACE.md` — topology spec
-3. `4-control/foundation/PRINCIPLE.md` — operating principles
-4. `4-control/foundation/SOUL.md` — canonical identity
-5. `2-mind/factory/essential/USER.md` — semantic person-model
-6. `2-mind/factory/essential/NEXT.md` — working buffer (step 3 below)
-7. `2-mind/factory/essential/journal/<most-recent>.md` — recent
+3. `3-control/foundation/PRINCIPLE.md` — operating principles
+4. `3-control/foundation/SOUL.md` — canonical identity
+5. `2-mind/garden/essential/USER.md` — semantic person-model
+6. `2-mind/garden/essential/NEXT.md` — working buffer (step 3 below)
+7. `2-mind/garden/essential/journal/<most-recent>.md` — recent
    session continuity (find by `ls -t` on journal/, exclude
    ENTRY-TEMPLATE.md and entries >30 days old to avoid stale context)
 
-Do NOT load `factory/essential/SOUL.md` — that's working observations,
+Do NOT load `garden/essential/SOUL.md` — that's working observations,
 read only by `learn`.
 
 ### 3. Consume + clear NEXT.md
@@ -68,7 +69,7 @@ before starting work.
 
 ## Pitfalls
 
-- **Loading `factory/essential/SOUL.md`**: that's the working store,
+- **Loading `garden/essential/SOUL.md`**: that's the working store,
   not canonical. R4 says it's NOT in session-start load.
 - **Forgetting to clear NEXT.md**: leaving content makes the next
   session double-process the handoff. Single-consumption is the rule.

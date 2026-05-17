@@ -8,13 +8,13 @@ human-agent collaboration.
 
 1. `AGENTS.md` (this file) — workspace entry + per-runtime mapping
 2. `WORKSPACE.md` — topology spec
-3. `4-control/foundation/PRINCIPLE.md` — operating principles
-4. `4-control/foundation/SOUL.md` — canonical identity (Owner-ratified)
-5. `2-mind/factory/essential/USER.md` — semantic person-model
-6. `2-mind/factory/essential/NEXT.md` — working buffer (consume + clear)
-7. `2-mind/factory/essential/journal/<most-recent>.md` — recent-session continuity
+3. `3-control/foundation/PRINCIPLE.md` — operating principles
+4. `3-control/foundation/SOUL.md` — canonical identity (Owner-ratified)
+5. `2-mind/garden/essential/USER.md` — semantic person-model
+6. `2-mind/garden/essential/NEXT.md` — working buffer (consume + clear)
+7. `2-mind/garden/essential/journal/<most-recent>.md` — recent-session continuity
 
-`factory/essential/SOUL.md` (working identity observations) is NOT
+`garden/essential/SOUL.md` (working identity observations) is NOT
 loaded at session-start. Read only by the `learn` skill when proposing
 graduations to canonical `foundation/SOUL.md`.
 

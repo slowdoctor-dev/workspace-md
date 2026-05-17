@@ -1,7 +1,7 @@
 # SOUL (working)
 
 Agent-written observations about workspace identity that may graduate
-to `4-control/foundation/SOUL.md` (T2 canonical) through Owner
+to `3-control/foundation/SOUL.md` (T2 canonical) through Owner
 ratification. Frozen-at-session-start — entries written here appear
 in the next session's loaded context, not the current one.
 

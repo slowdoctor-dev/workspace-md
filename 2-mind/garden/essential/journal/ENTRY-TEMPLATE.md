@@ -21,7 +21,7 @@ or decision benefited.)
 ## Procedural changes
 
 (New skills added, scripts created, rules added — anything new in
-3-playbook/ or 4-control/. Per-item.)
+2-mind/forge/ or 3-control/. Per-item.)
 
 ## Open / NEXT
 

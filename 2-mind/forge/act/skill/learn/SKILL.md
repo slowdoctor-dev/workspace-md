@@ -1,6 +1,6 @@
 ---
 name: learn
-description: Consolidation pass — distill journal entries into USER.md, factory/essential/SOUL.md, and factory/<topic>.md (T1 autonomous). Propose T2 graduations to foundation/SOUL.md, foundation/PRINCIPLE.md, new skills, new rules. Owner ratifies T2 per item.
+description: Consolidation pass — distill journal entries into garden/essential/USER.md, garden/essential/SOUL.md, garden/<topic>.md, and new procedures in forge/ (all T1 autonomous within capacity). Propose T2 graduations to 3-control/foundation/SOUL.md, 3-control/foundation/PRINCIPLE.md, and 3-control/rule/ for Owner ratification.
 ---
 
 # learn
@@ -21,15 +21,20 @@ under capacity* + *R4 dual-store graduation*.
 
 ## Quick reference
 
-| Signal type | T1 target (autonomous) | T2 target (propose-ratify) |
+| Signal type | Target | Tier |
 |---|---|---|
-| Owner preference / decision pattern | `factory/essential/USER.md` | — |
-| Owner-stance / identity-shift signal | `factory/essential/SOUL.md` (Observations / Owner-signals sections) | propose graduation → `4-control/foundation/SOUL.md` |
-| Synthesized domain observation | `factory/<topic>.md` (lazy create) | — |
-| Cross-session pattern → spec-level | — | propose update → `4-control/foundation/PRINCIPLE.md` |
-| Procedure ≥5 tool calls, reusable | — | propose new `3-playbook/act/skill/<name>/SKILL.md` |
-| Mechanical task ≥2 occurrences | — | propose new `3-playbook/act/script/<name>` |
-| Hard constraint | — | propose new `4-control/rule/<topic>.md` |
+| Owner preference / decision pattern | `garden/essential/USER.md` | **T1** autonomous |
+| Owner-stance / identity-shift signal | `garden/essential/SOUL.md` (Observations / Owner-signals sections) | **T1** autonomous |
+| → graduation of identity to canonical | `3-control/foundation/SOUL.md` | **T2** Owner-ratify |
+| Synthesized domain observation | `garden/<topic>.md` (lazy create) | **T1** autonomous |
+| Procedure ≥5 tool calls, reusable | new `2-mind/forge/act/skill/<name>/SKILL.md` | **T1** autonomous (procedural memory) |
+| Mechanical task ≥2 occurrences | new `2-mind/forge/act/script/<name>` | **T1** autonomous |
+| Cross-session pattern → spec-level principle | `3-control/foundation/PRINCIPLE.md` | **T2** Owner-ratify |
+| Hard constraint to enforce | `3-control/rule/<topic>.md` | **T2** Owner-ratify |
+
+T1 changes apply immediately (within capacity bounds R1). T2 changes
+require Owner per-item ratification — these are the
+**3-control/ governance boundary**.
 
 ## Procedure
 
@@ -38,7 +43,7 @@ under capacity* + *R4 dual-store graduation*.
 Read sources:
 - Today's journal entry (just written by `session-end`)
 - Last 1–2 prior journal entries (cross-session pattern detection)
-- `factory/essential/SOUL.md` Observations / Owner-signals sections
+- `garden/essential/SOUL.md` Observations / Owner-signals sections
   (working identity state)
 
 DO NOT full-rescan transcript. Look for:
@@ -62,20 +67,31 @@ each derived entry MUST cite back to the source journal entry
   Merge near-duplicate entries, drop superseded items.
 - Then append new entries with citations.
 
-**factory/essential/SOUL.md**:
+**garden/essential/SOUL.md**:
 - Observations / Owner-signals sections grow without cap (cap is
   managed by graduation + Graduated section).
 - Append observations with citations.
 
-**factory/<topic>.md** (for synthesized domain notes):
+**garden/<topic>.md** (for synthesized domain notes):
 - Create lazily on second occurrence of the same topic
 - Cite source journal entries
 - No fixed cap; `audit` handles consolidation
 
-### 4. Prepare T2 graduation proposals
+**New skills/scripts in forge/** (T1 autonomous):
+- When ≥5-tool-calls trigger fires + pattern is reusable, create
+  `2-mind/forge/act/skill/<name>/SKILL.md` directly
+- Mechanical task recurring ≥2 times → `2-mind/forge/act/script/<name>`
+- No Owner ratify gate — but `audit` skill prunes low-utility skills
+  periodically
 
-For each candidate (foundation/SOUL graduation / PRINCIPLE update /
-new skill / new rule / new script):
+### 4. Prepare T2 graduation proposals (3-control/ only)
+
+For each candidate that targets the 3-control/ governance boundary:
+- `3-control/foundation/SOUL.md` (canonical identity graduation)
+- `3-control/foundation/PRINCIPLE.md` (spec-level principle)
+- `3-control/rule/<topic>.md` (new enforceable rule)
+
+Procedure:
 - Draft the change as a diff
 - Present to Owner with context: "This pattern recurred in journals
   X, Y, Z. Propose adding to <target>. Accept?"
@@ -85,10 +101,10 @@ new skill / new rule / new script):
 
 For each accepted item:
 - Apply the diff to the target file
-- For factory/essential/SOUL.md → foundation/SOUL.md graduations:
-  mark the source entry in factory/essential/SOUL.md as
-  `[graduated YYYY-MM-DD → foundation/SOUL.md]` and move to
-  Graduated section (preserves R3 source trail)
+- For garden/essential/SOUL.md → 3-control/foundation/SOUL.md
+  graduations: mark the source entry in garden/essential/SOUL.md
+  as `[graduated YYYY-MM-DD → 3-control/foundation/SOUL.md]` and
+  move to Graduated section (preserves R3 source trail)
 
 ### 6. Update today's journal entry footer
 
@@ -102,15 +118,16 @@ Append to "Consolidations applied" section of today's journal:
   Always narrow to specific patterns first.
 - **Creating thin skills**: <5 tool calls = a note in USER.md or
   journal-only, not a skill. Resist premature codification.
-- **Writing to foundation/SOUL.md or PRINCIPLE.md without ratify**:
-  that's a T2 violation. ALL canonical-store changes go through Owner
-  ratify gate.
+- **Writing to 3-control/ without Owner ratify**: that's a T2
+  violation. ALL 3-control/ changes (foundation/, rule/, external/,
+  runtime/) require Owner ratify gate. The folder boundary is the
+  tier boundary.
 - **Skipping source citations**: R3 source-monitoring requires
   citation. A synthesized claim without traceable source is anti-
   pattern.
 - **Overflowing USER.md without consolidate-on-error**: must
   consolidate at 80% (80 lines) before append. R1 capacity discipline.
-- **Loading factory/essential/SOUL.md at session-start**: that's NOT
+- **Loading garden/essential/SOUL.md at session-start**: that's NOT
   loaded normally; only `learn` reads it. Don't trigger
   cache-invalidating loads.
 

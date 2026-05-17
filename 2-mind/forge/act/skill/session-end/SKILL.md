@@ -17,8 +17,8 @@ the episodic trace per R3.
 |---|---|---|
 | 1. Summarize | git diff/log + session transcript | — |
 | 2. Suggest commits | (per workspace convention) | Owner-accepted commits |
-| 3. Write journal entry | session transcript, decisions | `factory/essential/journal/<YYYY-MM-DD>-<runtime>-<NNN>.md` |
-| 4. Write fresh NEXT.md | outstanding work + open items | `factory/essential/NEXT.md` |
+| 3. Write journal entry | session transcript, decisions | `garden/essential/journal/<YYYY-MM-DD>-<runtime>-<NNN>.md` |
+| 4. Write fresh NEXT.md | outstanding work + open items | `garden/essential/NEXT.md` |
 | 5. Chain to learn (optional) | (handoff) | — |
 
 ## Procedure
@@ -41,13 +41,13 @@ default). Wait for Owner confirm before committing.
 
 ### 3. Write journal entry
 
-Path: `2-mind/factory/essential/journal/<YYYY-MM-DD>-<runtime>-<NNN>.md`
+Path: `2-mind/garden/essential/journal/<YYYY-MM-DD>-<runtime>-<NNN>.md`
 - `YYYY-MM-DD` = today
 - `<runtime>` = `claude` / `codex` / `gemini` / `cron` / etc.
 - `<NNN>` = zero-padded ordinal within day-runtime combo (`001`,
   `002`, etc. — check existing entries today to determine)
 
-Use the structure in `factory/essential/journal/ENTRY-TEMPLATE.md`:
+Use the structure in `garden/essential/journal/ENTRY-TEMPLATE.md`:
 - Header (Started / Closed / Runtime / Working dir)
 - Summary (2-3 sentences)
 - Decisions (architecture / naming / design choices)
@@ -59,7 +59,7 @@ Use the structure in `factory/essential/journal/ENTRY-TEMPLATE.md`:
 
 ### 4. Write fresh NEXT.md
 
-Replace any content in `factory/essential/NEXT.md` (which should
+Replace any content in `garden/essential/NEXT.md` (which should
 already be cleared by session-start of this session) with fresh
 content based on the Open / NEXT items from the journal entry:
 - Outstanding (in-progress, paused mid-task)
@@ -95,7 +95,7 @@ journal entry alone is sufficient episodic trace.
 
 - `git status` reflects only Owner-accepted commits
 - New journal entry exists at correct path with all sections filled
-- `factory/essential/NEXT.md` has fresh content matching Open / NEXT
+- `garden/essential/NEXT.md` has fresh content matching Open / NEXT
   in the journal entry
 - For substantive sessions: `learn` has run (check
   "Consolidations applied" footer of journal entry)

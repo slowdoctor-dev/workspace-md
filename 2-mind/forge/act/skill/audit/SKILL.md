@@ -36,75 +36,78 @@ Plus: journal archival pass (entries >3 months → archive).
 
 ### 1. Journal archival (the main mechanical task)
 
-Scan `2-mind/factory/essential/journal/` for entries with date prefix
+Scan `2-mind/garden/essential/journal/` for entries with date prefix
 older than 3 months from today.
 
 For each old entry:
-- `mkdir -p 2-mind/factory/archive/<YYYY-MM>/` (year-month of entry)
-- `git mv 2-mind/factory/essential/journal/<entry>.md 2-mind/factory/archive/<YYYY-MM>/`
+- `mkdir -p 2-mind/garden/archive/<YYYY-MM>/` (year-month of entry)
+- `git mv 2-mind/garden/essential/journal/<entry>.md 2-mind/garden/archive/<YYYY-MM>/`
 
 Archived entries remain searchable via grep but are not auto-loaded.
 
 ### 2. Stale scan
 
 - Grep for paths that no longer resolve (e.g., references to
-  `4-control/principle/` or `4-control/setting/` after foundation/
-  consolidation)
+  pre-restructure paths like `4-control/` or `3-playbook/`)
 - Check entries with `last_verified:` frontmatter older than 6 months
   (for non-time-anchored content)
 
-Propose updates or prunes to Owner per item (T2).
+Stale items in 2-mind/ → fix or prune directly (T1).
+Stale items in 3-control/ → propose to Owner (T2).
 
 ### 3. Duplicate scan
 
-- Walk `factory/<topic>.md` files; look for overlapping topics
-- Check if rules duplicate between `4-control/rule/` and any
-  per-agent `rules/`
+- Walk `garden/<topic>.md` files; look for overlapping topics
+- Check if rules duplicate between `3-control/rule/` and per-agent
+  `rules/` (if exists in `forge/role/<agent>/rules/`)
 - Scan USER.md for repeated entries
+- Scan `forge/act/skill/` for skills with overlapping scope
 
-Propose merges to canonical home (T2).
+In 2-mind/ → merge directly (T1). In 3-control/ → propose (T2).
 
 ### 4. Contradiction scan
 
 - Compare PRINCIPLE.md statements with SOUL.md / WORKSPACE.md for
   internal consistency
-- Look for "previously did X but now Y" patterns in factory content
+- Look for "previously did X but now Y" patterns in garden content
   without explicit resolution
 
-Propose resolution (T2): keep newer, annotate older.
+Resolution (T2 if 3-control/ involved; T1 otherwise): keep newer,
+annotate older.
 
 ### 5. Over-grown scan
 
 | File | Bound |
 |---|---|
 | `USER.md` | 100 lines |
-| `SOUL.md` (working) | no hard cap; Graduated section ≥30 entries |
+| `SOUL.md` (working, in garden) | no hard cap; Graduated section ≥30 entries |
 | journal entry | 200 lines soft |
-| factory `<topic>.md` | no fixed cap; flag >300 lines |
+| garden `<topic>.md` | no fixed cap; flag >300 lines |
 | `PRINCIPLE.md` | no fixed cap; flag >250 lines |
 
-Propose splits or consolidations for files breaching bounds (T2).
+Splits / consolidations in 2-mind/ → apply directly (T1). In
+3-control/ → propose (T2).
 
 ### 6. Orphan + broken-ref scan
 
 - `git ls-files | xargs grep -hoE '\[.*?\]\([^)]+\)'` → check links
 - Check `@file` imports / cross-refs in spec docs
 
-Propose fixes (T2).
+Fixes in 2-mind/ → apply (T1). In 3-control/ → propose (T2).
 
 ### 7. Low-utility scan
 
 - Skills never invoked since creation (check git log of journal/
   for skill name mentions)
 - Rules never fired (no hook history / no agent self-reference)
-- factory `<topic>.md` files with no downstream references
+- garden `<topic>.md` files with no downstream references
 
-Propose archive (move to `factory/archive/low-utility/<filename>.md`)
-or prune (T2).
+For 2-mind/ items: archive (move to `garden/archive/low-utility/<filename>.md`)
+or prune directly (T1). For 3-control/ items (rules): propose (T2).
 
 ### 8. Write audit log
 
-Append to `2-mind/factory/audit-log.md` (create if missing):
+Append to `2-mind/garden/audit-log.md` (create if missing):
 ```
 ## YYYY-MM-DD audit pass
 
@@ -118,9 +121,11 @@ Append to `2-mind/factory/audit-log.md` (create if missing):
 ## Pitfalls
 
 - **Auto-deleting**: NEVER. Always archive (move to
-  `factory/archive/`). R3 source-monitoring requires source preserved.
-- **Touching Owner-canonical files (foundation/) autonomously**:
-  ALL foundation/ changes are T2. Always propose, never auto-apply.
+  `garden/archive/`). R3 source-monitoring requires source preserved.
+- **Touching 3-control/ files autonomously**: ALL 3-control/
+  changes (foundation/, rule/, external/, runtime/) are T2.
+  Always propose, never auto-apply. The folder boundary is the
+  tier boundary.
 - **Full audit when only specific class needed**: if Owner asks
   "/audit stale", scan only stale class; don't drag in others.
 - **Skipping the audit log**: the log is the source-trail for what
@@ -129,7 +134,7 @@ Append to `2-mind/factory/audit-log.md` (create if missing):
 ## Verification
 
 - 6 issue classes scanned (or explicitly skipped per request scope)
-- Journal entries >3 months moved to `factory/archive/<YYYY-MM>/`
+- Journal entries >3 months moved to `garden/archive/<YYYY-MM>/`
 - All applied changes have Owner ratification
-- `2-mind/factory/audit-log.md` updated with this pass
+- `2-mind/garden/audit-log.md` updated with this pass
 - `git status` reflects only Owner-accepted commits

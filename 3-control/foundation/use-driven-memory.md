@@ -16,35 +16,42 @@ The workspace provides the files; the runtime drives the loop.
 
 | Store | Location | Tier | Cognitive analog |
 |---|---|---|---|
-| Self canonical | `4-control/foundation/SOUL.md` | T2 | Conway core self-schema |
-| Self working | `2-mind/factory/essential/SOUL.md` | T1 | Conway working-self observations |
-| Semantic person | `2-mind/factory/essential/USER.md` (≤100 lines) | T1 | Conway external person-schema |
-| Working buffer | `2-mind/factory/essential/NEXT.md` (single-consumption) | T1 | Baddeley 2000 episodic buffer |
-| Episodic | `2-mind/factory/essential/journal/<YYYY-MM-DD>-<runtime>-<NNN>.md` | T1 | Tulving 1972 episodic store |
-| Semantic domain | `2-mind/factory/` (whole folder; sub-org per lazy-structure) | T1 | Tulving semantic store |
-| Procedural | `3-playbook/` (whole layer) | T2 | Schacter & Tulving 1994 procedural |
+| Self canonical | `3-control/foundation/SOUL.md` | T2 | Conway core self-schema |
+| Self working | `2-mind/garden/essential/SOUL.md` | T1 | Conway working-self observations |
+| Semantic person | `2-mind/garden/essential/USER.md` (≤100 lines) | T1 | Conway external person-schema |
+| Working buffer | `2-mind/garden/essential/NEXT.md` (single-consumption) | T1 | Baddeley 2000 episodic buffer |
+| Episodic | `2-mind/garden/essential/journal/<YYYY-MM-DD>-<runtime>-<NNN>.md` | T1 | Tulving 1972 episodic store |
+| Semantic domain | `2-mind/garden/` (whole folder; sub-org per lazy-structure) | T1 | Tulving semantic store |
+| Procedural | `2-mind/forge/` (whole layer) | T1 | Schacter & Tulving 1994 procedural |
 
-Factory functions as the agent's semantic-domain storage in full;
-`essential/` is the bounded fast-access portion. The runtime's
-turn-by-turn transcript (e.g., Claude Code's session SQLite) plays the
-role of pre-consolidation hippocampal trace — searched on demand, not
-loaded at session-start.
+Garden functions as the agent's declarative memory in full
+(semantic + episodic + working); `essential/` is the bounded
+fast-access portion. Forge functions as procedural memory — agent
+autonomously creates new skills, scripts, role specs, triggers when
+patterns recur. The runtime's turn-by-turn transcript (e.g., Claude
+Code's session SQLite) plays the role of pre-consolidation
+hippocampal trace — searched on demand, not loaded at session-start.
 
 ## 2 write-tiers
 
-- **T1 — agent autonomous within capacity**: all of `2-mind/factory/`
-  (including essential stores and freely-organized topic content).
+- **T1 — agent autonomous within capacity**: all of `2-mind/` —
+  `garden/` (declarative memory) and `forge/` (procedural memory).
   Agent writes without ratification, bounded by per-store capacity
-  rules (R1).
-- **T2 — agent-proposes, Owner-ratifies**: `4-control/foundation/`,
-  `4-control/rule/`, `4-control/external/`, `4-control/runtime/`,
-  `3-playbook/role/`, `3-playbook/cue/`, `3-playbook/act/skill/`,
-  `3-playbook/act/script/`. Agent presents a diff; Owner accepts per
-  item.
+  rules (R1). Atelier (within 2-mind/) is T2-when-content-exists,
+  but is optional and currently empty.
+- **T2 — agent-proposes, Owner-ratifies**: all of `3-control/` —
+  `foundation/` (canonical identity + operating principles +
+  architecture detail), `rule/` (enforceable rules), `external/`
+  (MCP/OpenAPI/webhook configs), `runtime/` (local LLM adapters).
+  Agent presents a diff; Owner accepts per item.
 
 There is no T3 (Owner-only-no-touch). Even canonical SOUL.md (T2)
 permits agent-proposed graduations; the firewall is *ratification*,
 not *no-touch*.
+
+**Layer = tier mapping**: 2-mind = T1 (agent autonomous);
+3-control = T2 (Owner-ratified). The folder boundary is the tier
+boundary — answers "do I need to ratify?" by location alone.
 
 ## 4 operating rules
 
@@ -103,7 +110,7 @@ Johnson 1993 source monitoring framework.
 ### R4 — Two-tier authority with mirrored identity
 
 T1 / T2 split (above). Identity content uses **dual-store**: the
-agent's working observations (`factory/essential/SOUL.md`, T1)
+agent's working observations (`garden/essential/SOUL.md`, T1)
 accumulate freely; canonical identity (`foundation/SOUL.md`, T2) only
 updates via Owner-ratified graduation proposals from the working
 store. The working store is NOT loaded at session-start — it's read
@@ -123,16 +130,16 @@ Loaded into the agent's prompt in this sequence:
 
 1. `AGENTS.md` — workspace entry + per-runtime mapping
 2. `WORKSPACE.md` — topology spec
-3. `4-control/foundation/PRINCIPLE.md` — operating principles
-4. `4-control/foundation/SOUL.md` — canonical identity
-5. `2-mind/factory/essential/USER.md` — semantic person-model
-6. `2-mind/factory/essential/NEXT.md` — working buffer (consume + clear)
-7. `2-mind/factory/essential/journal/<most-recent>.md` — recent-session continuity
+3. `3-control/foundation/PRINCIPLE.md` — operating principles
+4. `3-control/foundation/SOUL.md` — canonical identity
+5. `2-mind/garden/essential/USER.md` — semantic person-model
+6. `2-mind/garden/essential/NEXT.md` — working buffer (consume + clear)
+7. `2-mind/garden/essential/journal/<most-recent>.md` — recent-session continuity
 
 Progression: **spec → principle → identity → user → state → recent**.
 
 Not loaded at session-start (read on demand):
-- `factory/essential/SOUL.md` (working observations — `learn` only)
+- `garden/essential/SOUL.md` (working observations — `learn` only)
 - Older journal entries (search via grep when needed)
 - factory `<topic>.md` content (loaded by relevance)
 - skills (invoked by description match)
@@ -160,12 +167,12 @@ journal entries     →   factory/essential/SOUL.md  →  foundation/SOUL.md
 1. **Session**: agent observes Owner-stance signals → journal entry
    `Owner-signals` section.
 2. **`learn` skill**: distills Owner-signals from journal entries into
-   `factory/essential/SOUL.md` *Observations* / *Owner-signals*
+   `garden/essential/SOUL.md` *Observations* / *Owner-signals*
    sections. T1 autonomous.
 3. **Periodic (also via `learn`)**: agent proposes promising
    observations as `foundation/SOUL.md` diffs. Owner ratifies per item.
 4. **On ratify**: change lands in `foundation/SOUL.md`; the
-   `factory/essential/SOUL.md` entry gets marked
+   `garden/essential/SOUL.md` entry gets marked
    `[graduated YYYY-MM-DD → foundation/SOUL.md]` and moves to
    *Graduated* section (kept for source-monitoring trail per R3).
 
@@ -175,13 +182,13 @@ journal entries     →   factory/essential/SOUL.md  →  foundation/SOUL.md
 |---|---|
 | `USER.md` | 100 lines hard; consolidate at 80 lines before append |
 | journal entries | 30–200 lines soft per entry; no entry-count cap |
-| journal/ folder | entries >3 months → `factory/archive/<YYYY-MM>/<filename>.md` via `audit` |
-| `factory/essential/SOUL.md` | no hard cap; *Graduated* section pruned by `audit` for >6 month old graduations |
+| journal/ folder | entries >3 months → `garden/archive/<YYYY-MM>/<filename>.md` via `audit` |
+| `garden/essential/SOUL.md` | no hard cap; *Graduated* section pruned by `audit` for >6 month old graduations |
 | factory `<topic>.md` | no fixed cap; `audit` consolidates near-duplicates |
 | canonical `SOUL.md` / `PRINCIPLE.md` | no caps; Owner-curated cadence |
 
 Archival is **not deletion** — old journal entries move to
-`factory/archive/` and remain searchable (grep), just not auto-loaded
+`garden/archive/` and remain searchable (grep), just not auto-loaded
 at session-start. Preserves source-monitoring trail (R3).
 
 ## Cross-runtime continuity
@@ -189,7 +196,7 @@ at session-start. Preserves source-monitoring trail (R3).
 All memory stores are **workspace-canonical**: written to / read from
 the repo, not runtime cache. A session in Claude Code, the next in
 Codex CLI, the third in Gemini CLI all read and write the same
-`factory/essential/USER.md`, `NEXT.md`, and `journal/` (entries
+`garden/essential/USER.md`, `NEXT.md`, and `journal/` (entries
 distinguished by `<runtime>` tag in filename).
 
 Per-runtime auto-loaded context (Claude Code's `CLAUDE.md`, Codex's

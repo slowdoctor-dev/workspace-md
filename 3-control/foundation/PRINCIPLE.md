@@ -24,17 +24,17 @@ session leaves behind durable assets so the next session knows more,
 automates more, and requires less re-explanation. Use compounds
 usability.
 
-Each session deposits knowledge into `2-mind/factory/`, automation
-into `3-playbook/`, constraints and orientation into `4-control/`,
-and refinements into `AGENTS.md`. A workspace that has not been used
-grows nothing.
+Each session deposits declarative knowledge into `2-mind/garden/`,
+procedural skills into `2-mind/forge/`, constraints and orientation
+into `3-control/`, and refinements into `AGENTS.md`. A workspace
+that has not been used grows nothing.
 
 The accumulation is operationalized by a memory architecture grounded
 in cognitive theory (Schacter-Tulving five-system taxonomy + Conway
 self-memory + McGaugh consolidation + Miller/Ebbinghaus bounded
 growth + Loftus/Johnson source-monitoring). 6 stores + 2 write-tiers
 + 4 operating rules + 5 lifecycle skills. Detail:
-`4-control/foundation/use-driven-memory.md`.
+`3-control/foundation/use-driven-memory.md`.
 
 ### Separability *(general SW vocabulary; framing here is spec-specific)*
 
@@ -50,7 +50,7 @@ runtime-specific hooks) lives at that runtime's native location.
 Content that exists independently of any specific runtime — MCP
 server lists, OpenAPI specs, webhook configs, business rules,
 documents, agent personas — lives runtime-independently in
-`4-control/external/`, `2-mind/`, etc.
+`3-control/external/`, `2-mind/`, etc.
 
 ### Lazy structure *(borrowed from programming "lazy evaluation"; application to directory topology proposed by this spec)*
 
@@ -77,7 +77,7 @@ categories splits into separate pages; the spec forbids duplication.
 already provide; invent convention only where no native exists.
 
 `.claude/`, `.codex/`, `.gemini/` are used directly at the workspace
-root. The spec only invents convention (`4-control/runtime/<name>/`)
+root. The spec only invents convention (`3-control/runtime/<name>/`)
 where the runtime offers none (Ollama, LM Studio, MLX).
 
 ### Open standard ethos *(general open-standards practice; AAIF-alignment cited)*
@@ -103,15 +103,28 @@ material.
 **1-active/** [mandated] — Disposable working space. Drafts, scratch,
 work-in-progress. Graduate to `2-mind/` if it matters to keep.
 
-**2-mind/** [mandated] — Knowledge systems. Two sub-folders,
-differentiated by *who authors* the knowledge.
+**2-mind/** [mandated] — Agent-managed memory layer (T1). Three
+sub-folders mapping to Schacter-Tulving 1994 memory taxonomy: atelier
+(optional Owner-stance bin), garden (declarative memory),
+forge (procedural memory). The three are cultivation crafts side by
+side — Owner cultivates identity in atelier, agent grows knowledge
+in garden, agent forges skills in forge.
 
-**2-mind/atelier/** [mandated] — Owner-authored knowledge. Identity,
-declared stance, brand, persona, values, curated reference. Owner's
-words preserved verbatim; agent may help with wrapper structure
-(indexing, cross-refs) but not content.
+**2-mind/atelier/** (optional) — Owner-stance bin (T2 if content
+exists). For non-canonical Owner-authored stance content — brand,
+persona, voice, declared values not yet promoted to canonical
+foundation. Loses mandated status because canonical identity now
+lives in `3-control/foundation/SOUL.md`.
 
-`4-control/foundation/SOUL.md` is the canonical identity (T2,
+**2-mind/garden/** [mandated] — Declarative memory: semantic +
+episodic + working stores. Sub-structure: `essential/` holds the 4
+essential memory files (SOUL working, USER, NEXT, journal/) — see
+`3-control/foundation/use-driven-memory.md`. Freely-organized topic
+content (`<topic>.md`, `<topic>/<sub>.md`) and `archive/` (aged-out
+journal entries) appear lazily as needed. T1 — agent autonomous
+within capacity bounds.
+
+`3-control/foundation/SOUL.md` is the canonical identity (T2,
 Owner-ratified). Per the Hermes Agent SOUL.md pattern this spec
 generalizes from
 ([personality](https://hermes-agent.nousresearch.com/docs/user-guide/features/personality)
@@ -121,31 +134,27 @@ canonical shape (Identity / Style / Avoid / Defaults), extended here
 with §Values for spec-specific articulation. SOUL.md's own §Avoid
 owns the full content-type exclusion list.
 
-Companion working-identity store at `2-mind/factory/essential/SOUL.md`
+Companion working-identity store at `2-mind/garden/essential/SOUL.md`
 (T1, agent-autonomous) holds observations awaiting Owner-ratified
-graduation. See `4-control/foundation/use-driven-memory.md` for the
+graduation. See `3-control/foundation/use-driven-memory.md` for the
 dual-store pattern.
 
-**2-mind/factory/** [mandated] — Agent-authored knowledge — semantic
-domain + essential memory accumulation slot. Sub-structure:
-`essential/` holds the 4 essential memory files (SOUL working, USER,
-NEXT, journal/) — see `4-control/foundation/use-driven-memory.md`.
-Freely-organized topic content (`<topic>.md`, `<topic>/<sub>.md`) and
-`archive/` (aged-out journal entries) appear lazily as needed.
-Updated continuously without asking; user audits periodically.
+**2-mind/forge/** [mandated, may be empty initially] — Procedural
+memory (T1). Agent specs (`role/`), triggers (`cue/`), procedures
+(`act/skill/`), deterministic code (`act/script/`). Agent
+autonomously creates new skills/scripts when Hermes-style triggers
+fire (≥5 tool calls / error recovery / Owner correction / novel
+workflow). All sub-folders optional per lazy-structure.
 
-**3-playbook/** [mandated, may be empty initially] — Automation:
-agent specs (`role/`), triggers (`cue/`), procedures (`act/skill/`),
-deterministic code (`act/script/`). All sub-folders optional per
-lazy-structure.
-
-**4-control/** [mandated] — Configuration and governance.
-Sub-paths: `foundation/` [mandated — holds canonical SOUL.md +
-PRINCIPLE.md + use-driven-memory.md], `external/` (optional,
+**3-control/** [mandated] — Owner-curated configuration and
+governance (T2). Sub-paths: `foundation/` [mandated — holds canonical
+SOUL.md + PRINCIPLE.md + use-driven-memory.md], `external/` (optional,
 LLM-agnostic connections like MCP), `runtime/` (optional, local LLM
-adapters), `rule/` (optional, enforceable rules).
+adapters), `rule/` (optional, enforceable rules). All changes to
+3-control/ require Owner ratification — this is the workspace's
+governance boundary.
 
-### External connections (`4-control/external/`)
+### External connections (`3-control/external/`)
 
 LLM-agnostic external connections (MCP, OpenAPI, webhooks). The same
 connection is conceptually identical regardless of which runtime
