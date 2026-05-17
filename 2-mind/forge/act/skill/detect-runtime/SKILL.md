@@ -82,8 +82,10 @@ may misidentify (a Llama variant may not know its quantization).
 **B. Per-harness config read** (objective):
 
 - **Hosted CLI** (Claude Code / Codex CLI / Gemini CLI):
-  - If `OPENAI_BASE_URL` set + points at localhost → local backend
-    via OpenAI-compat proxy
+  - If `OPENAI_BASE_URL` env var set → harness is routed through an
+    OpenAI-compat proxy (could be local: `localhost:11434` Ollama or
+    `localhost:1234` LM Studio; OR remote: LiteLLM gateway etc.).
+    Query that URL's `/models` endpoint to discover backend.
   - Else → harness's native provider (Anthropic / OpenAI / Google)
   - Model id from harness settings file
 - **Hermes**: read `~/.hermes/config.yaml` for `provider`,
@@ -154,13 +156,14 @@ Apply the canonical tier-derivation rule from
 | ≤ 16K | any | `lean` |
 | 16K - 64K | any | `standard` |
 | > 64K | hosted-large (Sonnet/Opus, GPT-4, Gemini Pro) | `extended` |
-| > 64K | hosted-modest (Haiku, GPT-4o-mini) | `standard` (attention cap) |
+| > 64K | hosted-modest (Haiku, GPT-4o-mini, Gemini Flash) | `standard` (attention cap) |
 | uncertain / detection failed | — | `standard` (R1 baseline) |
 
 ### Sub-step 5 — Produce result
 
-Emit (return / write / propose) a profile draft with 6 fields
-populated:
+Emit a profile-draft proposal with 6 detected fields. The tier
+field is emitted as `recommended_tier` (a proposal); on Owner ratify
+it becomes `active_tier` in `3-control/runtime/profile.md`.
 
 ```
 harness:             <detected>
@@ -168,7 +171,7 @@ backend_provider:    <detected>
 backend_endpoint:    <detected>
 backend_model:       <detected>
 effective_context:   <detected>
-active_tier:         <derived per rule>
+recommended_tier:    <derived per rule>     # → active_tier on ratify
 ```
 
 Plus any `signal_disagreements:` flagged for Owner attention.

@@ -92,7 +92,7 @@ case "$backend_provider" in
   anthropic) effective_context=200000 ;;
   openai)    effective_context=128000 ;;
   google)    effective_context=1000000 ;;
-  ollama|lm-studio|llama-cpp|vllm|custom)
+  ollama|lm-studio|mlx|llama-cpp|vllm|custom)
     if [ -n "$backend_endpoint" ] && [ -n "$backend_model" ]; then
       # Try common context fields in /v1/models response
       models_response=$(curl -s -m 2 "$backend_endpoint" 2>/dev/null || echo "{}")

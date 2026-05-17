@@ -67,10 +67,15 @@ This structure enables *use-driven evolution* — see
         runtime-flexibility.md runtime-tier mechanism (R2 B) (recommended — T2)
         ...                    additional foundational docs  (optional)
       external/   LLM-agnostic external connections         (optional — MCP, OpenAPI, webhooks)
-      runtime/    runtime adapters + active runtime profile (optional except profile.md when
-                                                             multi-tier setup; local LLM
-                                                             configs: Ollama / LM Studio / MLX;
-                                                             profile.md holds active cap tier)
+      runtime/    runtime adapters + active runtime profile (optional; recommended once
+                                                             `detect-runtime` runs at init —
+                                                             profile.md holds 6 fields: harness,
+                                                             backend_provider, backend_endpoint,
+                                                             backend_model, effective_context,
+                                                             active_tier. Local LLM adapter
+                                                             configs (Ollama / LM Studio / MLX)
+                                                             also land here when adopter needs
+                                                             repo-level convention)
       rule/       enforceable rules + document conventions  (optional)
 
 Secrets and credentials never live inside the workspace; keep them

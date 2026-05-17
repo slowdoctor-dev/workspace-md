@@ -64,7 +64,7 @@ a tier:
 | ≤ 16K | any | `lean` |
 | 16K - 64K | any | `standard` |
 | > 64K | hosted-large (Sonnet/Opus, GPT-4, Gemini Pro) | `extended` |
-| > 64K | hosted-modest (Haiku, GPT-4o-mini) | `standard` (attention-quality cap) |
+| > 64K | hosted-modest (Haiku, GPT-4o-mini, Gemini Flash) | `standard` (attention-quality cap) |
 | uncertain / detection failed | — | `standard` (R1 baseline) |
 
 ## Mixed-runtime rule
@@ -99,9 +99,11 @@ sub-steps:
 3. **Effective context** — agent self-knowledge + hosted constants
    table OR local endpoint query
 
-Invoked by `init` (bootstrap) and `session-start` (drift check).
-Owner can also invoke `/detect-runtime` directly after switching
-backends. Optional helper script at
+Invoked in three modes: by `init` (bootstrap), by `session-start`
+(drift check, every session), and rarely by `audit` (freshness
+re-check of the known-constants table when `last_verified` is
+>6 months old). Owner can also invoke `/detect-runtime` directly
+after switching backends. Optional helper script at
 `2-mind/forge/act/script/detect-runtime.sh` automates the procedure
 for shell-capable harnesses.
 
