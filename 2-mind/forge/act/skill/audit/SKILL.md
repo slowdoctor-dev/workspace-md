@@ -126,9 +126,9 @@ Cap sources:
   `3-control/foundation/runtime-flexibility.md`. Active selection:
   `3-control/runtime/profile.md` (default `standard` = R1 baseline
   unchanged).
-- **R1 spec caps** (AGENTS, WORKSPACE, PRINCIPLE, canonical SOUL,
-  use-driven-memory, runtime-flexibility) — fixed advisory flags,
-  runtime-independent.
+- **R1 spec caps** (README, AGENTS, WORKSPACE, PRINCIPLE, canonical
+  SOUL, use-driven-memory, runtime-flexibility) — fixed advisory
+  flags, runtime-independent.
 
 For each file, look up its effective cap (R1 × R2 tier scale) and
 compare current line count. Working `SOUL.md` (in garden) has no

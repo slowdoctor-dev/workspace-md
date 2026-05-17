@@ -155,8 +155,10 @@ matures with usage.
 
 ## See also
 
-- `AGENTS.md` — workspace AAIF entry: reading order + per-runtime mapping.
+- `README.md` — public-facing repo entry (start here if browsing on GitHub).
+- `AGENTS.md` — workspace AAIF entry: reading order + per-runtime mapping for AI agents.
+- `LICENSE` — CC BY-SA 4.0.
 
 ---
 
-*Version: v0.1 — 2026-05-16 (pre-stable)*
+*Version: v0.1 — 2026-05-18 (pre-stable)*

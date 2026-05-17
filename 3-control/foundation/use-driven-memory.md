@@ -77,9 +77,9 @@ Runtime-tier adjustment is R2's concern.
   consolidate-on-error): `USER.md`, `NEXT.md`, journal entries,
   `garden/<topic>.md`.
 - **Spec caps** (Owner-curated, growth-by-edit — advisory flags
-  only, reported by `audit`): `AGENTS.md`, `WORKSPACE.md`,
-  `PRINCIPLE.md`, canonical `SOUL.md`, `use-driven-memory.md`,
-  `runtime-flexibility.md`.
+  only, reported by `audit`): `README.md`, `AGENTS.md`,
+  `WORKSPACE.md`, `PRINCIPLE.md`, canonical `SOUL.md`,
+  `use-driven-memory.md`, `runtime-flexibility.md`.
 
 #### Natural memory caps (R1 baseline)
 
@@ -104,6 +104,7 @@ surface whether the natural caps need adjustment.
 
 | File | Flag at |
 |---|---|
+| `README.md` | 150 lines (public-facing entry — keep scan-able) |
 | `AGENTS.md` | 80 lines (entry doc — keep terse) |
 | `WORKSPACE.md` | 200 lines |
 | `PRINCIPLE.md` | 250 lines |
