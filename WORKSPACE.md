@@ -23,7 +23,7 @@ One approach, not *the* approach.
 ## Layout
 
 **Five top-level folders are mandated**, plus three mandated leaf
-paths: `2-mind/atelier/SOUL.md` (identity), `2-mind/factory/`
+paths: `2-mind/atelier/setting/SOUL.md` (identity), `2-mind/factory/`
 (knowledge accumulation slot, may be empty), and
 `4-control/principle/PRINCIPLE.md` (operating principles). Containing
 `2-mind/atelier/` and `4-control/principle/` folders are implied. All
@@ -39,7 +39,8 @@ This structure enables *use-driven evolution* — see
     1-active/     main work area                            [mandated]
     2-mind/       knowledge systems                         [mandated]
       atelier/    Owner-authored knowledge                  [mandated]
-        SOUL.md   workspace identity / animating principles [mandated]
+        setting/                                            [mandated]
+          SOUL.md workspace identity / animating principles [mandated]
         ...       additional Owner-stance files             (optional)
       factory/    agent-authored knowledge                  [mandated, may be empty initially]
     3-playbook/   automation                                [mandated, may be empty initially]
