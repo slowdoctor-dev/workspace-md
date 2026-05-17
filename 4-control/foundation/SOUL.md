@@ -23,7 +23,7 @@ delete before you add.
 - *Lazy structure*
 - *Separability*
 
-Full articulation: `4-control/principle/PRINCIPLE.md` §Core design
+Full articulation: `4-control/foundation/PRINCIPLE.md` §Core design
 values.
 
 ## Avoid

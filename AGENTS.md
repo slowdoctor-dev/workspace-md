@@ -4,12 +4,19 @@ This repo defines the `workspace.md` specification — a sibling to
 [agents.md](https://agents.md) describing workspace topology for
 human-agent collaboration.
 
-## Reading order
+## Reading order (load at session-start, in sequence)
 
-1. `4-control/setting/SOUL.md` — workspace identity (Owner stance,
-   verbatim; read first)
-2. `WORKSPACE.md` — the spec
-3. `4-control/principle/PRINCIPLE.md` — operating principles
+1. `AGENTS.md` (this file) — workspace entry + per-runtime mapping
+2. `WORKSPACE.md` — topology spec
+3. `4-control/foundation/PRINCIPLE.md` — operating principles
+4. `4-control/foundation/SOUL.md` — canonical identity (Owner-ratified)
+5. `2-mind/factory/essential/USER.md` — semantic person-model
+6. `2-mind/factory/essential/NEXT.md` — working buffer (consume + clear)
+7. `2-mind/factory/essential/journal/<most-recent>.md` — recent-session continuity
+
+`factory/essential/SOUL.md` (working identity observations) is NOT
+loaded at session-start. Read only by the `learn` skill when proposing
+graduations to canonical `foundation/SOUL.md`.
 
 ## Per-runtime entry
 

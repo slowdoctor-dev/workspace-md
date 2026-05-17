@@ -23,37 +23,46 @@ One approach, not *the* approach.
 ## Layout
 
 **Five top-level folders are mandated**, plus three mandated leaf
-paths: `4-control/setting/SOUL.md` (identity), `2-mind/factory/`
-(knowledge accumulation slot, may be empty), and
-`4-control/principle/PRINCIPLE.md` (operating principles). Containing
-`2-mind/atelier/` and `4-control/principle/` folders are implied. All
-other sub-folder structure is *optional* — apply *lazy structure*:
-create only when content arrives.
+paths: `4-control/foundation/SOUL.md` (canonical identity),
+`4-control/foundation/PRINCIPLE.md` (operating principles), and
+`2-mind/factory/` (semantic-domain + essential-memory accumulation
+slot). All other sub-folder structure is *optional* — apply *lazy
+structure*: create only when content arrives.
 
 Layer 0 is general file storage (LLM-passive); layers 1–3 are
 LLM-active content layers; layer 4 is the orthogonal control axis.
 This structure enables *use-driven evolution* — see
-`4-control/principle/PRINCIPLE.md` §Core design values.
+`4-control/foundation/PRINCIPLE.md` §Core design values.
 
     0-storage/    general file storage (LLM-passive)        [mandated]
     1-active/     main work area                            [mandated]
     2-mind/       knowledge systems                         [mandated]
       atelier/    Owner-authored knowledge                  (optional — for non-canonical
                                                              Owner-stance files: brand, persona, voice)
-      factory/    agent-authored knowledge                  [mandated, may be empty initially]
+      factory/    agent-authored knowledge (semantic        [mandated]
+                  domain + essential memory)
+        essential/                                          (recommended — auto-growth machinery)
+          SOUL.md      working identity observations        (T1 agent-autonomous)
+          USER.md      semantic person-model (≤100 lines)   (T1 agent-autonomous)
+          NEXT.md      working buffer (single-consumption)  (T1 agent-autonomous)
+          journal/     episodic per-session entries         (T1 agent-autonomous;
+                       YYYY-MM-DD-<runtime>-<NNN>.md         file per session)
+        archive/    aged-out journal entries                 (lazy — first audit pass)
+        ...         freely-organized semantic-domain        (lazy — topic.md or topic/sub.md)
+                    content (research, notes, syntheses)
     3-playbook/   automation                                [mandated, may be empty initially]
       role/       agent specs (who acts)                    (optional)
       cue/        triggers (hooks, schedules, CI workflows) (optional)
-      act/skill/  natural-language procedures               (optional)
+      act/skill/  natural-language procedures               (optional — init/session-start/
+                                                             session-end/learn/audit)
       act/script/ executable code                           (optional)
     4-control/    workspace configuration & governance      [mandated]
-                  (reading order: setting → principle → external → runtime → rule)
-      setting/                                              [mandated]
-        SOUL.md   workspace identity / animating principles [mandated — canonical, Owner-set]
-        ...       additional Owner-set canonical files      (optional)
-      principle/    workspace operating principles            [mandated]
-        PRINCIPLE.md  runtime-independent operating discipline [mandated]
-        ...           additional principle files              (optional)
+                  (reading order: foundation → external → runtime → rule)
+      foundation/                                           [mandated]
+        SOUL.md           canonical identity                [mandated — T2, Owner-ratified]
+        PRINCIPLE.md      operating principles              [mandated — T2]
+        use-driven-memory.md  memory-architecture detail    (recommended — T2)
+        ...               additional foundational docs      (optional)
       external/   LLM-agnostic external connections         (optional — MCP, OpenAPI, webhooks)
       runtime/    canonical for runtimes lacking native     (optional — local LLM configs:
                   repo-level convention                       Ollama / LM Studio / MLX)
@@ -65,7 +74,7 @@ outside (e.g., `~/.config/<workspace>-secrets/`).
 Layout reflects the *separability* principle — runtime-tied content
 lives at runtime-native paths, runtime-independent content under
 `4-control/external/`, `2-mind/`, etc. Full articulation:
-`4-control/principle/PRINCIPLE.md` §Separability.
+`4-control/foundation/PRINCIPLE.md` §Separability.
 
 Hosted CLIs' native discovery paths live at repo root and are
 committed directly **when settings exist** (lazy structure — empty
@@ -89,9 +98,9 @@ Three rule homes by scope:
 established standard.)
 
 Workspace operating *principles* — distinct from rules — live in
-`4-control/principle/`. Principles shape *how* the workspace is
+`4-control/foundation/`. Principles shape *how* the workspace is
 operated; rules constrain *what* may be done. See
-`4-control/principle/PRINCIPLE.md`.
+`4-control/foundation/PRINCIPLE.md`.
 
 ## Conventions
 

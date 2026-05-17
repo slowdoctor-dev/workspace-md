@@ -104,23 +104,28 @@ declared stance, brand, persona, values, curated reference. Owner's
 words preserved verbatim; agent may help with wrapper structure
 (indexing, cross-refs) but not content.
 
-`4-control/setting/SOUL.md` is the universal canonical first file — the
-workspace's animating identity. Per the Hermes Agent SOUL.md pattern
-this spec generalizes from
+`4-control/foundation/SOUL.md` is the canonical identity (T2,
+Owner-ratified). Per the Hermes Agent SOUL.md pattern this spec
+generalizes from
 ([personality](https://hermes-agent.nousresearch.com/docs/user-guide/features/personality)
 + [use-soul-with-hermes](https://hermes-agent.nousresearch.com/docs/guides/use-soul-with-hermes)):
-SOUL.md is **strictly Owner-authored verbatim** — the agent does not
-paraphrase, rewrite, or re-section it. Read first at session start.
-Section structure follows Hermes' canonical shape (Identity / Style /
-Avoid / Defaults), extended here with §Values for spec-specific
-articulation. SOUL.md's own §Avoid owns the full content-type
-exclusion list.
+content is Owner-authored verbatim. Section structure follows Hermes'
+canonical shape (Identity / Style / Avoid / Defaults), extended here
+with §Values for spec-specific articulation. SOUL.md's own §Avoid
+owns the full content-type exclusion list.
 
-**2-mind/factory/** [mandated, may be empty initially] —
-Agent-authored knowledge. Synthesized observations, operational
-bookkeeping, session logs, research synthesis. Updated continuously
-without asking; user audits periodically. The accumulation slot for
-use-driven evolution.
+Companion working-identity store at `2-mind/factory/essential/SOUL.md`
+(T1, agent-autonomous) holds observations awaiting Owner-ratified
+graduation. See `4-control/foundation/use-driven-memory.md` for the
+dual-store pattern.
+
+**2-mind/factory/** [mandated] — Agent-authored knowledge — semantic
+domain + essential memory accumulation slot. Sub-structure:
+`essential/` holds the 4 essential memory files (SOUL working, USER,
+NEXT, journal/) — see `4-control/foundation/use-driven-memory.md`.
+Freely-organized topic content (`<topic>.md`, `<topic>/<sub>.md`) and
+`archive/` (aged-out journal entries) appear lazily as needed.
+Updated continuously without asking; user audits periodically.
 
 **3-playbook/** [mandated, may be empty initially] — Automation:
 agent specs (`role/`), triggers (`cue/`), procedures (`act/skill/`),
@@ -128,10 +133,10 @@ deterministic code (`act/script/`). All sub-folders optional per
 lazy-structure.
 
 **4-control/** [mandated] — Configuration and governance.
-Sub-paths: `principle/PRINCIPLE.md` [mandated — runtime-independent
-operating discipline], `external/` (optional, LLM-agnostic connections
-like MCP), `runtime/` (optional, local LLM adapters), `rule/`
-(optional, enforceable rules).
+Sub-paths: `foundation/` [mandated — holds canonical SOUL.md +
+PRINCIPLE.md + use-driven-memory.md], `external/` (optional,
+LLM-agnostic connections like MCP), `runtime/` (optional, local LLM
+adapters), `rule/` (optional, enforceable rules).
 
 ### External connections (`4-control/external/`)
 
