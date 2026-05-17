@@ -215,7 +215,8 @@ detection downstream; Owner-ratify per row.
 ## Verification
 
 - Result has all 6 fields populated (harness, backend_provider,
-  backend_endpoint, backend_model, effective_context, active_tier),
+  backend_endpoint, backend_model, effective_context,
+  recommended_tier — becomes `active_tier` in profile.md on ratify),
   with `(uncertain — <reason>)` annotations where detection failed
 - Tier derivation matches the canonical rule in
   `runtime-flexibility.md`
