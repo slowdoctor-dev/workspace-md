@@ -62,8 +62,40 @@ derived entry MUST cite its source journal as
 **USER.md** — R1 natural cap = 100 lines / consolidate at 80. R2
 runtime-tier (read `3-control/runtime/profile.md`; default
 `standard` = R1 unchanged) may scale: lean → 60/50, extended →
-200/160. At ≥80% of the effective hard cap, CONSOLIDATE before
-append: merge near-duplicates, drop superseded items.
+200/160. At ≥80% of the effective hard cap, run CONSOLIDATE
+(below) before append.
+
+**CONSOLIDATE procedure** (R1 write-time enforcement):
+
+1. **Identify near-duplicates** — entries with overlapping subject +
+   semantically similar claim. Heuristic: same §section AND
+   ≥50% lexical overlap on the descriptor (excluding citation
+   suffix), OR explicit Owner restatement of an earlier point.
+2. **Identify superseded entries** — entry X is superseded by entry
+   Y when: (a) Y is newer AND on the same topic AND contradicts X
+   (Owner correction); OR (b) Y explicitly subsumes X ("we used to
+   X, now we do Y"); OR (c) Owner has retracted X.
+3. **Merge near-duplicates** — produce one consolidated entry
+   carrying *all* source citations (R3): `<merged descriptor>
+   (journal A, B, C)`. Never drop citations on merge — preserves
+   source trail.
+4. **Drop superseded entries** — remove from USER.md but record the
+   removal in the journal entry's *Consolidations applied* section
+   (R3: removal trail preserved in episodic store even if removed
+   from semantic store).
+5. **Verify post-consolidation**: USER.md is ≤cap, every remaining
+   entry still has its `(journal …)` citation(s), no information
+   loss against the journal entries that fed it (the journal
+   entries are unchanged).
+6. **If consolidation can't reduce below cap** — all entries are
+   distinct and current. Two paths:
+   - If the new entry is itself a near-duplicate / supersedes
+     something → still apply consolidation, may reduce by 1.
+   - Otherwise → escalate to Owner: "USER.md at cap; no
+     consolidation candidates. Bump tier? Manual prune? Add a new
+     §section?". Do NOT silently relax the cap or reject the write.
+
+Then append the new entry with its `(journal …)` citation.
 
 **garden/essential/SOUL.md** — *Observations* / *Owner-signals* grow
 without cap (managed by graduation + *Graduated* section). Append
@@ -114,14 +146,23 @@ Append to today's journal *Consolidations applied* section:
   (R4 / R3 / R4 respectively).
 - **Skipping consolidate-on-error**: USER.md must consolidate at 80%
   of its effective cap (R1 natural × R2 tier scale) before append.
+- **Dropping citations on merge**: merging two USER entries on the
+  same topic must carry forward *both* journal citations. Losing one
+  breaks R3 source trail.
+- **Silently relaxing the cap**: if no consolidation candidates exist
+  at the cap, escalate to Owner — do not auto-bump the cap or reject
+  the write.
 
 ## Verification
 
 - All sourced signals categorized to a target (or explicitly deferred)
-- USER.md within active tier's hard cap; consolidate-on-error fired
-  if needed
+- USER.md within its effective hard cap (R1 × R2 tier); if
+  consolidation ran, the post-consolidation file is ≤cap, all
+  remaining entries retain their citations, no information loss
+  against feeding journal entries
 - All written entries have `(journal <YYYY-MM-DD-runtime-NNN>)`
-  citations
+  citations (merged entries carry *all* source citations)
 - T2 proposals presented with diffs; Owner ratified per item
 - Ratified T2 changes applied; rejected ones not written
-- Today's journal entry footer updated with applied/deferred record
+- Today's journal entry footer updated: T1 writes + T2 proposals +
+  any superseded-entry removals (R3 trail)

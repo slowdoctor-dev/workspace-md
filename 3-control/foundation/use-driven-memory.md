@@ -84,16 +84,20 @@ Runtime-tier adjustment is R2's concern.
 
 | Store | Hard cap | Consolidate at | Cognitive rationale |
 |---|---|---|---|
-| `USER.md` | 100 lines | 80 | semantic person-model becomes unscannable past ~100 entries (Miller 7±2 extended to skim-able list) |
-| `NEXT.md` | 30 lines soft | n/a (single-consumption) | terse handoff, not a journal |
-| journal entry | 200 lines soft per entry | n/a (per-entry shape) | one session's record readable in one sitting |
-| garden `<topic>.md` | flag at 300 lines | split or consolidate | single topic stays cohesive |
+| `USER.md` | 100 lines | 80 | ~10 × Miller-chunked categories (≈ 7±2 entries per § Preferences / § Patterns / § Tells × 3 sections), with 30-line headroom for section headers + new entries before next consolidate trigger |
+| `NEXT.md` | 30 lines soft | n/a (single-consumption) | one screen worth — agent should read it without scrolling; handoff, not journal |
+| journal entry | 200 lines soft per entry | n/a (per-entry shape) | ~one session's decisions + learnings at human reading pace (8–10 min); long enough for substantive content, short enough to skim |
+| garden `<topic>.md` | flag at 300 lines | split or consolidate | single subject still cohesive without internal sectioning; past 300 → split into `<topic>/<sub>.md` |
 
 Working `SOUL.md` (in garden): no cap; *Graduated* entries older
 than 6 months pruned by `audit` (source-trail discipline per R3).
 
 *Theory*: McGaugh consolidation (hippocampus → cortex via replay);
 Miller 1956 7±2 working-memory capacity; Ebbinghaus forgetting curve.
+
+The numbers are *defensibly grounded* but not *empirically validated*
+— this is a pre-stable spec; first real adopter workloads will
+surface whether the natural caps need adjustment.
 
 #### Spec caps (advisory flags)
 
@@ -215,8 +219,8 @@ Not loaded at session-start (read on demand):
 | `init` | Once after clone (or major restructure) | Workspace bootstrap — verify structure + detect runtime + propose tier profile |
 | `session-start` | Every session begin | Load 7-item read order; consume + clear `NEXT.md` |
 | `session-end` | Every session close | Write journal entry + fresh `NEXT.md`; chain `learn` for substantive sessions |
-| `learn` | Chain from `session-end`, mid-session triggers, or `/learn` | Consolidation pass (R1): distill journal → T1 writes; propose T2 graduations |
-| `audit` | Monthly, limit-breach, or `/audit` | Periodic maintenance: 6-class scan + archival of journal entries >3 months |
+| `learn` | Chain from `session-end`, mid-session triggers, or `/learn` | Consolidation pass — **R1 primary enforcer** (consolidate-on-error at write-time); distill journal → T1 writes; propose T2 graduations |
+| `audit` | Monthly, limit-breach, or `/audit` | General-purpose maintenance — cross-cutting enforcement: One canonical home (duplicates/contradictions/orphans), Use-driven evolution (low-utility prune + journal archival), **R1 backstop** (over-grown scan), R3 source-trail |
 
 Detail per skill at `2-mind/forge/act/skill/<name>/SKILL.md`.
 

@@ -1,6 +1,6 @@
 ---
 name: audit
-description: Periodic maintenance pass — 6-class issue scan + journal archival (>3 months old → garden/archive/<YYYY-MM>/). Companion to learn (accumulation); audit handles forgetting and consolidation.
+description: General-purpose workspace maintenance pass. Cross-cutting enforcement of multiple core values (One canonical home / Use-driven evolution) and rules (R1 capacity backstop / R3 source-trail integrity / R4 T1-T2 boundary). 6-class issue scan + journal archival (>3 months old → garden/archive/<YYYY-MM>/) + audit-log write.
 ---
 
 # audit
@@ -8,28 +8,32 @@ description: Periodic maintenance pass — 6-class issue scan + journal archival
 ## When to use
 
 - **Monthly** by default (or every N sessions, per workspace cadence)
-- **On size-limit breach** (USER.md or garden topic exceeds its tier
-  cap — see R1)
+- **On size-limit breach** (R1 cap exceeded; primary R1 enforcement
+  is `learn` consolidate-on-error — `audit` is the backstop)
 - **After bulk additions** (post-migration, post-research-heavy)
 - **Explicit `/audit`** Owner invocation
 
-Companion to `learn` — `learn` accumulates, `audit` prunes. Without
-`audit` the workspace drifts toward clutter; without `learn` it
-doesn't accumulate. (Ebbinghaus forgetting curve + interference
-theory mitigation.)
+`audit` is the workspace's janitor — it doesn't accumulate, it keeps
+things tidy. Each scan class serves a specific value or rule (see
+Quick reference). Companion to `learn`: `learn` accumulates +
+consolidates at write-time; `audit` verifies + prunes periodically.
 
 ## Quick reference
 
-| Issue class | What to look for | Action |
-|---|---|---|
-| 1. Stale | references to deleted/renamed files; entries with old `last_verified` | update or prune |
-| 2. Duplicates | two files on same topic; same rule in multiple places | merge to canonical home |
-| 3. Contradictions | rules/principles in tension; old vs new claims | resolve (keep newer; annotate older) |
-| 4. Over-grown | files exceeding their R1 cap | split or consolidate |
-| 5. Orphans | dead links; broken cross-refs | fix paths or remove refs |
-| 6. Low-utility | skills never invoked; rules never fired | archive or prune |
+Each scan class enforces a specific value or rule:
 
-Plus: journal archival pass (entries >3 months → archive).
+| # | Issue class | What to look for | Action | Serves |
+|---|---|---|---|---|
+| 1 | Stale | references to deleted/renamed files; old `last_verified` | update or prune | One canonical home + R3 |
+| 2 | Duplicates | two files on same topic; rule in multiple places | merge to canonical home | **One canonical home** |
+| 3 | Contradictions | rules/principles in tension; old vs new claims | resolve (keep newer; annotate older) | One canonical home + internal consistency |
+| 4 | Over-grown | files exceeding their cap | split or consolidate | **R1 backstop** (× R2 tier) |
+| 5 | Orphans | dead links; broken cross-refs | fix paths or remove refs | One canonical home (link integrity) |
+| 6 | Low-utility | skills never invoked; rules never fired | archive or prune | Use-driven evolution (pruning) |
+
+Plus two mechanical steps that serve **R3 source-trail integrity**:
+- Journal archival pass (entries >3 months → archive)
+- Audit-log write (records what changed when)
 
 ## Procedure
 
