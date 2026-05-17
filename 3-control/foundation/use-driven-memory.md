@@ -109,8 +109,8 @@ readable by extended sessions; the reverse silently overflows.
 | `SOUL.md` (canonical) | 100 lines (Hermes-style sectioned) |
 | `use-driven-memory.md` | 300 lines |
 
-Working `SOUL.md` (in garden): no cap; *Graduated* section pruned by
-`audit` once ≥30 entries.
+Working `SOUL.md` (in garden): no cap; *Graduated* entries older
+than 6 months pruned by `audit`.
 
 #### Active tier selection
 

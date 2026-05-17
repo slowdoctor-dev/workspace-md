@@ -48,7 +48,8 @@ This structure enables *use-driven evolution* — see
           USER.md      semantic person-model (tier-capped)   (T1)
           NEXT.md      working buffer (single-consumption)  (T1)
           journal/     episodic per-session entries         (T1; YYYY-MM-DD-<runtime>-<NNN>.md)
-        archive/    aged-out journal entries                 (lazy — first audit pass)
+        archive/    aged-out journal entries +               (lazy — first audit pass;
+                    audit-pruned low-utility items            sub-folders: <YYYY-MM>/, low-utility/)
         ...         freely-organized semantic-domain        (lazy — topic.md or topic/sub.md)
                     content (research, notes, syntheses)
       forge/      procedural memory (where skills are forged) [mandated, may be empty initially]
