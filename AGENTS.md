@@ -14,9 +14,9 @@ human-agent collaboration.
 6. `2-mind/garden/essential/NEXT.md` — working buffer (consume + clear)
 7. `2-mind/garden/essential/journal/<most-recent>.md` — recent-session continuity
 
-`garden/essential/SOUL.md` (working identity observations) is NOT
-loaded at session-start. Read only by the `learn` skill when proposing
-graduations to canonical `foundation/SOUL.md`.
+`2-mind/garden/essential/SOUL.md` (working identity observations) is
+NOT loaded at session-start. Read only by the `learn` skill when
+proposing graduations to canonical `3-control/foundation/SOUL.md`.
 
 ## Per-runtime entry
 

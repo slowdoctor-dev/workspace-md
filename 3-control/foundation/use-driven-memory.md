@@ -12,7 +12,7 @@ training concerns deliberately not modeled): Optimizer (fine-tuning,
 exploration), Environment & Feedback (LLM-as-judge, reward systems).
 The workspace provides the files; the runtime drives the loop.
 
-## 6 stores + cognitive analogs
+## 7 memory stores + cognitive analogs
 
 | Store | Location | Tier | Cognitive analog |
 |---|---|---|---|
@@ -157,7 +157,7 @@ Not loaded at session-start (read on demand):
 ## Dual-store identity graduation pipeline
 
 ```
-session                  session-retro             periodic Owner review
+session                  learn skill               periodic Owner review
    ↓                          ↓                            ↓
 journal entries     →   garden/essential/SOUL.md  →  3-control/foundation/SOUL.md
 (episodic events)       (T1 working observations)     (T2 canonical, Owner-

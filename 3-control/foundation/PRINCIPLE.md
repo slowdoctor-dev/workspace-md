@@ -32,7 +32,7 @@ that has not been used grows nothing.
 The accumulation is operationalized by a memory architecture grounded
 in cognitive theory (Schacter-Tulving five-system taxonomy + Conway
 self-memory + McGaugh consolidation + Miller/Ebbinghaus bounded
-growth + Loftus/Johnson source-monitoring). 6 stores + 2 write-tiers
+growth + Loftus/Johnson source-monitoring). 7 memory stores + 2 write-tiers
 + 4 operating rules + 5 lifecycle skills. Detail:
 `3-control/foundation/use-driven-memory.md`.
 
@@ -104,11 +104,13 @@ material.
 work-in-progress. Graduate to `2-mind/` if it matters to keep.
 
 **2-mind/** [mandated] — Agent-managed memory layer (T1). Three
-sub-folders mapping to Schacter-Tulving 1994 memory taxonomy: atelier
-(optional Owner-stance bin), garden (declarative memory),
-forge (procedural memory). The three are cultivation crafts side by
-side — Owner cultivates identity in atelier, agent grows knowledge
-in garden, agent forges skills in forge.
+sub-folders: atelier (optional Owner-stance bin — outside the
+Schacter-Tulving taxonomy), garden (declarative memory: semantic +
+episodic + working), forge (procedural memory). Garden + forge map
+to Schacter-Tulving 1994 declarative vs procedural distinction. The
+three are cultivation crafts side by side — Owner cultivates identity
+in atelier, agent grows knowledge in garden, agent forges skills in
+forge.
 
 **2-mind/atelier/** (optional) — Owner-stance bin (T2 if content
 exists). For non-canonical Owner-authored stance content — brand,
