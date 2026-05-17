@@ -30,11 +30,11 @@ here for source-monitoring trail.
 
 ## Owner-signals
 
-Owner preferences observed; candidates for `learn`-driven graduation
+Owner preferences observed; candidates for `dream`-driven graduation
 to `garden/essential/USER.md` or `garden/essential/SOUL.md`.
 
-## Consolidations applied (filled by `learn`)
+## Consolidations applied (filled by `dream`)
 
-After `learn` runs against this entry, log T1 writes (USER.md,
+After `dream` runs against this entry, log T1 writes (USER.md,
 garden/essential/SOUL.md, garden/<topic>.md) and any T2 graduations
 proposed / ratified / declined.

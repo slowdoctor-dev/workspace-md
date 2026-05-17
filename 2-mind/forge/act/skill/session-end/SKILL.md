@@ -1,6 +1,6 @@
 ---
 name: session-end
-description: Close a session — summarize changes, suggest commits, write a journal entry (episodic trace), write fresh NEXT.md (handoff). Chains to learn for substantive sessions.
+description: Close a session — summarize changes, suggest commits, write a journal entry (episodic trace), write fresh NEXT.md (handoff). Chains to `dream` for substantive sessions.
 ---
 
 # session-end
@@ -18,7 +18,7 @@ Every session ends with a journal entry — the episodic trace per R3.
 | 2. Suggest commits | (per workspace convention) | Owner-accepted commits |
 | 3. Write journal entry | session transcript, decisions | `garden/essential/journal/<YYYY-MM-DD>-<runtime>-<NNN>.md` |
 | 4. Write fresh NEXT.md | outstanding work + open items | `garden/essential/NEXT.md` |
-| 5. Chain to learn (optional) | (handoff) | — |
+| 5. Chain to `dream` (optional) | (handoff) | — |
 
 ## Procedure
 
@@ -49,7 +49,7 @@ Path: `2-mind/garden/essential/journal/<YYYY-MM-DD>-<runtime>-<NNN>.md`
 Fill the structure from `garden/essential/journal/ENTRY-TEMPLATE.md`.
 Two sections need cross-action: *Open / NEXT* items also transfer to
 fresh NEXT.md (step 4); *Consolidations applied* stays empty until
-`learn` runs (step 5).
+`dream` runs (step 5).
 
 ### 4. Write fresh NEXT.md
 
@@ -60,14 +60,14 @@ content based on the Open / NEXT items from the journal entry:
 - Open questions (decisions deferred for Owner)
 - Next-session priorities (what to tackle first)
 
-### 5. Chain to learn (substantive sessions)
+### 5. Chain to `dream` (substantive sessions)
 
 If the session was substantive (multiple decisions / non-trivial work
 / ≥5 tool calls / error recovery / Owner correction / novel workflow),
-invoke `/learn` — consolidates journal signals into T1 stores and
+invoke `/dream` — consolidates journal signals into T1 stores and
 proposes T2 graduations for Owner ratification.
 
-For trivial sessions (single quick fix), skip `learn`; the journal
+For trivial sessions (single quick fix), skip `dream`; the journal
 entry alone suffices as episodic trace.
 
 ## Pitfalls
@@ -78,8 +78,8 @@ entry alone suffices as episodic trace.
   episodic trace per R3 is non-negotiable.
 - **Wrong filename format**: `YYYY-MM-DD-<runtime>-<NNN>.md`; NNN
   increments within today's runtime-matched entries.
-- **Auto-running learn on trivial sessions**: produces thin USER.md
-  entries. Only chain when substantive.
+- **Auto-running `dream` on trivial sessions**: produces thin
+  USER.md entries. Only chain when substantive.
 - **Not transferring Open / NEXT to fresh NEXT.md**: loses handoff
   context for the next session.
 
@@ -89,5 +89,5 @@ entry alone suffices as episodic trace.
 - New journal entry exists at correct path with all sections filled
 - `garden/essential/NEXT.md` has fresh content matching Open / NEXT
   in the journal entry
-- For substantive sessions: `learn` has run (check
+- For substantive sessions: `dream` has run (check
   "Consolidations applied" footer of journal entry)

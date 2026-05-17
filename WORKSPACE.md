@@ -56,7 +56,7 @@ This structure enables *use-driven evolution* — see
         role/     agent specs (who acts)                    (optional)
         cue/      triggers (hooks, schedules, CI workflows) (optional)
         act/skill/  natural-language procedures             (optional — init/session-start/
-                                                             session-end/learn/audit/detect-runtime)
+                                                             session-end/dream/audit/detect-runtime)
         act/script/ executable code                         (optional — e.g. detect-runtime.sh)
     3-control/    workspace configuration & governance (T2) [mandated]
                   (reading order: foundation → external → runtime → rule)

@@ -2,7 +2,7 @@
 
 **Purpose**: T2-ratification record of the active runtime tier for
 this workspace. Tier governs USER / NEXT / journal / garden caps
-used by `learn` and `audit`. Written by `init` after Owner ratifies
+used by `dream` and `audit`. Written by `init` after Owner ratifies
 detection results from `detect-runtime`; read by all memory skills.
 Drift between this file and a fresh `detect-runtime` run triggers a
 re-ratify prompt at `session-start`.

@@ -1,9 +1,9 @@
 ---
-name: learn
-description: Consolidation pass — distill journal entries into garden/essential/USER.md, garden/essential/SOUL.md, garden/<topic>.md, and new procedures in forge/ (all T1 autonomous within capacity). Propose T2 graduations to 3-control/foundation/SOUL.md, 3-control/foundation/PRINCIPLE.md, and 3-control/rule/ for Owner ratification.
+name: dream
+description: Sleep-consolidation pass — replay journal entries to distill them into garden/essential/USER.md, garden/essential/SOUL.md, garden/<topic>.md, and new procedures in forge/ (all T1 autonomous within capacity). Propose T2 graduations to 3-control/foundation/SOUL.md, 3-control/foundation/PRINCIPLE.md, and 3-control/rule/ for Owner ratification. Named after sleep-consolidation (McGaugh replay; Anthropic Auto Dream).
 ---
 
-# learn
+# dream
 
 ## When to use
 
@@ -13,10 +13,14 @@ Three modes:
 - **Mid-session**: on Hermes-style triggers — ≥5 tool calls in a
   non-trivial workflow, error recovery, Owner correction, novel
   workflow.
-- **Explicit**: Owner invokes `/learn` directly.
+- **Explicit**: Owner invokes `/dream` directly.
 
 Operational instance of R1 (consolidation under capacity) + R4
-(dual-store graduation).
+(dual-store graduation). Named for the sleep-consolidation metaphor
+that R1/R2 are grounded in (McGaugh hippocampus→cortex replay;
+Anthropic Auto Dream); session-end → dream → session-start completes
+a sleep cycle (lay down memory → consolidate during quiescence →
+wake to refined context).
 
 ## Quick reference
 

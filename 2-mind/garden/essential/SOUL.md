@@ -2,7 +2,7 @@
 
 Agent-written observations about workspace identity that may graduate
 to `3-control/foundation/SOUL.md` (T2 canonical) via Owner
-ratification. Read only by the `learn` skill when proposing
+ratification. Read only by the `dream` skill when proposing
 graduations — **not** loaded at session-start (per R4).
 
 ## Observations

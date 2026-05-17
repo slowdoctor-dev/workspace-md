@@ -54,7 +54,7 @@ using cached self-introspection where possible). Compare against
    ENTRY-TEMPLATE.md and entries >30 days old to avoid stale context)
 
 Do NOT load `garden/essential/SOUL.md` — that's working observations,
-read only by `learn`.
+read only by `dream`.
 
 ### 3. Consume + clear NEXT.md
 

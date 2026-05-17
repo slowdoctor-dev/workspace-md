@@ -78,7 +78,7 @@ extended sessions; the reverse silently overflows.
 
 Stored at `3-control/runtime/profile.md` — T2 (Owner-ratified) at
 `init` time, re-ratify on runtime change detected by
-`session-start`. `learn` and `audit` read profile.md for active
+`session-start`. `dream` and `audit` read profile.md for active
 caps. Default if `profile.md` absent: `standard` (R1 baseline
 applies as-is).
 

@@ -64,7 +64,7 @@ how much content a memory store can hold before it stops *being*
 memory (scan-ability drops, signal dilutes in noise, near-duplicates
 accumulate). Reaching the bound triggers in-place consolidation
 (merge near-duplicates / drop superseded entries), never
-write-rejection. Regular replay via `learn` consolidates
+write-rejection. Regular replay via `dream` consolidates
 independently of size pressure.
 
 R1 caps are **runtime-independent** — they describe what makes a
@@ -73,7 +73,7 @@ Runtime-tier adjustment is R2's concern.
 
 #### Two cap classes
 
-- **Memory caps** (use-grown — hard, enforced by `learn` /
+- **Memory caps** (use-grown — hard, enforced by `dream` /
   consolidate-on-error): `USER.md`, `NEXT.md`, journal entries,
   `garden/<topic>.md`.
 - **Spec caps** (Owner-curated, growth-by-edit — advisory flags
@@ -126,7 +126,7 @@ the current one. This:
 - Prevents the agent from reacting to its own just-written claims
 
 Agent writes to T1 stores any time during a session (typically via
-`session-end` and `learn`); the *loaded-context effect* manifests
+`session-end` and `dream`); the *loaded-context effect* manifests
 only at the next `session-start`.
 
 #### Part B — Session-start load fits runtime budget
@@ -166,7 +166,7 @@ T1 / T2 as above. Identity content uses **dual-store**: the agent's
 working observations (`garden/essential/SOUL.md`, T1) accumulate
 freely; canonical identity (`3-control/foundation/SOUL.md`, T2)
 updates only via Owner-ratified graduation from the working store.
-The working store is **not** loaded at session-start — `learn` reads
+The working store is **not** loaded at session-start — `dream` reads
 it only when preparing graduation proposals.
 
 This mirrors Conway's self-memory system: the working self
@@ -191,7 +191,7 @@ Loaded into the agent's prompt in this sequence:
 Progression: **spec → principle → identity → user → state → recent**.
 
 Not loaded at session-start (read on demand):
-- `garden/essential/SOUL.md` (working observations — `learn` only)
+- `garden/essential/SOUL.md` (working observations — `dream` only)
 - Older journal entries (search via grep when needed)
 - garden `<topic>.md` content (loaded by relevance)
 - skills (invoked by description match)
@@ -202,8 +202,8 @@ Not loaded at session-start (read on demand):
 |---|---|---|
 | `init` | Once after clone (or major restructure) | Workspace bootstrap — verify structure; invoke `detect-runtime`; ratify profile.md |
 | `session-start` | Every session begin | Load 7-item read order; invoke `detect-runtime` for drift check; consume + clear `NEXT.md` |
-| `session-end` | Every session close | Write journal entry + fresh `NEXT.md`; chain `learn` for substantive sessions |
-| `learn` | Chain from `session-end`, mid-session triggers, or `/learn` | Consolidation pass — **R1 primary enforcer** (consolidate-on-error at write-time); distill journal → T1 writes; propose T2 graduations |
+| `session-end` | Every session close | Write journal entry + fresh `NEXT.md`; chain `dream` for substantive sessions |
+| `dream` | Chain from `session-end`, mid-session triggers, or `/dream` | Sleep-consolidation pass — **R1 primary enforcer** (consolidate-on-error at write-time); replay journal → T1 writes; propose T2 graduations |
 | `audit` | Monthly, limit-breach, or `/audit` | General-purpose maintenance — cross-cutting enforcement: One canonical home (duplicates/contradictions/orphans), Use-driven evolution (low-utility prune + journal archival), **R1 backstop** (over-grown scan), R3 source-trail |
 | `detect-runtime` | From `init`, `session-start`, or `/detect-runtime` | Detect (harness, backend, effective_context); derive recommended tier per `runtime-flexibility.md` rule |
 
@@ -212,7 +212,7 @@ Detail per skill at `2-mind/forge/act/skill/<name>/SKILL.md`.
 ## Dual-store identity graduation pipeline
 
 ```
-session                learn skill            periodic Owner review
+session                dream skill            periodic Owner review
    ↓                       ↓                          ↓
 journal entries  →   garden/essential/SOUL.md  →  3-control/foundation/SOUL.md
 (episodic)           (T1 working observations)     (T2 canonical, Owner-ratified)
@@ -220,9 +220,9 @@ journal entries  →   garden/essential/SOUL.md  →  3-control/foundation/SOUL.
 
 1. **Session**: agent observes Owner-stance signals → records in
    journal entry's *Owner-signals* section.
-2. **`learn`**: distills signals from journals into
+2. **`dream`**: distills signals from journals into
    `garden/essential/SOUL.md` *Observations* / *Owner-signals* (T1).
-3. **`learn`, periodic**: agent proposes promising observations as
+3. **`dream`, periodic**: agent proposes promising observations as
    `3-control/foundation/SOUL.md` diffs; Owner ratifies per item.
 4. **On ratify**: change lands in canonical; the source entry gets
    marked `[graduated YYYY-MM-DD → 3-control/foundation/SOUL.md]` and

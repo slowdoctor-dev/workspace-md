@@ -85,13 +85,13 @@ Don't add substantive content — templates fill via use.
 - **Creating new memory files**: templates ship in the repo. `init`
   only modifies templates; never creates memory content. If a
   template is missing, the spec repo itself is broken — restore.
-- **Skipping the tier-ratify step**: without `profile.md`, `learn`
+- **Skipping the tier-ratify step**: without `profile.md`, `dream`
   and `audit` default to `standard` (R1 baseline). Fine on
   hosted-modest / local 30B+; under-protective on local 7-13B
   (lean would fit better). Always offer the tier proposal.
 - **Substantive content in templates**: templates are scaffolds, not
   starter content. Don't pre-populate USER.md with guessed Owner
-  preferences — let `learn` discover them.
+  preferences — let `dream` discover them.
 - **Skipping read-order brief**: even if Owner is experienced, the
   brief surfaces structural mismatches early.
 

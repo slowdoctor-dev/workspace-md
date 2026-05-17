@@ -9,13 +9,13 @@ description: General-purpose workspace maintenance pass. Cross-cutting enforceme
 
 - **Monthly** by default (or every N sessions, per workspace cadence)
 - **On size-limit breach** (R1 cap exceeded; primary R1 enforcement
-  is `learn` consolidate-on-error — `audit` is the backstop)
+  is `dream` consolidate-on-error — `audit` is the backstop)
 - **After bulk additions** (post-migration, post-research-heavy)
 - **Explicit `/audit`** Owner invocation
 
 `audit` is the workspace's janitor — it doesn't accumulate, it keeps
 things tidy. Each scan class serves a specific value or rule (see
-Quick reference). Companion to `learn`: `learn` accumulates +
+Quick reference). Companion to `dream`: `dream` accumulates +
 consolidates at write-time; `audit` verifies + prunes periodically.
 
 ## Quick reference

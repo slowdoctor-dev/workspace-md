@@ -15,7 +15,7 @@ human-agent collaboration.
 7. `2-mind/garden/essential/journal/<most-recent>.md` — recent-session continuity
 
 `2-mind/garden/essential/SOUL.md` (working identity observations) is
-NOT loaded at session-start. Read only by the `learn` skill when
+NOT loaded at session-start. Read only by the `dream` skill when
 proposing graduations to canonical `3-control/foundation/SOUL.md`.
 
 ## Per-runtime entry
