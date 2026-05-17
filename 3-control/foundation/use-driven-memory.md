@@ -108,6 +108,7 @@ surface whether the natural caps need adjustment.
 | `PRINCIPLE.md` | 250 lines |
 | `SOUL.md` (canonical) | 100 lines (Hermes-style sectioned) |
 | `use-driven-memory.md` | 300 lines |
+| `runtime-flexibility.md` | 200 lines |
 
 These are growth-by-edit, not use-grown — flag for Owner review
 when exceeded; never auto-consolidated.
