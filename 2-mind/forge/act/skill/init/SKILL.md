@@ -1,6 +1,6 @@
 ---
 name: init
-description: One-shot workspace bootstrap after git clone. Verifies mandated structure, detects installed LLM runtimes, modifies template seeds with workspace-specific info (e.g., runtime detection results). Does NOT create files — templates ship in the repo.
+description: One-shot workspace bootstrap after git clone. Verifies mandated structure, detects installed LLM runtimes, proposes runtime profile (active cap tier) for Owner ratification, modifies template seeds with workspace-specific info. Does NOT create memory content — templates ship in the repo.
 ---
 
 # init
@@ -8,8 +8,9 @@ description: One-shot workspace bootstrap after git clone. Verifies mandated str
 ## When to use
 
 Once after cloning a workspace.md-compliant workspace, or after major
-filesystem reorganization. Not for routine sessions (use
-`session-start` for those).
+filesystem reorganization, or after switching the primary runtime
+(e.g., moving from local-only Ollama to a hosted CLI). Not for
+routine sessions (use `session-start`).
 
 ## Quick reference
 
@@ -17,8 +18,10 @@ filesystem reorganization. Not for routine sessions (use
 |---|---|---|
 | 1. Verify structure | `WORKSPACE.md`, repo file tree | — |
 | 2. Detect runtimes | shell `command -v` checks | — |
-| 3. Brief read order | `AGENTS.md` (reading order section) | — |
-| 4. (Optional) modify seeds | template files in `garden/essential/` | minor edits only |
+| 3. Recommend cap tier | detected-runtime list + R1 tier table | — |
+| 4. Propose runtime profile | (Owner-ratified) | `3-control/runtime/profile.md` (T2) |
+| 5. Brief read order | `AGENTS.md` (reading order section) | — |
+| 6. (Optional) modify seeds | template files in `garden/essential/` | minor edits only |
 
 ## Procedure
 
@@ -41,7 +44,41 @@ run `command -v <name>` and report:
 - `detected:` list
 - `missing:` list (informational; install separately if desired)
 
-### 3. Brief the Owner on read order
+For each detected local runtime (`ollama` / `lms` / `mlx_lm`),
+attempt to enumerate installed models (e.g., `ollama list`) and
+record the largest available — this informs tier recommendation.
+
+### 3. Recommend cap tier
+
+Map detected runtime(s) to a cap tier per
+`3-control/foundation/use-driven-memory.md §R1`:
+
+| Detected runtime | Recommended tier |
+|---|---|
+| Only hosted CLI(s) (claude / codex / gemini) | `extended` |
+| Local runtime running 30B+ model, OR hosted-modest pairing | `standard` |
+| Local runtime running ≤13B model (most common single-GPU setup) | `lean` |
+| Mixed (hosted + local) | **most constrained** of the set |
+| Nothing detected | `lean` (safe floor) |
+
+### 4. Propose runtime profile to Owner
+
+Draft `3-control/runtime/profile.md` content:
+
+```markdown
+# Runtime profile
+
+**active_tier**: <recommended>
+**detected_runtimes**: <list>
+**last_updated**: <YYYY-MM-DD>
+**notes**: <recommendation rationale; Owner may amend>
+```
+
+Present diff to Owner: "Detected runtimes X, Y. Recommending tier T
+because Z. Accept / adjust?". On accept (T2 ratify), write the file.
+On adjust, write Owner's chosen tier.
+
+### 5. Brief the Owner on read order
 
 From `AGENTS.md` § Reading order:
 1. `AGENTS.md`
@@ -52,7 +89,7 @@ From `AGENTS.md` § Reading order:
 6. `2-mind/garden/essential/NEXT.md` (consume + clear)
 7. `2-mind/garden/essential/journal/<most-recent>.md`
 
-### 4. (Optional) Modify template seeds with workspace-specific info
+### 6. (Optional) Modify template seeds with workspace-specific info
 
 If template files (`garden/essential/{USER,NEXT,SOUL}.md`,
 `journal/ENTRY-TEMPLATE.md`) have placeholder slots that benefit from
@@ -62,18 +99,23 @@ fill via use.
 
 ## Pitfalls
 
-- **Creating new files**: templates ship in the repo. `init` only
-  modifies; never creates. If a template is missing, the spec repo
-  itself is broken — restore from git.
+- **Creating new memory files**: templates ship in the repo. `init`
+  only modifies templates; never creates memory content. If a
+  template is missing, the spec repo itself is broken — restore.
+- **Skipping the tier-ratify step**: without `profile.md`, `learn`
+  and `audit` default to `lean` — fine on local but wastes headroom
+  on hosted setups. Always offer the tier proposal.
 - **Substantive content in templates**: templates are scaffolds, not
   starter content. Don't pre-populate USER.md with guessed Owner
-  preferences — let `learn` skill discover them across sessions.
+  preferences — let `learn` discover them.
 - **Skipping read-order brief**: even if Owner is experienced, the
-  read-order brief surfaces any structural mismatches.
+  brief surfaces structural mismatches early.
 
 ## Verification
 
 - `find . -not -path './.git*' \( -type f -o -type l \)` shows all
   mandated files present
 - Read order in `AGENTS.md` matches the 7-item list above
+- `3-control/runtime/profile.md` exists with Owner-ratified
+  `active_tier`
 - Owner acknowledges readiness to proceed

@@ -28,6 +28,10 @@ Confirm 4 top folders + `2-mind/garden/` + `2-mind/forge/` +
 `3-control/foundation/{SOUL,PRINCIPLE}.md` are present. If broken,
 escalate to `init`.
 
+If `3-control/runtime/profile.md` is absent, default `active_tier =
+lean` for this session and remind Owner that `init` should run to
+ratify the proper tier.
+
 ### 2. Load read order (7 items, in sequence)
 
 1. `AGENTS.md` — workspace entry + per-runtime mapping

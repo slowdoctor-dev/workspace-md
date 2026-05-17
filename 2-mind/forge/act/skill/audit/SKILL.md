@@ -77,16 +77,34 @@ annotate older.
 
 ### 5. Over-grown scan
 
-| File | Bound |
+Caps are runtime-tier-dependent for memory files; fixed for spec
+files. Read `3-control/runtime/profile.md` for the active tier
+(default `lean` if absent). Full tier table at
+`3-control/foundation/use-driven-memory.md §R1`.
+
+**Memory caps** (hard — apply by tier):
+
+| File | lean | standard | extended |
+|---|---|---|---|
+| `USER.md` | 60 | 100 | 200 |
+| `NEXT.md` | 20 | 30 | 50 |
+| journal entry | 100 soft | 200 soft | 400 soft |
+| garden `<topic>.md` flag | 200 | 300 | 500 |
+
+**Spec caps** (advisory flags — same all tiers):
+
+| File | Flag at |
 |---|---|
-| `USER.md` | 100 lines |
-| `SOUL.md` (working, in garden) | no hard cap; Graduated section ≥30 entries |
-| journal entry | 200 lines soft |
-| garden `<topic>.md` | no fixed cap; flag >300 lines |
-| `PRINCIPLE.md` | no fixed cap; flag >250 lines |
+| `AGENTS.md` | 80 |
+| `WORKSPACE.md` | 200 |
+| `PRINCIPLE.md` | 250 |
+| `SOUL.md` (canonical) | 100 |
+| `use-driven-memory.md` | 300 |
+| `SOUL.md` (working, in garden) | no cap; Graduated section ≥30 entries → prune |
 
 Splits / consolidations in 2-mind/ → apply directly (T1). In
-3-control/ → propose (T2).
+3-control/ → propose (T2). Spec-cap flags → report-only (Owner
+decides whether to trim the spec doc).
 
 ### 6. Orphan + broken-ref scan
 

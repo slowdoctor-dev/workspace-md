@@ -63,8 +63,11 @@ each derived entry MUST cite back to the source journal entry
 ### 3. Apply T1 writes (autonomous within capacity)
 
 **USER.md**:
-- Check size: if ≥80 lines (80% of 100 cap), CONSOLIDATE first.
-  Merge near-duplicate entries, drop superseded items.
+- Check size against active tier cap (read
+  `3-control/runtime/profile.md` for active_tier; default `lean`).
+  If ≥80% of the tier's hard cap (lean: 50 / standard: 80 /
+  extended: 160), CONSOLIDATE first — merge near-duplicate entries,
+  drop superseded items.
 - Then append new entries with citations.
 
 **garden/essential/SOUL.md**:
@@ -126,7 +129,8 @@ Append to "Consolidations applied" section of today's journal:
   citation. A synthesized claim without traceable source is anti-
   pattern.
 - **Overflowing USER.md without consolidate-on-error**: must
-  consolidate at 80% (80 lines) before append. R1 capacity discipline.
+  consolidate at 80% of the active tier's hard cap before append
+  (see `3-control/runtime/profile.md`). R1 capacity discipline.
 - **Loading garden/essential/SOUL.md at session-start**: that's NOT
   loaded normally; only `learn` reads it. Don't trigger
   cache-invalidating loads.
@@ -134,7 +138,8 @@ Append to "Consolidations applied" section of today's journal:
 ## Verification
 
 - All sourced signals categorized to a target (or explicitly deferred)
-- USER.md ≤100 lines; consolidate-on-error fired if needed
+- USER.md within active tier's hard cap; consolidate-on-error fired
+  if needed
 - All written entries have `(journal <YYYY-MM-DD-runtime-NNN>)`
   citations
 - T2 proposals presented with diffs; Owner ratified per item

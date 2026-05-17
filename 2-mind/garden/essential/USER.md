@@ -1,8 +1,9 @@
 # USER
 
 Semantic model of the Owner — preferences, patterns, communication
-tells, decision habits. Hard ceiling: **100 lines**. Consolidate
-existing entries before append when at 80% capacity (≥80 lines).
+tells, decision habits. Hard ceiling is **tier-dependent** — see
+`3-control/runtime/profile.md` for active tier (defaults: lean=60 /
+standard=100 / extended=200; consolidate at 80% of the active cap).
 
 Loaded at session-start (item 5 of read order). Frozen-at-session-
 start — entries written here appear in next session, not current.

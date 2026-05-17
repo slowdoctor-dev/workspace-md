@@ -64,17 +64,67 @@ in-place consolidation (merge near-duplicates / drop superseded
 entries) rather than rejecting writes. Regular replay via the `learn`
 skill consolidates independently of size pressure.
 
-Concrete caps:
-- `USER.md`: 100 lines hard; consolidate at 80 lines (80%).
-- journal entries: 30–200 lines soft per entry; no hard cap on entry
-  count, but `archive/` move applies at 3 months age (see below).
-- garden `<topic>.md`: no fixed cap; `audit` consolidates near-
-  duplicates periodically.
-- `SOUL.md` (canonical and working): no hard cap; content discipline
-  via Hermes-style verbatim + sectioned structure.
+**Primary rationale — runtime context budget.** The 7-item session-
+start read order (see below) loads on every session. Cumulative size
+must fit the runtime's effective context window. Local LLMs are the
+binding constraint: a Llama 3.1 8B advertises 128K context but the
+needle-in-haystack quality cliff lands around 8-16K tokens. Past
+that, content is loaded but not reliably attended to — worse than
+not loading. Hosted LLMs (Claude / GPT / Gemini) have far more
+headroom; their constraint is prompt-cache stability rather than
+absolute size.
 
-*Theory*: McGaugh consolidation (hippocampus → cortex via replay);
-Miller 1956 7±2 working-memory capacity; Ebbinghaus forgetting curve.
+**Convergent cognitive grounding.** The same caps that match runtime
+budget also match cognitive theory: McGaugh consolidation
+(hippocampus → cortex via replay), Miller 1956 7±2 working-memory
+capacity, Ebbinghaus forgetting curve. The numbers are runtime-driven;
+the *discipline* is theory-grounded.
+
+#### Two cap classes
+
+- **Memory caps** (use-grown — enforced hard by `learn` /
+  consolidate-on-error): `USER.md`, `NEXT.md`, journal entries,
+  `garden/<topic>.md`. Values depend on runtime tier (table below).
+- **Spec caps** (Owner-curated, growth-by-edit — advisory flags only,
+  reported by `audit`): `AGENTS.md`, `WORKSPACE.md`, `PRINCIPLE.md`,
+  canonical `SOUL.md`, `use-driven-memory.md`. Numbers fixed (not
+  runtime-dependent — these are Owner-authored, not use-grown).
+
+#### Runtime tiers (memory caps)
+
+| Tier | USER (hard / consol-at) | NEXT | journal/<entry> | garden/<topic> flag | Target runtime |
+|---|---|---|---|---|---|
+| **lean** | 60 / 50 | 20 | 100 soft | 200 | local 7-13B (Llama 3.1 8B, Qwen 2.5 7B, Mistral 7B class); sub-16K effective context |
+| **standard** | 100 / 80 | 30 | 200 soft | 300 | local 30B-70B (Llama 70B, Mixtral, Qwen 32B+) / hosted-modest (Claude Haiku, GPT-4o-mini) |
+| **extended** | 200 / 160 | 50 | 400 soft | 500 | hosted-large (Claude Sonnet/Opus, GPT-4, Gemini Pro 1M) |
+
+Session-start budget per tier (memory + Owner-curated spec docs):
+**lean ≈ 15K tokens · standard ≈ 19K · extended ≈ 29K**.
+
+**Mixed-runtime rule**: if multiple runtimes share a workspace (e.g.,
+Claude Code + local Ollama), select the **most constrained** active
+tier. Writes from constrained sessions are always readable by extended
+sessions; the reverse silently overflows.
+
+#### Spec caps (advisory flags)
+
+| File | Flag at | Notes |
+|---|---|---|
+| `AGENTS.md` | 80 lines | entry doc — keep terse |
+| `WORKSPACE.md` | 200 lines | topology spec |
+| `PRINCIPLE.md` | 250 lines | principles |
+| `SOUL.md` (canonical) | 100 lines | Hermes-style sectioned |
+| `use-driven-memory.md` | 300 lines | architecture detail |
+
+Working `SOUL.md` (in garden): no cap; *Graduated* section pruned by
+`audit` once ≥30 entries.
+
+#### Active tier selection
+
+Stored at `3-control/runtime/profile.md` (T2 — Owner-ratified at
+`init` time, re-ratify on runtime change). `learn` and `audit` read
+this file to look up applicable caps. Default if `profile.md`
+absent: `lean` (safe floor).
 
 ### R2 — Writes settle between sessions
 

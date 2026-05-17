@@ -65,8 +65,10 @@ This structure enables *use-driven evolution* — see
         use-driven-memory.md  memory-architecture detail    (recommended — T2)
         ...               additional foundational docs      (optional)
       external/   LLM-agnostic external connections         (optional — MCP, OpenAPI, webhooks)
-      runtime/    canonical for runtimes lacking native     (optional — local LLM configs:
-                  repo-level convention                       Ollama / LM Studio / MLX)
+      runtime/    runtime adapters + active runtime profile (optional except profile.md when
+                                                             multi-tier setup; local LLM
+                                                             configs: Ollama / LM Studio / MLX;
+                                                             profile.md holds active cap tier)
       rule/       enforceable rules + document conventions  (optional)
 
 Secrets and credentials never live inside the workspace; keep them
