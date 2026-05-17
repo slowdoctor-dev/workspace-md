@@ -34,24 +34,26 @@ hippocampal trace — searched on demand, not loaded at session-start.
 
 ## 2 write-tiers
 
-- **T1 — agent autonomous within capacity**: all of `2-mind/` —
-  `garden/` (declarative memory) and `forge/` (procedural memory).
-  Agent writes without ratification, bounded by per-store capacity
-  rules (R1). Atelier (within 2-mind/) is T2-when-content-exists,
-  but is optional and currently empty.
+- **T1 — agent autonomous within capacity**: `2-mind/garden/`
+  (declarative memory) + `2-mind/forge/` (procedural memory). Agent
+  writes without ratification, bounded by per-store capacity rules
+  (R1).
 - **T2 — agent-proposes, Owner-ratifies**: all of `3-control/` —
   `foundation/` (canonical identity + operating principles +
   architecture detail), `rule/` (enforceable rules), `external/`
-  (MCP/OpenAPI/webhook configs), `runtime/` (local LLM adapters).
-  Agent presents a diff; Owner accepts per item.
+  (MCP/OpenAPI/webhook configs), `runtime/` (local LLM adapters) —
+  plus `2-mind/atelier/` when content exists (Owner-stance bin;
+  optional). Agent presents a diff; Owner accepts per item.
 
 There is no T3 (Owner-only-no-touch). Even canonical SOUL.md (T2)
 permits agent-proposed graduations; the firewall is *ratification*,
 not *no-touch*.
 
-**Layer = tier mapping**: 2-mind = T1 (agent autonomous);
-3-control = T2 (Owner-ratified). The folder boundary is the tier
-boundary — answers "do I need to ratify?" by location alone.
+**Tier-by-location heuristic**: 2-mind/garden/ + 2-mind/forge/ = T1;
+3-control/ + 2-mind/atelier/ = T2. Folder location answers "do I need
+to ratify?" — atelier is the one exception that crosses the 2-mind/3-
+control boundary (it is Owner-stance content placed inside the mind
+layer for cultivation-craft adjacency).
 
 ## 4 operating rules
 
