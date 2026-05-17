@@ -76,7 +76,7 @@ entry alone suffices as episodic trace.
   accept, even under fast workspace conventions.
 - **Skipping the journal entry**: every session writes one — the
   episodic trace per R3 is non-negotiable.
-- **Wrong filename format**: `YYYY-MM-DD-<runtime>-<NNN>.md`; NNN
+- **Wrong filename format**: `<YYYY-MM-DD>-<runtime>-<NNN>.md`; NNN
   increments within today's runtime-matched entries.
 - **Auto-running `dream` on trivial sessions**: produces thin
   USER.md entries. Only chain when substantive.
