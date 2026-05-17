@@ -1,6 +1,6 @@
 ---
 name: audit
-description: General-purpose workspace maintenance pass. Cross-cutting enforcement of multiple core values (One canonical home / Use-driven evolution) and rules (R1 capacity backstop / R3 source-trail integrity / R4 T1-T2 boundary). 6-class issue scan + journal archival (>3 months old → garden/archive/<YYYY-MM>/) + audit-log write.
+description: General-purpose workspace maintenance pass. Cross-cutting enforcement of multiple core values (One canonical home / Use-driven evolution) and rules (R1 capacity backstop / R3 source-trail integrity). Every action respects R4 T1-T2 boundary procedurally. 6-class issue scan + journal archival (>3 months old → garden/archive/<YYYY-MM>/) + audit-log write.
 ---
 
 # audit
