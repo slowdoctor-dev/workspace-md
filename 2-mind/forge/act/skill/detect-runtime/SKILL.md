@@ -29,8 +29,9 @@ report to Owner; never silently resolve.
 | 3. Effective context | Agent self-knowledge | Hosted: known-constants table (below); Local: `/v1/models` response + attention-cliff clamp | Owner declaration |
 
 Optional helper: `2-mind/forge/act/script/detect-runtime.sh` runs
-the three sub-steps and emits JSON. Use when shell is available;
-otherwise execute the procedure manually.
+the full 5-step procedure (3 detection sub-steps + tier derivation
++ JSON emission) when shell is available; otherwise execute the
+procedure manually.
 
 ## Procedure
 
