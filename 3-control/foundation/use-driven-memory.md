@@ -204,7 +204,7 @@ Not loaded at session-start (read on demand):
 | `session-start` | Every session begin | Load 7-item read order; invoke `detect-runtime` for drift check; consume + clear `NEXT.md` |
 | `session-end` | Every session close | Write journal entry + fresh `NEXT.md`; chain `dream` for substantive sessions |
 | `dream` | Chain from `session-end`, mid-session triggers, or `/dream` | Sleep-consolidation pass — **R1 primary enforcer** (consolidate-on-error at write-time); replay journal → T1 writes; propose T2 graduations |
-| `audit` | Monthly, limit-breach, or `/audit` | General-purpose maintenance — cross-cutting enforcement: One canonical home (duplicates/contradictions/orphans), Use-driven evolution (low-utility prune + journal archival), **R1 backstop** (over-grown scan), R3 source-trail |
+| `audit` | Monthly, limit-breach, or `/audit` | General-purpose maintenance — cross-cutting enforcement: One canonical home (duplicates/contradictions/orphans), Use-driven evolution (low-utility prune + journal archival), **R1 backstop** (over-grown scan), **R3 backstop** (citation-gap scan), R3 source-trail (audit-log) |
 | `detect-runtime` | From `init`, `session-start`, or `/detect-runtime` | Detect (harness, backend, effective_context); derive recommended tier per `runtime-flexibility.md` rule |
 
 Detail per skill at `2-mind/forge/act/skill/<name>/SKILL.md`.
