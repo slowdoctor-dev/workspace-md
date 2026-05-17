@@ -18,7 +18,7 @@ routine sessions (use `session-start`).
 |---|---|---|
 | 1. Verify structure | `WORKSPACE.md`, repo file tree | — |
 | 2. Detect runtimes | shell `command -v` checks | — |
-| 3. Recommend + ratify cap tier | detected list + R2 Part B tier table | `3-control/runtime/profile.md` (T2) |
+| 3. Recommend + ratify cap tier | detected list + runtime-flexibility tier table | `3-control/runtime/profile.md` (T2) |
 | 4. Brief read order | `AGENTS.md` § Reading order | — |
 | 5. (Optional) modify seeds | template files in `garden/essential/` | minor edits only |
 
@@ -46,8 +46,8 @@ run `command -v <name>`. Report `detected:` and `missing:` lists.
 For each detected local runtime, enumerate installed models (e.g.,
 `ollama list`) to find the largest available — informs tier choice.
 
-Map to a cap tier per `use-driven-memory.md §R2 Part B` (R2's
-runtime adjustment over R1 natural caps):
+Map to a cap tier per `3-control/foundation/runtime-flexibility.md`
+(R2 runtime adjustment over R1 natural caps):
 
 | Detected runtime | Recommended tier |
 |---|---|

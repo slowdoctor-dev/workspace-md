@@ -78,15 +78,18 @@ annotate older.
 
 ### 5. Over-grown scan
 
-Caps live in `3-control/foundation/use-driven-memory.md`:
+Cap sources:
 - **R1 natural memory caps** (USER, NEXT, journal entry, garden
-  topic) — content-discipline baselines.
-- **R2 runtime-tier override** scales R1 caps down (lean) or up
-  (extended) per the active runtime profile. Read
+  topic) — content-discipline baselines, defined in
+  `3-control/foundation/use-driven-memory.md §R1`.
+- **R2 runtime-tier override** — scales R1 caps down (lean) or up
+  (extended) per the active runtime profile. Tier system + rule:
+  `3-control/foundation/runtime-flexibility.md`. Active selection:
   `3-control/runtime/profile.md` (default `standard` = R1 baseline
   unchanged).
 - **R1 spec caps** (AGENTS, WORKSPACE, PRINCIPLE, canonical SOUL,
-  use-driven-memory) — fixed advisory flags, runtime-independent.
+  use-driven-memory, runtime-flexibility) — fixed advisory flags,
+  runtime-independent.
 
 For each file, look up its effective cap (R1 × R2 tier scale) and
 compare current line count. Working `SOUL.md` (in garden) has no

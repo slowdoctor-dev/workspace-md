@@ -20,7 +20,7 @@ T2 (Owner-ratified). Default if this file is absent: `standard`
 
 ## Tier reference
 
-Full cap table at `3-control/foundation/use-driven-memory.md §R2`.
+Full cap table at `3-control/foundation/runtime-flexibility.md`.
 Summary:
 
 | Tier | USER (hard / consol) | NEXT | journal/<entry> | garden/<topic> flag |

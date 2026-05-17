@@ -61,10 +61,11 @@ This structure enables *use-driven evolution* — see
     3-control/    workspace configuration & governance (T2) [mandated]
                   (reading order: foundation → external → runtime → rule)
       foundation/                                           [mandated]
-        SOUL.md           canonical identity                [mandated — T2, Owner-ratified]
-        PRINCIPLE.md      operating principles              [mandated — T2]
-        use-driven-memory.md  memory-architecture detail    (recommended — T2)
-        ...               additional foundational docs      (optional)
+        SOUL.md                canonical identity            [mandated — T2, Owner-ratified]
+        PRINCIPLE.md           operating principles          [mandated — T2]
+        use-driven-memory.md   memory-architecture detail    (recommended — T2)
+        runtime-flexibility.md runtime-tier mechanism (R2 B) (recommended — T2)
+        ...                    additional foundational docs  (optional)
       external/   LLM-agnostic external connections         (optional — MCP, OpenAPI, webhooks)
       runtime/    runtime adapters + active runtime profile (optional except profile.md when
                                                              multi-tier setup; local LLM

@@ -130,33 +130,16 @@ only at the next `session-start`.
 
 #### Part B — Session-start load fits runtime budget
 
-The 7-item session-start load runs every session; cumulative size
-must fit the runtime's *effective* context window. Local LLMs are
-the binding constraint: a Llama 3.1 8B advertises 128K but the
-needle-in-haystack cliff lands near 8-16K tokens — content past
-that is loaded but not reliably attended to. Hosted LLMs (Claude /
-GPT / Gemini) have far more headroom; their constraint is
-prompt-cache stability rather than raw size.
+The 7-item session-start load must fit the runtime's *effective*
+context. "Runtime" is a pair (harness, backend); tier is driven by
+backend `effective_context`. See
+`3-control/foundation/runtime-flexibility.md` for the full mechanism
+— two-axis framing, three patterns, tier system + derivation rule,
+detection procedure, graceful degradation, freshness discipline.
 
-When the runtime can't fit R1's natural caps, R1 caps are scaled
-down via a three-tier override:
-
-| Tier | USER (hard/consol) | NEXT | journal/<entry> | garden/<topic> flag | Target runtime |
-|---|---|---|---|---|---|
-| **lean** | 60 / 50 | 20 | 100 soft | 200 | local 7-13B (Llama 3.1 8B, Qwen 2.5 7B, Mistral 7B); ≤16K effective |
-| **standard** | 100 / 80 | 30 | 200 soft | 300 | **R1 baseline** — local 30-70B, hosted-modest (Haiku, GPT-4o-mini) |
-| **extended** | 200 / 160 | 50 | 400 soft | 500 | hosted-large (Claude Sonnet/Opus, GPT-4, Gemini Pro) |
-
-Session-start budgets: **lean ≈ 15K · standard ≈ 19K · extended ≈ 29K tokens**.
-
-**Mixed-runtime rule**: pick the **most constrained** active tier
-across runtimes sharing the workspace. Constrained writes are always
-readable by extended sessions; the reverse silently overflows.
-
-**Active selection**: stored at `3-control/runtime/profile.md` (T2 —
-Owner-ratified at `init`, re-ratify on runtime change). `learn` and
-`audit` read it for active caps. Default if absent: `standard` (R1
-baseline applies as-is).
+Quick reference: `lean` for ≤16K effective; `standard` 16-64K
+(= R1 baseline); `extended` >64K hosted-large. Default if
+`profile.md` absent: `standard`.
 
 *Theory*: sleep-boundary consolidation in the standard model of
 declarative memory.
