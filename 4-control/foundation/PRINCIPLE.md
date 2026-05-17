@@ -24,10 +24,17 @@ session leaves behind durable assets so the next session knows more,
 automates more, and requires less re-explanation. Use compounds
 usability.
 
-Each session deposits knowledge into `2-mind/`, automation into
-`3-playbook/`, constraints and orientation into `4-control/`, and
-refinements into `AGENTS.md`. A workspace that has not been used
+Each session deposits knowledge into `2-mind/factory/`, automation
+into `3-playbook/`, constraints and orientation into `4-control/`,
+and refinements into `AGENTS.md`. A workspace that has not been used
 grows nothing.
+
+The accumulation is operationalized by a memory architecture grounded
+in cognitive theory (Schacter-Tulving five-system taxonomy + Conway
+self-memory + McGaugh consolidation + Miller/Ebbinghaus bounded
+growth + Loftus/Johnson source-monitoring). 6 stores + 2 write-tiers
++ 4 operating rules + 5 lifecycle skills. Detail:
+`4-control/foundation/use-driven-memory.md`.
 
 ### Separability *(general SW vocabulary; framing here is spec-specific)*
 
