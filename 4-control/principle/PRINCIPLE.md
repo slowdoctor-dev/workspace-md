@@ -104,7 +104,7 @@ declared stance, brand, persona, values, curated reference. Owner's
 words preserved verbatim; agent may help with wrapper structure
 (indexing, cross-refs) but not content.
 
-`atelier/setting/SOUL.md` is the universal canonical first file — the
+`4-control/setting/SOUL.md` is the universal canonical first file — the
 workspace's animating identity. Per the Hermes Agent SOUL.md pattern
 this spec generalizes from
 ([personality](https://hermes-agent.nousresearch.com/docs/user-guide/features/personality)

@@ -23,7 +23,7 @@ One approach, not *the* approach.
 ## Layout
 
 **Five top-level folders are mandated**, plus three mandated leaf
-paths: `2-mind/atelier/setting/SOUL.md` (identity), `2-mind/factory/`
+paths: `4-control/setting/SOUL.md` (identity), `2-mind/factory/`
 (knowledge accumulation slot, may be empty), and
 `4-control/principle/PRINCIPLE.md` (operating principles). Containing
 `2-mind/atelier/` and `4-control/principle/` folders are implied. All
@@ -38,10 +38,8 @@ This structure enables *use-driven evolution* — see
     0-storage/    general file storage (LLM-passive)        [mandated]
     1-active/     main work area                            [mandated]
     2-mind/       knowledge systems                         [mandated]
-      atelier/    Owner-authored knowledge                  [mandated]
-        setting/                                            [mandated]
-          SOUL.md workspace identity / animating principles [mandated]
-        ...       additional Owner-stance files             (optional)
+      atelier/    Owner-authored knowledge                  (optional — for non-canonical
+                                                             Owner-stance files: brand, persona, voice)
       factory/    agent-authored knowledge                  [mandated, may be empty initially]
     3-playbook/   automation                                [mandated, may be empty initially]
       role/       agent specs (who acts)                    (optional)
@@ -49,7 +47,10 @@ This structure enables *use-driven evolution* — see
       act/skill/  natural-language procedures               (optional)
       act/script/ executable code                           (optional)
     4-control/    workspace configuration & governance      [mandated]
-                  (reading order: principle → external → runtime → rule)
+                  (reading order: setting → principle → external → runtime → rule)
+      setting/                                              [mandated]
+        SOUL.md   workspace identity / animating principles [mandated — canonical, Owner-set]
+        ...       additional Owner-set canonical files      (optional)
       principle/    workspace operating principles            [mandated]
         PRINCIPLE.md  runtime-independent operating discipline [mandated]
         ...           additional principle files              (optional)
