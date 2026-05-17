@@ -64,10 +64,11 @@ derived entry MUST cite its source journal as
 ### 3. Apply T1 writes
 
 **USER.md** — R1 natural cap = 100 lines / consolidate at 80. R2
-runtime-tier (read `3-control/runtime/profile.md`; default
-`standard` = R1 unchanged) may scale: lean → 60/50, extended →
-200/160. At ≥80% of the effective hard cap, run CONSOLIDATE
-(below) before append.
+runtime-tier (read `3-control/runtime/profile.md` for active_tier;
+default `standard` = R1 unchanged; canonical tier table in
+`3-control/foundation/runtime-flexibility.md`) may scale:
+lean → 60 / 50, extended → 200 / 160. At ≥80% of the effective hard
+cap, run CONSOLIDATE (below) before append.
 
 **CONSOLIDATE procedure** (R1 write-time enforcement):
 

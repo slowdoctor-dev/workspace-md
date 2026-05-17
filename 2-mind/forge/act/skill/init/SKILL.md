@@ -1,6 +1,6 @@
 ---
 name: init
-description: One-shot workspace bootstrap after git clone. Verifies mandated structure, detects installed LLM runtimes, proposes runtime profile (active cap tier) for Owner ratification, modifies template seeds with workspace-specific info. Does NOT create memory content — templates ship in the repo.
+description: One-shot workspace bootstrap after git clone. Verifies mandated structure, invokes `detect-runtime` to detect (harness, backend, effective_context) and derive recommended tier, proposes the runtime profile for Owner ratification, modifies template seeds with workspace-specific info. Does NOT create memory content — templates ship in the repo.
 ---
 
 # init
@@ -100,6 +100,9 @@ Don't add substantive content — templates fill via use.
 - `find . -not -path './.git*' \( -type f -o -type l \)` shows all
   mandated files present
 - Read order in `AGENTS.md` matches the 7-item list above
-- `3-control/runtime/profile.md` exists with Owner-ratified
-  `active_tier`
+- `3-control/runtime/profile.md` exists with all 6 fields Owner-
+  ratified: `harness`, `backend_provider`, `backend_endpoint`,
+  `backend_model`, `effective_context`, `active_tier` (or
+  annotated `(uncertain — <reason>)` per `detect-runtime` discipline)
+- `last_updated` field set to today's date
 - Owner acknowledges readiness to proceed

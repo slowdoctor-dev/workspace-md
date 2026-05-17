@@ -1,6 +1,6 @@
 ---
 name: session-start
-description: Load read order into agent context at every session begin. Consume + clear NEXT.md (the working buffer). Brief Owner on state. Not the one-time bootstrap (use init for that).
+description: Load read order into agent context at every session begin. Invoke `detect-runtime` in drift-check mode and propose re-ratify on runtime mismatch with profile.md. Consume + clear NEXT.md (the working buffer). Brief Owner on state. Not the one-time bootstrap (use `init` for that).
 ---
 
 # session-start
@@ -34,12 +34,17 @@ using cached self-introspection where possible). Compare against
 
 - **profile.md present + detection matches** → silent pass; use
   profile.md's active_tier
-- **profile.md present + `harness` or `backend_model` differs** →
-  surface diff to Owner + propose re-ratify; default behavior =
-  continue with profile.md's tier for this session
+- **profile.md present + `harness`, `backend_model`, or
+  `effective_context` differs** → surface diff to Owner + propose
+  re-ratify; default behavior = continue with profile.md's tier for
+  this session
 - **profile.md absent** → default `active_tier = standard` (R1
   baseline) for this session; remind Owner to run `/init` to
   ratify the proper tier
+- **detect-runtime fails or returns uncertain** (no shell access,
+  headless, network unreachable) → continue silently with profile.md's
+  tier (or `standard` if absent); record the failure in the audit-log
+  next time `audit` runs
 
 ### 2. Load read order (7 items, in sequence)
 
@@ -86,6 +91,13 @@ before starting.
   only if last 30 days).
 - **Changing read order**: order matters for cache stability. Locked
   per R2 unless deliberate spec-level revision.
+- **Blocking session on detect-runtime failure**: drift detection is
+  best-effort. If `detect-runtime` errors (no shell, no network,
+  uncertain), continue silently with profile.md's tier — do NOT
+  block session-start on detection.
+- **Silently changing active tier on drift**: drift surfaces a
+  re-ratify proposal; the session continues with profile.md's
+  recorded tier. Tier change requires Owner ratify, not auto-apply.
 
 ## Verification
 

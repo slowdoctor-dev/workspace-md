@@ -172,13 +172,23 @@ active_tier:         <derived per rule>
 
 Plus any `signal_disagreements:` flagged for Owner attention.
 
-**Drift-check mode** (called from `session-start`): compare result
-against existing profile.md. If `harness` or `backend_model` differ
-→ surface diff + propose re-ratify. Default on drift = continue
-with profile.md's tier; do not silently change.
+**Bootstrap mode** (called from `init`): present result to Owner
+for field-by-field T2 ratify; write profile.md on accept.
 
-**Bootstrap mode** (called from `init`): present to Owner for
-field-by-field T2 ratify; write profile.md on accept.
+**Drift-check mode** (called from `session-start`): compare result
+against existing profile.md. If `harness`, `backend_model`, or
+`effective_context` differ → surface diff + propose re-ratify.
+Default on drift = continue with profile.md's tier for this session;
+do not silently change. Return value: `{matches: true|false, diff: …}`
+plus the standard result fields.
+
+**Freshness-check mode** (called from `audit`, rare): re-verify
+the known-constants table (above, §3 B) against current vendor
+documentation. If any constant has shifted (e.g., Claude Sonnet
+context bumped, GPT-5 family released) → propose updates to Owner
+with new `last_verified:` date. Do not auto-apply — the table is
+T1 in `detect-runtime/SKILL.md` but its accuracy affects every
+detection downstream; Owner-ratify per row.
 
 ## Pitfalls
 
@@ -208,6 +218,8 @@ field-by-field T2 ratify; write profile.md on accept.
 - Signal disagreements surfaced to Owner; not silently resolved
 - For bootstrap mode: profile.md written only on Owner ratify; all
   6 fields persisted; `last_updated` set to today
-- For drift-check mode: re-ratify proposed if `harness` or
-  `backend_model` differ; current session continues with existing
-  profile.md tier
+- For drift-check mode: re-ratify proposed if `harness`,
+  `backend_model`, or `effective_context` differ; current session
+  continues with existing profile.md tier
+- For freshness-check mode: known-constants table re-verified; per-row
+  updates Owner-ratified; `last_verified:` date bumped on changed rows
