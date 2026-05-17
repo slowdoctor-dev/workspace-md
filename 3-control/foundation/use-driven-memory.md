@@ -18,7 +18,7 @@ The workspace provides the files; the runtime drives the loop.
 |---|---|---|---|
 | Self canonical | `3-control/foundation/SOUL.md` | T2 | Conway core self-schema |
 | Self working | `2-mind/garden/essential/SOUL.md` | T1 | Conway working-self observations |
-| Semantic person | `2-mind/garden/essential/USER.md` (≤100 lines) | T1 | Conway external person-schema |
+| Semantic person | `2-mind/garden/essential/USER.md` (tier-capped, see R1) | T1 | Conway external person-schema |
 | Working buffer | `2-mind/garden/essential/NEXT.md` (single-consumption) | T1 | Baddeley 2000 episodic buffer |
 | Episodic | `2-mind/garden/essential/journal/<YYYY-MM-DD>-<runtime>-<NNN>.md` | T1 | Tulving 1972 episodic store |
 | Semantic domain | `2-mind/garden/` (whole folder; sub-org per lazy-structure) | T1 | Tulving semantic store |
@@ -232,12 +232,13 @@ journal entries     →   garden/essential/SOUL.md  →  3-control/foundation/SO
 
 | Store | Discipline |
 |---|---|
-| `USER.md` | 100 lines hard; consolidate at 80 lines before append |
-| journal entries | 30–200 lines soft per entry; no entry-count cap |
+| `USER.md` | tier-dependent hard cap (see §R1); consolidate at 80% before append |
+| `NEXT.md` | tier-dependent soft cap (see §R1); single-consumption discipline |
+| journal entry | tier-dependent soft cap per entry (see §R1); no entry-count cap |
 | journal/ folder | entries >3 months → `garden/archive/<YYYY-MM>/<filename>.md` via `audit` |
 | `garden/essential/SOUL.md` | no hard cap; *Graduated* section pruned by `audit` for >6 month old graduations |
-| garden `<topic>.md` | no fixed cap; `audit` consolidates near-duplicates |
-| canonical `SOUL.md` / `PRINCIPLE.md` | no caps; Owner-curated cadence |
+| garden `<topic>.md` | tier-dependent flag-only threshold (see §R1); `audit` consolidates near-duplicates |
+| canonical `SOUL.md` / `PRINCIPLE.md` | spec-cap advisory flags (see §R1); Owner-curated cadence |
 
 Archival is **not deletion** — old journal entries move to
 `garden/archive/` and remain searchable (grep), just not auto-loaded

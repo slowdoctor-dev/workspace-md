@@ -45,7 +45,7 @@ This structure enables *use-driven evolution* — see
                   + working (where knowledge grows)
         essential/                                          (recommended — auto-growth machinery)
           SOUL.md      working identity observations        (T1)
-          USER.md      semantic person-model (≤100 lines)   (T1)
+          USER.md      semantic person-model (tier-capped)   (T1)
           NEXT.md      working buffer (single-consumption)  (T1)
           journal/     episodic per-session entries         (T1; YYYY-MM-DD-<runtime>-<NNN>.md)
         archive/    aged-out journal entries                 (lazy — first audit pass)
