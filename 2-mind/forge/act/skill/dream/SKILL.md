@@ -59,7 +59,7 @@ Do NOT full-rescan the transcript. Look for:
 
 Match each signal to a target. Apply R3 source-monitoring: every
 derived entry MUST cite its source journal as
-`(journal <YYYY-MM-DD-runtime-NNN>)`.
+`(journal <YYYY-MM-DD>-<runtime>-<NNN>)`.
 
 ### 3. Apply T1 writes
 
@@ -165,7 +165,7 @@ Append to today's journal *Consolidations applied* section:
   consolidation ran, the post-consolidation file is ≤cap, all
   remaining entries retain their citations, no information loss
   against feeding journal entries
-- All written entries have `(journal <YYYY-MM-DD-runtime-NNN>)`
+- All written entries have `(journal <YYYY-MM-DD>-<runtime>-<NNN>)`
   citations (merged entries carry *all* source citations)
 - T2 proposals presented with diffs; Owner ratified per item
 - Ratified T2 changes applied; rejected ones not written

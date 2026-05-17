@@ -78,7 +78,8 @@ Runtime-tier adjustment is R2's concern.
   `garden/<topic>.md`.
 - **Spec caps** (Owner-curated, growth-by-edit — advisory flags
   only, reported by `audit`): `AGENTS.md`, `WORKSPACE.md`,
-  `PRINCIPLE.md`, canonical `SOUL.md`, `use-driven-memory.md`.
+  `PRINCIPLE.md`, canonical `SOUL.md`, `use-driven-memory.md`,
+  `runtime-flexibility.md`.
 
 #### Natural memory caps (R1 baseline)
 
@@ -152,7 +153,7 @@ timestamp, runtime tag, and citations to the session's commits and
 decisions. Semantic stores (`USER.md`, garden `<topic>.md`, foundation
 docs) hold **synthesized** content; each item carries an explicit
 citation back to its source journal entry in the form
-`(journal <YYYY-MM-DD-runtime-NNN>)`.
+`(journal <YYYY-MM-DD>-<runtime>-<NNN>)`.
 
 A synthesized claim is always traceable to its raw observation. This
 prevents source-attribution errors and compression-driven drift.
@@ -238,7 +239,7 @@ journal entries  →   garden/essential/SOUL.md  →  3-control/foundation/SOUL.
 | journal/ folder | entries >3 months → `garden/archive/<YYYY-MM>/<filename>.md` via `audit` |
 | `garden/essential/SOUL.md` | no hard cap; *Graduated* entries >6 months pruned by `audit` |
 | garden `<topic>.md` | R1 flag at 300 lines; R2 tier-adjusted; `audit` consolidates near-duplicates |
-| canonical `SOUL.md` / `PRINCIPLE.md` | R1 spec-cap advisory flags (runtime-independent); Owner-curated cadence |
+| spec docs (6 — see §R1 Spec caps table) | R1 spec-cap advisory flags (runtime-independent); Owner-curated cadence; flag at file-specific threshold |
 
 Archival is **not deletion** — old journal entries move to
 `garden/archive/` and remain searchable (grep), just not auto-loaded

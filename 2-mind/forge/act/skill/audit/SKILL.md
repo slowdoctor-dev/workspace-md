@@ -145,7 +145,7 @@ Fixes in 2-mind/ → apply (T1). In 3-control/ → propose (T2).
 ### 7. Citation-gap scan (R3 backstop)
 
 R3 says every synthesized entry in semantic stores carries a
-`(journal <YYYY-MM-DD-runtime-NNN>)` citation. `dream` is the
+`(journal <YYYY-MM-DD>-<runtime>-<NNN>)` citation. `dream` is the
 primary enforcer at write-time; `audit` is the backstop.
 
 Walk these targets:

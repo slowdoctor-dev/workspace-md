@@ -13,7 +13,7 @@ Format: short paragraph + citation back to source journal entry.
 ## Owner-signals
 
 Owner-stance signals awaiting graduation review. Format:
-`**<signal name>** (journal <YYYY-MM-DD-runtime-NNN>)`: <observation>.
+`**<signal name>** (journal <YYYY-MM-DD>-<runtime>-<NNN>)`: <observation>.
 
 ## Graduated
 
