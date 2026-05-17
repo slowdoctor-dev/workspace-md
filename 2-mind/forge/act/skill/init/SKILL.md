@@ -46,16 +46,17 @@ run `command -v <name>`. Report `detected:` and `missing:` lists.
 For each detected local runtime, enumerate installed models (e.g.,
 `ollama list`) to find the largest available — informs tier choice.
 
-Map to a cap tier per `use-driven-memory.md §R1`:
+Map to a cap tier per `use-driven-memory.md §R2 Part B` (R2's
+runtime adjustment over R1 natural caps):
 
 | Detected runtime | Recommended tier |
 |---|---|
 | Hosted CLI(s) pointing at hosted-large model (Claude Sonnet/Opus, GPT-4, Gemini Pro) | `extended` |
-| Hosted CLI(s) pointing at hosted-modest model (Claude Haiku, GPT-4o-mini) | `standard` |
-| Local runtime, 30B+ model | `standard` |
+| Hosted CLI(s) pointing at hosted-modest model (Claude Haiku, GPT-4o-mini) | `standard` (= R1 baseline) |
+| Local runtime, 30B+ model | `standard` (= R1 baseline) |
 | Local runtime, ≤13B model | `lean` |
 | Mixed runtimes | **most constrained** of the set |
-| Nothing detected | `lean` (safe floor) |
+| Nothing detected | `standard` (R1 baseline as-is) |
 
 CLI detection alone doesn't reveal which model the CLI is pointing
 at — confirm with Owner. Default to `standard` if uncertain.
@@ -98,8 +99,9 @@ Don't add substantive content — templates fill via use.
   only modifies templates; never creates memory content. If a
   template is missing, the spec repo itself is broken — restore.
 - **Skipping the tier-ratify step**: without `profile.md`, `learn`
-  and `audit` default to `lean` — fine on local but wastes headroom
-  on hosted setups. Always offer the tier proposal.
+  and `audit` default to `standard` (R1 baseline). Fine on
+  hosted-modest / local 30B+; under-protective on local 7-13B
+  (lean would fit better). Always offer the tier proposal.
 - **Substantive content in templates**: templates are scaffolds, not
   starter content. Don't pre-populate USER.md with guessed Owner
   preferences — let `learn` discover them.

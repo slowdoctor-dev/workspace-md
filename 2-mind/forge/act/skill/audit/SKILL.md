@@ -74,16 +74,19 @@ annotate older.
 
 ### 5. Over-grown scan
 
-All caps live in `3-control/foundation/use-driven-memory.md §R1`:
-**memory caps** (USER, NEXT, journal entry, garden topic) are
-runtime-tier-dependent — read `3-control/runtime/profile.md` for
-active tier (default `lean`); **spec caps** (AGENTS, WORKSPACE,
-PRINCIPLE, canonical SOUL, use-driven-memory) are fixed advisory
-flags.
+Caps live in `3-control/foundation/use-driven-memory.md`:
+- **R1 natural memory caps** (USER, NEXT, journal entry, garden
+  topic) — content-discipline baselines.
+- **R2 runtime-tier override** scales R1 caps down (lean) or up
+  (extended) per the active runtime profile. Read
+  `3-control/runtime/profile.md` (default `standard` = R1 baseline
+  unchanged).
+- **R1 spec caps** (AGENTS, WORKSPACE, PRINCIPLE, canonical SOUL,
+  use-driven-memory) — fixed advisory flags, runtime-independent.
 
-For each file, look up its cap and compare current line count.
-Working `SOUL.md` (in garden) has no cap but prune *Graduated*
-entries older than 6 months.
+For each file, look up its effective cap (R1 × R2 tier scale) and
+compare current line count. Working `SOUL.md` (in garden) has no
+cap but prune *Graduated* entries older than 6 months.
 
 Memory-cap breach in 2-mind/ → split or consolidate directly (T1).
 Spec-cap breach → flag only; Owner decides whether to trim (3-control/

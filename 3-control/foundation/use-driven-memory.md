@@ -17,7 +17,7 @@ drives the loop.
 |---|---|---|---|
 | Self canonical | `3-control/foundation/SOUL.md` | T2 | Conway core self-schema |
 | Self working | `2-mind/garden/essential/SOUL.md` | T1 | Conway working-self observations |
-| Semantic person | `2-mind/garden/essential/USER.md` (tier-capped, see R1) | T1 | Conway external person-schema |
+| Semantic person | `2-mind/garden/essential/USER.md` (R1 natural cap; R2 tier-adjusted) | T1 | Conway external person-schema |
 | Working buffer | `2-mind/garden/essential/NEXT.md` (single-consumption) | T1 | Baddeley 2000 episodic buffer |
 | Episodic | `2-mind/garden/essential/journal/<YYYY-MM-DD>-<runtime>-<NNN>.md` | T1 | Tulving 1972 episodic store |
 | Semantic domain | `2-mind/garden/` (whole folder; sub-org per lazy-structure) | T1 | Tulving semantic store |
@@ -59,45 +59,41 @@ layer for cultivation-craft adjacency).
 
 ### R1 — Consolidation under capacity
 
-Every store has a capacity bound. Reaching it triggers in-place
-consolidation (merge near-duplicates / drop superseded entries),
-never write-rejection. Regular replay via `learn` consolidates
+Every store has a capacity bound rooted in cognitive usability —
+how much content a memory store can hold before it stops *being*
+memory (scan-ability drops, signal dilutes in noise, near-duplicates
+accumulate). Reaching the bound triggers in-place consolidation
+(merge near-duplicates / drop superseded entries), never
+write-rejection. Regular replay via `learn` consolidates
 independently of size pressure.
 
-**Rationale — runtime context budget.** The 7-item session-start
-load runs every session; cumulative size must fit the runtime's
-*effective* context window. Local LLMs are the binding constraint: a
-Llama 3.1 8B advertises 128K but the needle-in-haystack cliff lands
-near 8-16K tokens — content past that is loaded but not reliably
-attended to. Hosted LLMs (Claude / GPT / Gemini) have far more
-headroom; their constraint is prompt-cache stability, not raw size.
-
-The caps that fit runtime budget also align with cognitive theory
-(McGaugh replay-driven consolidation, Miller 7±2, Ebbinghaus decay)
-— numbers are runtime-driven, discipline is theory-grounded.
+R1 caps are **runtime-independent** — they describe what makes a
+store usable *as memory*, not what fits a particular runtime.
+Runtime-tier adjustment is R2's concern.
 
 #### Two cap classes
 
 - **Memory caps** (use-grown — hard, enforced by `learn` /
   consolidate-on-error): `USER.md`, `NEXT.md`, journal entries,
-  `garden/<topic>.md`. Tier-dependent (table below).
-- **Spec caps** (Owner-curated, growth-by-edit — advisory flags only,
-  reported by `audit`): `AGENTS.md`, `WORKSPACE.md`, `PRINCIPLE.md`,
-  canonical `SOUL.md`, `use-driven-memory.md`. Fixed numbers.
+  `garden/<topic>.md`.
+- **Spec caps** (Owner-curated, growth-by-edit — advisory flags
+  only, reported by `audit`): `AGENTS.md`, `WORKSPACE.md`,
+  `PRINCIPLE.md`, canonical `SOUL.md`, `use-driven-memory.md`.
 
-#### Memory caps by runtime tier
+#### Natural memory caps (R1 baseline)
 
-| Tier | USER (hard/consol) | NEXT | journal/<entry> | garden/<topic> flag | Target runtime |
-|---|---|---|---|---|---|
-| **lean** | 60 / 50 | 20 | 100 soft | 200 | local 7-13B (Llama 3.1 8B, Qwen 2.5 7B, Mistral 7B); ≤16K effective |
-| **standard** | 100 / 80 | 30 | 200 soft | 300 | local 30B-70B / hosted-modest (Haiku, GPT-4o-mini) |
-| **extended** | 200 / 160 | 50 | 400 soft | 500 | hosted-large (Claude Sonnet/Opus, GPT-4, Gemini Pro) |
+| Store | Hard cap | Consolidate at | Cognitive rationale |
+|---|---|---|---|
+| `USER.md` | 100 lines | 80 | semantic person-model becomes unscannable past ~100 entries (Miller 7±2 extended to skim-able list) |
+| `NEXT.md` | 30 lines soft | n/a (single-consumption) | terse handoff, not a journal |
+| journal entry | 200 lines soft per entry | n/a (per-entry shape) | one session's record readable in one sitting |
+| garden `<topic>.md` | flag at 300 lines | split or consolidate | single topic stays cohesive |
 
-Session-start budgets: **lean ≈ 15K · standard ≈ 19K · extended ≈ 29K tokens**.
+Working `SOUL.md` (in garden): no cap; *Graduated* entries older
+than 6 months pruned by `audit` (source-trail discipline per R3).
 
-**Mixed-runtime rule**: pick the **most constrained** active tier
-across runtimes sharing the workspace. Constrained writes are always
-readable by extended sessions; the reverse silently overflows.
+*Theory*: McGaugh consolidation (hippocampus → cortex via replay);
+Miller 1956 7±2 working-memory capacity; Ebbinghaus forgetting curve.
 
 #### Spec caps (advisory flags)
 
@@ -109,16 +105,14 @@ readable by extended sessions; the reverse silently overflows.
 | `SOUL.md` (canonical) | 100 lines (Hermes-style sectioned) |
 | `use-driven-memory.md` | 300 lines |
 
-Working `SOUL.md` (in garden): no cap; *Graduated* entries older
-than 6 months pruned by `audit`.
+These are growth-by-edit, not use-grown — flag for Owner review
+when exceeded; never auto-consolidated.
 
-#### Active tier selection
+### R2 — Session-boundary discipline
 
-Stored at `3-control/runtime/profile.md` (T2 — Owner-ratified at
-`init`, re-ratify on runtime change). `learn` and `audit` read it
-for active caps. Default if absent: `lean` (safe floor).
+The session boundary is the workspace's sync point. Two parts:
 
-### R2 — Writes settle between sessions
+#### Part A — Writes settle between sessions
 
 Memory writes appear in the **next session's** loaded context, never
 the current one. This:
@@ -129,6 +123,36 @@ the current one. This:
 Agent writes to T1 stores any time during a session (typically via
 `session-end` and `learn`); the *loaded-context effect* manifests
 only at the next `session-start`.
+
+#### Part B — Session-start load fits runtime budget
+
+The 7-item session-start load runs every session; cumulative size
+must fit the runtime's *effective* context window. Local LLMs are
+the binding constraint: a Llama 3.1 8B advertises 128K but the
+needle-in-haystack cliff lands near 8-16K tokens — content past
+that is loaded but not reliably attended to. Hosted LLMs (Claude /
+GPT / Gemini) have far more headroom; their constraint is
+prompt-cache stability rather than raw size.
+
+When the runtime can't fit R1's natural caps, R1 caps are scaled
+down via a three-tier override:
+
+| Tier | USER (hard/consol) | NEXT | journal/<entry> | garden/<topic> flag | Target runtime |
+|---|---|---|---|---|---|
+| **lean** | 60 / 50 | 20 | 100 soft | 200 | local 7-13B (Llama 3.1 8B, Qwen 2.5 7B, Mistral 7B); ≤16K effective |
+| **standard** | 100 / 80 | 30 | 200 soft | 300 | **R1 baseline** — local 30-70B, hosted-modest (Haiku, GPT-4o-mini) |
+| **extended** | 200 / 160 | 50 | 400 soft | 500 | hosted-large (Claude Sonnet/Opus, GPT-4, Gemini Pro) |
+
+Session-start budgets: **lean ≈ 15K · standard ≈ 19K · extended ≈ 29K tokens**.
+
+**Mixed-runtime rule**: pick the **most constrained** active tier
+across runtimes sharing the workspace. Constrained writes are always
+readable by extended sessions; the reverse silently overflows.
+
+**Active selection**: stored at `3-control/runtime/profile.md` (T2 —
+Owner-ratified at `init`, re-ratify on runtime change). `learn` and
+`audit` read it for active caps. Default if absent: `standard` (R1
+baseline applies as-is).
 
 *Theory*: sleep-boundary consolidation in the standard model of
 declarative memory.
@@ -219,13 +243,13 @@ journal entries  →   garden/essential/SOUL.md  →  3-control/foundation/SOUL.
 
 | Store | Discipline |
 |---|---|
-| `USER.md` | tier-dependent hard cap (see §R1); consolidate at 80% before append |
-| `NEXT.md` | tier-dependent soft cap (see §R1); single-consumption discipline |
-| journal entry | tier-dependent soft cap per entry (see §R1); no entry-count cap |
+| `USER.md` | R1 natural cap 100 hard / consolidate at 80; R2 tier-adjusted |
+| `NEXT.md` | R1 natural cap 30 soft; R2 tier-adjusted; single-consumption |
+| journal entry | R1 natural cap 200 soft per entry; R2 tier-adjusted; no entry-count cap |
 | journal/ folder | entries >3 months → `garden/archive/<YYYY-MM>/<filename>.md` via `audit` |
-| `garden/essential/SOUL.md` | no hard cap; *Graduated* section pruned by `audit` for >6 month old graduations |
-| garden `<topic>.md` | tier-dependent flag-only threshold (see §R1); `audit` consolidates near-duplicates |
-| canonical `SOUL.md` / `PRINCIPLE.md` | spec-cap advisory flags (see §R1); Owner-curated cadence |
+| `garden/essential/SOUL.md` | no hard cap; *Graduated* entries >6 months pruned by `audit` |
+| garden `<topic>.md` | R1 flag at 300 lines; R2 tier-adjusted; `audit` consolidates near-duplicates |
+| canonical `SOUL.md` / `PRINCIPLE.md` | R1 spec-cap advisory flags (runtime-independent); Owner-curated cadence |
 
 Archival is **not deletion** — old journal entries move to
 `garden/archive/` and remain searchable (grep), just not auto-loaded

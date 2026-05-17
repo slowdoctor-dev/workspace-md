@@ -4,9 +4,9 @@ Session-to-session handoff. Single-consumption: written by
 `session-end` of session N, consumed and cleared by `session-start`
 of session N+1.
 
-Soft cap is **tier-dependent** (lean 20 / standard 30 / extended 50)
-— see `3-control/runtime/profile.md`. Keep terse: handoff, not a
-journal.
+Natural cap (R1): **30 lines soft**. Runtime tier (R2) may scale:
+lean → 20, extended → 50. See `3-control/runtime/profile.md`. Keep
+terse: handoff, not a journal.
 
 ## Outstanding
 

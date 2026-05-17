@@ -1,9 +1,9 @@
 # USER
 
 Semantic model of the Owner — preferences, patterns, communication
-tells. Hard cap is **tier-dependent** (lean 60 / standard 100 /
-extended 200; consolidate at 80% of active cap) — see
-`3-control/runtime/profile.md`.
+tells. Natural cap (R1): **100 lines hard, consolidate at 80**.
+Runtime tier (R2) may scale: lean → 60/50, extended → 200/160. See
+`3-control/runtime/profile.md` for active tier.
 
 Loaded at session-start (item 5). Frozen-at-session-start: entries
 written here appear in the *next* session, not the current.

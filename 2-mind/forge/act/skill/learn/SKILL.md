@@ -59,10 +59,11 @@ derived entry MUST cite its source journal as
 
 ### 3. Apply T1 writes
 
-**USER.md** — check size against active tier cap (read
-`3-control/runtime/profile.md`; default `lean`). At ≥80% of the
-tier's hard cap (lean 50 / standard 80 / extended 160), CONSOLIDATE
-before append: merge near-duplicates, drop superseded items.
+**USER.md** — R1 natural cap = 100 lines / consolidate at 80. R2
+runtime-tier (read `3-control/runtime/profile.md`; default
+`standard` = R1 unchanged) may scale: lean → 60/50, extended →
+200/160. At ≥80% of the effective hard cap, CONSOLIDATE before
+append: merge near-duplicates, drop superseded items.
 
 **garden/essential/SOUL.md** — *Observations* / *Owner-signals* grow
 without cap (managed by graduation + *Graduated* section). Append
@@ -112,7 +113,7 @@ Append to today's journal *Consolidations applied* section:
   `garden/essential/SOUL.md` at session-start — each breaks a rule
   (R4 / R3 / R4 respectively).
 - **Skipping consolidate-on-error**: USER.md must consolidate at 80%
-  of active tier cap before append (R1).
+  of its effective cap (R1 natural × R2 tier scale) before append.
 
 ## Verification
 
