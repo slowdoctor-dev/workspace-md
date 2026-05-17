@@ -1,16 +1,15 @@
 # Use-driven memory
 
-Cognitive-architecture spec for workspace.md auto-growth. Grounds the
-*use-driven evolution* core design value in established memory theory
-and gives it operational machinery.
+Cognitive-architecture spec for workspace.md auto-growth — the
+operational machinery behind the *use-driven evolution* design value.
 
 ## Scope
 
 workspace.md specifies the **file scaffold** for the Memory System
-building block of a self-growing-agent stack. Out of scope (runtime /
-training concerns deliberately not modeled): Optimizer (fine-tuning,
-exploration), Environment & Feedback (LLM-as-judge, reward systems).
-The workspace provides the files; the runtime drives the loop.
+of a self-growing-agent stack. Deliberately out of scope: Optimizer
+(fine-tuning, exploration) and Environment & Feedback (LLM-as-judge,
+reward systems). The workspace provides the files; the runtime
+drives the loop.
 
 ## 7 memory stores + cognitive analogs
 
@@ -22,15 +21,16 @@ The workspace provides the files; the runtime drives the loop.
 | Working buffer | `2-mind/garden/essential/NEXT.md` (single-consumption) | T1 | Baddeley 2000 episodic buffer |
 | Episodic | `2-mind/garden/essential/journal/<YYYY-MM-DD>-<runtime>-<NNN>.md` | T1 | Tulving 1972 episodic store |
 | Semantic domain | `2-mind/garden/` (whole folder; sub-org per lazy-structure) | T1 | Tulving semantic store |
-| Procedural | `2-mind/forge/` (whole layer) | T1 | Schacter & Tulving 1994 procedural |
+| Procedural | `2-mind/forge/` (whole layer) | T1 | Schacter-Tulving 1994 procedural |
 
-Garden functions as the agent's declarative memory in full
-(semantic + episodic + working); `essential/` is the bounded
-fast-access portion. Forge functions as procedural memory — agent
-autonomously creates new skills, scripts, role specs, triggers when
-patterns recur. The runtime's turn-by-turn transcript (e.g., Claude
-Code's session SQLite) plays the role of pre-consolidation
-hippocampal trace — searched on demand, not loaded at session-start.
+Garden = declarative memory in full (semantic + episodic + working);
+`essential/` is the bounded fast-access portion. Forge = procedural
+memory; agent creates new skills, scripts, role specs, triggers when
+patterns recur.
+
+The runtime's turn-by-turn transcript (e.g., Claude Code's session
+SQLite) plays the role of pre-consolidation hippocampal trace —
+searched on demand, not loaded at session-start.
 
 ## 2 write-tiers
 
@@ -59,62 +59,55 @@ layer for cultivation-craft adjacency).
 
 ### R1 — Consolidation under capacity
 
-Every store has a capacity bound. Reaching the bound triggers
-in-place consolidation (merge near-duplicates / drop superseded
-entries) rather than rejecting writes. Regular replay via the `learn`
-skill consolidates independently of size pressure.
+Every store has a capacity bound. Reaching it triggers in-place
+consolidation (merge near-duplicates / drop superseded entries),
+never write-rejection. Regular replay via `learn` consolidates
+independently of size pressure.
 
-**Primary rationale — runtime context budget.** The 7-item session-
-start read order (see below) loads on every session. Cumulative size
-must fit the runtime's effective context window. Local LLMs are the
-binding constraint: a Llama 3.1 8B advertises 128K context but the
-needle-in-haystack quality cliff lands around 8-16K tokens. Past
-that, content is loaded but not reliably attended to — worse than
-not loading. Hosted LLMs (Claude / GPT / Gemini) have far more
-headroom; their constraint is prompt-cache stability rather than
-absolute size.
+**Rationale — runtime context budget.** The 7-item session-start
+load runs every session; cumulative size must fit the runtime's
+*effective* context window. Local LLMs are the binding constraint: a
+Llama 3.1 8B advertises 128K but the needle-in-haystack cliff lands
+near 8-16K tokens — content past that is loaded but not reliably
+attended to. Hosted LLMs (Claude / GPT / Gemini) have far more
+headroom; their constraint is prompt-cache stability, not raw size.
 
-**Convergent cognitive grounding.** The same caps that match runtime
-budget also match cognitive theory: McGaugh consolidation
-(hippocampus → cortex via replay), Miller 1956 7±2 working-memory
-capacity, Ebbinghaus forgetting curve. The numbers are runtime-driven;
-the *discipline* is theory-grounded.
+The caps that fit runtime budget also align with cognitive theory
+(McGaugh replay-driven consolidation, Miller 7±2, Ebbinghaus decay)
+— numbers are runtime-driven, discipline is theory-grounded.
 
 #### Two cap classes
 
-- **Memory caps** (use-grown — enforced hard by `learn` /
+- **Memory caps** (use-grown — hard, enforced by `learn` /
   consolidate-on-error): `USER.md`, `NEXT.md`, journal entries,
-  `garden/<topic>.md`. Values depend on runtime tier (table below).
+  `garden/<topic>.md`. Tier-dependent (table below).
 - **Spec caps** (Owner-curated, growth-by-edit — advisory flags only,
   reported by `audit`): `AGENTS.md`, `WORKSPACE.md`, `PRINCIPLE.md`,
-  canonical `SOUL.md`, `use-driven-memory.md`. Numbers fixed (not
-  runtime-dependent — these are Owner-authored, not use-grown).
+  canonical `SOUL.md`, `use-driven-memory.md`. Fixed numbers.
 
-#### Runtime tiers (memory caps)
+#### Memory caps by runtime tier
 
-| Tier | USER (hard / consol-at) | NEXT | journal/<entry> | garden/<topic> flag | Target runtime |
+| Tier | USER (hard/consol) | NEXT | journal/<entry> | garden/<topic> flag | Target runtime |
 |---|---|---|---|---|---|
-| **lean** | 60 / 50 | 20 | 100 soft | 200 | local 7-13B (Llama 3.1 8B, Qwen 2.5 7B, Mistral 7B class); sub-16K effective context |
-| **standard** | 100 / 80 | 30 | 200 soft | 300 | local 30B-70B (Llama 70B, Mixtral, Qwen 32B+) / hosted-modest (Claude Haiku, GPT-4o-mini) |
-| **extended** | 200 / 160 | 50 | 400 soft | 500 | hosted-large (Claude Sonnet/Opus, GPT-4, Gemini Pro 1M) |
+| **lean** | 60 / 50 | 20 | 100 soft | 200 | local 7-13B (Llama 3.1 8B, Qwen 2.5 7B, Mistral 7B); ≤16K effective |
+| **standard** | 100 / 80 | 30 | 200 soft | 300 | local 30B-70B / hosted-modest (Haiku, GPT-4o-mini) |
+| **extended** | 200 / 160 | 50 | 400 soft | 500 | hosted-large (Claude Sonnet/Opus, GPT-4, Gemini Pro) |
 
-Session-start budget per tier (memory + Owner-curated spec docs):
-**lean ≈ 15K tokens · standard ≈ 19K · extended ≈ 29K**.
+Session-start budgets: **lean ≈ 15K · standard ≈ 19K · extended ≈ 29K tokens**.
 
-**Mixed-runtime rule**: if multiple runtimes share a workspace (e.g.,
-Claude Code + local Ollama), select the **most constrained** active
-tier. Writes from constrained sessions are always readable by extended
-sessions; the reverse silently overflows.
+**Mixed-runtime rule**: pick the **most constrained** active tier
+across runtimes sharing the workspace. Constrained writes are always
+readable by extended sessions; the reverse silently overflows.
 
 #### Spec caps (advisory flags)
 
-| File | Flag at | Notes |
-|---|---|---|
-| `AGENTS.md` | 80 lines | entry doc — keep terse |
-| `WORKSPACE.md` | 200 lines | topology spec |
-| `PRINCIPLE.md` | 250 lines | principles |
-| `SOUL.md` (canonical) | 100 lines | Hermes-style sectioned |
-| `use-driven-memory.md` | 300 lines | architecture detail |
+| File | Flag at |
+|---|---|
+| `AGENTS.md` | 80 lines (entry doc — keep terse) |
+| `WORKSPACE.md` | 200 lines |
+| `PRINCIPLE.md` | 250 lines |
+| `SOUL.md` (canonical) | 100 lines (Hermes-style sectioned) |
+| `use-driven-memory.md` | 300 lines |
 
 Working `SOUL.md` (in garden): no cap; *Graduated* section pruned by
 `audit` once ≥30 entries.
@@ -122,59 +115,54 @@ Working `SOUL.md` (in garden): no cap; *Graduated* section pruned by
 #### Active tier selection
 
 Stored at `3-control/runtime/profile.md` (T2 — Owner-ratified at
-`init` time, re-ratify on runtime change). `learn` and `audit` read
-this file to look up applicable caps. Default if `profile.md`
-absent: `lean` (safe floor).
+`init`, re-ratify on runtime change). `learn` and `audit` read it
+for active caps. Default if absent: `lean` (safe floor).
 
 ### R2 — Writes settle between sessions
 
-All memory writes appear in the **next session's** loaded context,
-not the current one. This:
+Memory writes appear in the **next session's** loaded context, never
+the current one. This:
 - Preserves prompt-cache stability (no mid-session cache thrash)
-- Mirrors biological sleep consolidation (writes "settle" during
-  quiescence)
+- Mirrors sleep consolidation (writes settle during quiescence)
 - Prevents the agent from reacting to its own just-written claims
-  mid-session
 
-The agent may write to T1 stores at any time during a session
-(typically via `session-end` and `learn` skills); the *effect* on
-loaded context only manifests at the next `session-start`.
+Agent writes to T1 stores any time during a session (typically via
+`session-end` and `learn`); the *loaded-context effect* manifests
+only at the next `session-start`.
 
-*Theory*: sleep-boundary consolidation in standard model of
+*Theory*: sleep-boundary consolidation in the standard model of
 declarative memory.
 
 ### R3 — Verbatim episodic, synthesized semantic
 
-Episodic stores preserve **verbatim** records: each journal entry has
-a timestamp, runtime tag, and source citations back to the session's
-commits / decisions. Semantic stores (`USER.md`, garden `<topic>.md`,
-foundation docs) hold **synthesized** content, each item with explicit
-citation back to the source journal entry it derives from (format:
-`(journal <YYYY-MM-DD-runtime-NNN>)`).
+Episodic stores (journal entries) preserve **verbatim** records with
+timestamp, runtime tag, and citations to the session's commits and
+decisions. Semantic stores (`USER.md`, garden `<topic>.md`, foundation
+docs) hold **synthesized** content; each item carries an explicit
+citation back to its source journal entry in the form
+`(journal <YYYY-MM-DD-runtime-NNN>)`.
 
-This source-monitoring discipline prevents attribution errors and
-LLM-hallucination-from-compression. A synthesized claim is always
-traceable back to its raw observation.
+A synthesized claim is always traceable to its raw observation. This
+prevents source-attribution errors and compression-driven drift.
 
 *Theory*: Loftus 1974 reconstructive memory + misinformation effect;
 Johnson 1993 source monitoring framework.
 
 ### R4 — Two-tier authority with mirrored identity
 
-T1 / T2 split (above). Identity content uses **dual-store**: the
-agent's working observations (`garden/essential/SOUL.md`, T1)
-accumulate freely; canonical identity (`3-control/foundation/SOUL.md`, T2) only
-updates via Owner-ratified graduation proposals from the working
-store. The working store is NOT loaded at session-start — it's read
-only by the `learn` skill when preparing graduation proposals.
+T1 / T2 as above. Identity content uses **dual-store**: the agent's
+working observations (`garden/essential/SOUL.md`, T1) accumulate
+freely; canonical identity (`3-control/foundation/SOUL.md`, T2)
+updates only via Owner-ratified graduation from the working store.
+The working store is **not** loaded at session-start — `learn` reads
+it only when preparing graduation proposals.
 
 This mirrors Conway's self-memory system: the working self
-(observations, contextual) is distinct from the core self (stable,
-protected), and the working self proposes updates to the core only
-through deliberate consolidation.
+(contextual, observational) is distinct from the core self (stable,
+protected), and updates the core only through deliberate consolidation.
 
-*Theory*: Conway self-memory system; Hermes Agent verbatim SOUL.md
-contract (relaxed: we permit T2-ratified updates).
+*Theory*: Conway self-memory system; Hermes Agent verbatim-SOUL
+contract (relaxed here to permit T2-ratified updates).
 
 ## Read order at session-start
 
@@ -198,35 +186,34 @@ Not loaded at session-start (read on demand):
 
 ## 5 lifecycle skills
 
-| Skill | When | Reads | Writes | Role |
-|---|---|---|---|---|
-| `init` | Once after clone or recreation | WORKSPACE, AGENTS (structure verify) | Modifies template seeds (NOT create); records runtime detection | Workspace bootstrap |
-| `session-start` | Every session begin | 7-item read order | Clears NEXT.md after consuming | Load working context |
-| `session-end` | Every session close | Transcript + git diff/log | journal/<new-entry>.md; NEXT.md (fresh) | Episodic trace + handoff |
-| `learn` | Chain from session-end OR mid-session triggers (≥5 tool calls / error recovery / Owner correction / novel workflow) OR `/learn` | Today's journal entry + prior 1-2 entries; garden/essential/SOUL.md | T1 (autonomous): USER.md, garden/essential/SOUL.md, garden/<topic>.md, new skills/scripts in forge/. T2 (propose-ratify): 3-control/foundation/SOUL.md, 3-control/foundation/PRINCIPLE.md, 3-control/rule/ | Consolidation pass (R1) |
-| `audit` | Monthly OR limit breach OR `/audit` | All of 2-mind/ (garden + forge) + 3-control/ (6 issue classes) | T1 (direct): archive journal entries >3 months → garden/archive/<YYYY-MM>/; consolidate within 2-mind/. T2 (propose): 3-control/ changes. Writes garden/audit-log.md | Periodic maintenance (Ebbinghaus pruning) |
+| Skill | When | Role |
+|---|---|---|
+| `init` | Once after clone (or major restructure) | Workspace bootstrap — verify structure + detect runtime + propose tier profile |
+| `session-start` | Every session begin | Load 7-item read order; consume + clear `NEXT.md` |
+| `session-end` | Every session close | Write journal entry + fresh `NEXT.md`; chain `learn` for substantive sessions |
+| `learn` | Chain from `session-end`, mid-session triggers, or `/learn` | Consolidation pass (R1): distill journal → T1 writes; propose T2 graduations |
+| `audit` | Monthly, limit-breach, or `/audit` | Periodic maintenance: 6-class scan + archival of journal entries >3 months |
+
+Detail per skill at `2-mind/forge/act/skill/<name>/SKILL.md`.
 
 ## Dual-store identity graduation pipeline
 
 ```
-session                  learn skill               periodic Owner review
-   ↓                          ↓                            ↓
-journal entries     →   garden/essential/SOUL.md  →  3-control/foundation/SOUL.md
-(episodic events)       (T1 working observations)     (T2 canonical, Owner-
-                                                       ratified)
+session                learn skill            periodic Owner review
+   ↓                       ↓                          ↓
+journal entries  →   garden/essential/SOUL.md  →  3-control/foundation/SOUL.md
+(episodic)           (T1 working observations)     (T2 canonical, Owner-ratified)
 ```
 
-1. **Session**: agent observes Owner-stance signals → journal entry
-   `Owner-signals` section.
-2. **`learn` skill**: distills Owner-signals from journal entries into
-   `garden/essential/SOUL.md` *Observations* / *Owner-signals*
-   sections. T1 autonomous.
-3. **Periodic (also via `learn`)**: agent proposes promising
-   observations as `3-control/foundation/SOUL.md` diffs. Owner ratifies per item.
-4. **On ratify**: change lands in `3-control/foundation/SOUL.md`; the
-   `garden/essential/SOUL.md` entry gets marked
-   `[graduated YYYY-MM-DD → 3-control/foundation/SOUL.md]` and moves to
-   *Graduated* section (kept for source-monitoring trail per R3).
+1. **Session**: agent observes Owner-stance signals → records in
+   journal entry's *Owner-signals* section.
+2. **`learn`**: distills signals from journals into
+   `garden/essential/SOUL.md` *Observations* / *Owner-signals* (T1).
+3. **`learn`, periodic**: agent proposes promising observations as
+   `3-control/foundation/SOUL.md` diffs; Owner ratifies per item.
+4. **On ratify**: change lands in canonical; the source entry gets
+   marked `[graduated YYYY-MM-DD → 3-control/foundation/SOUL.md]` and
+   moves to *Graduated* section (R3 source trail preserved).
 
 ## Bounded growth + archival
 
@@ -246,16 +233,14 @@ at session-start. Preserves source-monitoring trail (R3).
 
 ## Cross-runtime continuity
 
-All memory stores are **workspace-canonical**: written to / read from
-the repo, not runtime cache. A session in Claude Code, the next in
-Codex CLI, the third in Gemini CLI all read and write the same
-`garden/essential/USER.md`, `NEXT.md`, and `journal/` (entries
-distinguished by `<runtime>` tag in filename).
-
-Per-runtime auto-loaded context (Claude Code's `CLAUDE.md`, Codex's
-`AGENTS.md`, Gemini's `GEMINI.md` symlinks) all point at the workspace
-`AGENTS.md`. From there, the agent reads the 7-item read order
-regardless of runtime.
+Memory stores are **workspace-canonical** — written to and read from
+the repo, not runtime cache. Sessions in Claude Code, Codex CLI, and
+Gemini CLI all share the same `garden/essential/USER.md`, `NEXT.md`,
+and `journal/` (entries distinguished by `<runtime>` tag in filename).
+Each runtime's auto-loaded instruction file (`CLAUDE.md`, `AGENTS.md`,
+`GEMINI.md` — symlinks at repo root) points at the workspace
+`AGENTS.md`, from which the agent reads the 7-item order regardless
+of runtime.
 
 ## References
 

@@ -1,21 +1,21 @@
 # NEXT
 
-Session-to-session handoff. Single-consumption working buffer:
-written by `session-end` of session N; consumed and cleared by
-`session-start` of session N+1.
+Session-to-session handoff. Single-consumption: written by
+`session-end` of session N, consumed and cleared by `session-start`
+of session N+1.
 
-Size soft cap is **tier-dependent** — see
-`3-control/runtime/profile.md` (defaults: lean=20 / standard=30 /
-extended=50). Keep terse — handoff content, not a journal.
+Soft cap is **tier-dependent** (lean 20 / standard 30 / extended 50)
+— see `3-control/runtime/profile.md`. Keep terse: handoff, not a
+journal.
 
 ## Outstanding
 
-(Work in progress, paused mid-task. Include where exactly it stopped.)
+Work in progress, paused mid-task. Include exactly where it stopped.
 
 ## Open questions
 
-(Decisions deferred for the Owner. Include the question + context.)
+Decisions deferred for the Owner. Include question + context.
 
 ## Next-session priorities
 
-(What to tackle first when resuming.)
+What to tackle first when resuming.

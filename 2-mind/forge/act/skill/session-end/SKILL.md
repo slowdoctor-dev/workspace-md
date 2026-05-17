@@ -7,9 +7,8 @@ description: Close a session — summarize changes, suggest commits, write a jou
 
 ## When to use
 
-Before disconnecting from the workspace (end of work block, switching
-workspaces, etc.). Every session ends with a journal entry — that's
-the episodic trace per R3.
+Before disconnecting (end of work block, switching workspaces, etc.).
+Every session ends with a journal entry — the episodic trace per R3.
 
 ## Quick reference
 
@@ -66,31 +65,28 @@ content based on the Open / NEXT items from the journal entry:
 - Open questions (decisions deferred for Owner)
 - Next-session priorities (what to tackle first)
 
-### 5. Chain to learn (for substantive sessions)
+### 5. Chain to learn (substantive sessions)
 
-If the session had substantive work (multiple decisions, non-trivial
-work, ≥5 tool calls, errors recovered, Owner corrections, novel
-workflows), invoke `/learn` to consolidate journal signals into
-USER.md, garden/essential/SOUL.md, garden/<topic>.md, new
-skills/scripts in forge/ (T1 autonomous), and propose T2 graduations
-to 3-control/foundation/ + 3-control/rule/ for Owner ratification.
+If the session was substantive (multiple decisions / non-trivial work
+/ ≥5 tool calls / error recovery / Owner correction / novel workflow),
+invoke `/learn` — consolidates journal signals into T1 stores and
+proposes T2 graduations for Owner ratification.
 
-For trivial sessions (e.g., a single quick fix), skip `learn` — the
-journal entry alone is sufficient episodic trace.
+For trivial sessions (single quick fix), skip `learn`; the journal
+entry alone suffices as episodic trace.
 
 ## Pitfalls
 
-- **Committing without Owner accept**: even per the workspace's
-  convention, agent always waits for explicit accept.
-- **Skipping the journal entry**: every session writes one, even if
-  short. The episodic trace is non-negotiable per R3.
-- **Writing journal entry to wrong path**: check filename format
-  carefully — `YYYY-MM-DD-<runtime>-<NNN>.md`. NNN must increment
-  within today's runtime-matched entries.
-- **Auto-running learn on trivial sessions**: produces thin entries
-  in USER.md. Only chain if substantive.
+- **Committing without Owner accept**: always wait for explicit
+  accept, even under fast workspace conventions.
+- **Skipping the journal entry**: every session writes one — the
+  episodic trace per R3 is non-negotiable.
+- **Wrong filename format**: `YYYY-MM-DD-<runtime>-<NNN>.md`; NNN
+  increments within today's runtime-matched entries.
+- **Auto-running learn on trivial sessions**: produces thin USER.md
+  entries. Only chain when substantive.
 - **Not transferring Open / NEXT to fresh NEXT.md**: loses handoff
-  context for next session.
+  context for the next session.
 
 ## Verification
 

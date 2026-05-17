@@ -8,16 +8,15 @@ description: Periodic maintenance pass — 6-class issue scan + journal archival
 ## When to use
 
 - **Monthly** by default (or every N sessions, per workspace cadence)
-- **On size-limit breach** (USER.md hits 100, garden/<topic>.md
-  exceeds adopter's threshold)
-- **After bulk additions** (post-migration, post-research-heavy
-  period)
+- **On size-limit breach** (USER.md or garden topic exceeds its tier
+  cap — see R1)
+- **After bulk additions** (post-migration, post-research-heavy)
 - **Explicit `/audit`** Owner invocation
 
-Operational instance of *Ebbinghaus forgetting curve* + *interference
-theory* mitigation. Complement to `learn` (which accumulates).
-Without `audit`, the workspace drifts toward clutter; without `learn`,
-the workspace doesn't accumulate. Both are needed.
+Companion to `learn` — `learn` accumulates, `audit` prunes. Without
+`audit` the workspace drifts toward clutter; without `learn` it
+doesn't accumulate. (Ebbinghaus forgetting curve + interference
+theory mitigation.)
 
 ## Quick reference
 
@@ -26,7 +25,7 @@ the workspace doesn't accumulate. Both are needed.
 | 1. Stale | references to deleted/renamed files; entries with old `last_verified` | update or prune |
 | 2. Duplicates | two files on same topic; same rule in multiple places | merge to canonical home |
 | 3. Contradictions | rules/principles in tension; old vs new claims | resolve (keep newer; annotate older) |
-| 4. Over-grown | files exceeding their bounds (USER >100; etc.) | split or consolidate |
+| 4. Over-grown | files exceeding their R1 cap | split or consolidate |
 | 5. Orphans | dead links; broken cross-refs | fix paths or remove refs |
 | 6. Low-utility | skills never invoked; rules never fired | archive or prune |
 
@@ -37,13 +36,11 @@ Plus: journal archival pass (entries >3 months → archive).
 ### 1. Journal archival (the main mechanical task)
 
 Scan `2-mind/garden/essential/journal/` for entries with date prefix
-older than 3 months from today.
-
-For each old entry:
+>3 months old. For each:
 - `mkdir -p 2-mind/garden/archive/<YYYY-MM>/` (year-month of entry)
 - `git mv 2-mind/garden/essential/journal/<entry>.md 2-mind/garden/archive/<YYYY-MM>/`
 
-Archived entries remain searchable via grep but are not auto-loaded.
+Archived entries stay grep-searchable but no longer auto-load.
 
 ### 2. Stale scan
 
@@ -139,15 +136,14 @@ Append to `2-mind/garden/audit-log.md` (create if missing):
 ## Pitfalls
 
 - **Auto-deleting**: NEVER. Always archive (move to
-  `garden/archive/`). R3 source-monitoring requires source preserved.
-- **Touching 3-control/ files autonomously**: ALL 3-control/
-  changes (foundation/, rule/, external/, runtime/) are T2.
-  Always propose, never auto-apply. The folder boundary is the
-  tier boundary.
-- **Full audit when only specific class needed**: if Owner asks
-  "/audit stale", scan only stale class; don't drag in others.
+  `garden/archive/`) — R3 requires source preserved.
+- **Touching 3-control/ autonomously**: all 3-control/ paths
+  (foundation/, rule/, external/, runtime/) are T2 — propose, never
+  auto-apply. The folder boundary is the tier boundary.
+- **Full audit when scoped audit requested**: if Owner asks
+  `/audit stale`, scan only that class.
 - **Skipping the audit log**: the log is the source-trail for what
-  was changed when — critical for future audits.
+  changed when — critical for future audits.
 
 ## Verification
 

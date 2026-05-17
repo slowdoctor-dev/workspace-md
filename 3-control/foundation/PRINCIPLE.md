@@ -18,22 +18,18 @@ then the mechanism that enables it.
 
 ### Use-driven evolution *(coined by this spec)*
 
-**The core goal**: the workspace accumulates value with use — it
-becomes a higher-leverage substrate the more it is used. Each
+**The core goal**: the workspace accumulates value with use. Each
 session leaves behind durable assets so the next session knows more,
-automates more, and requires less re-explanation. Use compounds
-usability.
+automates more, requires less re-explanation. Use compounds usability.
 
-Each session deposits declarative knowledge into `2-mind/garden/`,
+Sessions deposit declarative knowledge into `2-mind/garden/`,
 procedural skills into `2-mind/forge/`, constraints and orientation
-into `3-control/`, and refinements into `AGENTS.md`. A workspace
-that has not been used grows nothing.
+into `3-control/`. An unused workspace grows nothing.
 
-The accumulation is operationalized by a memory architecture grounded
-in cognitive theory (Schacter-Tulving five-system taxonomy + Conway
-self-memory + McGaugh consolidation + Miller/Ebbinghaus bounded
-growth + Loftus/Johnson source-monitoring). 7 memory stores + 2 write-tiers
-+ 4 operating rules + 5 lifecycle skills. Detail:
+Operationalized by a cognitive-architecture memory spec — 7 stores +
+2 write-tiers (T1 / T2) + 4 operating rules (R1–R4) + 5 lifecycle
+skills — grounded in Schacter-Tulving, Conway, McGaugh, Miller,
+Ebbinghaus, Loftus, Johnson. Detail:
 `3-control/foundation/use-driven-memory.md`.
 
 ### Separability *(general SW vocabulary; framing here is spec-specific)*
@@ -119,27 +115,25 @@ foundation. Loses mandated status because canonical identity now
 lives in `3-control/foundation/SOUL.md`.
 
 **2-mind/garden/** [mandated] — Declarative memory: semantic +
-episodic + working stores. Sub-structure: `essential/` holds the 4
-essential memory files (SOUL working, USER, NEXT, journal/) — see
-`3-control/foundation/use-driven-memory.md`. Freely-organized topic
-content (`<topic>.md`, `<topic>/<sub>.md`) and `archive/` (aged-out
-journal entries) appear lazily as needed. T1 — agent autonomous
-within capacity bounds.
+episodic + working (T1, agent-autonomous within R1 capacity bounds).
+`essential/` holds the 4 essential items (SOUL working, USER, NEXT,
+journal/); freely-organized topic content (`<topic>.md`,
+`<topic>/<sub>.md`) and `archive/` (aged-out journal entries) appear
+lazily. Architecture detail at
+`3-control/foundation/use-driven-memory.md`.
 
 `3-control/foundation/SOUL.md` is the canonical identity (T2,
-Owner-ratified). Per the Hermes Agent SOUL.md pattern this spec
-generalizes from
-([personality](https://hermes-agent.nousresearch.com/docs/user-guide/features/personality)
-+ [use-soul-with-hermes](https://hermes-agent.nousresearch.com/docs/guides/use-soul-with-hermes)):
-content is Owner-authored verbatim. Section structure follows Hermes'
-canonical shape (Identity / Style / Avoid / Defaults), extended here
-with §Values for spec-specific articulation. SOUL.md's own §Avoid
-owns the full content-type exclusion list.
+Owner-ratified, Owner-authored verbatim). Adopts the Hermes Agent
+SOUL.md pattern
+([personality](https://hermes-agent.nousresearch.com/docs/user-guide/features/personality),
+[use-soul-with-hermes](https://hermes-agent.nousresearch.com/docs/guides/use-soul-with-hermes)):
+canonical sections Identity / Style / Avoid / Defaults, extended
+here with §Values. SOUL.md's own §Avoid owns the full content-type
+exclusion list.
 
 Companion working-identity store at `2-mind/garden/essential/SOUL.md`
-(T1, agent-autonomous) holds observations awaiting Owner-ratified
-graduation. See `3-control/foundation/use-driven-memory.md` for the
-dual-store pattern.
+(T1) accumulates observations awaiting Owner-ratified graduation —
+dual-store pattern detailed in `use-driven-memory.md`.
 
 **2-mind/forge/** [mandated, may be empty initially] — Procedural
 memory (T1). Agent specs (`role/`), triggers (`cue/`), procedures
