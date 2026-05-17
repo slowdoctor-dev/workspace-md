@@ -1,6 +1,6 @@
 ---
 name: audit
-description: Periodic maintenance pass — 6-class issue scan + journal archival (>3 months old → factory/archive/<YYYY-MM>/). Companion to learn (accumulation); audit handles forgetting and consolidation.
+description: Periodic maintenance pass — 6-class issue scan + journal archival (>3 months old → garden/archive/<YYYY-MM>/). Companion to learn (accumulation); audit handles forgetting and consolidation.
 ---
 
 # audit
@@ -8,7 +8,7 @@ description: Periodic maintenance pass — 6-class issue scan + journal archival
 ## When to use
 
 - **Monthly** by default (or every N sessions, per workspace cadence)
-- **On size-limit breach** (USER.md hits 100, factory/<topic>.md
+- **On size-limit breach** (USER.md hits 100, garden/<topic>.md
   exceeds adopter's threshold)
 - **After bulk additions** (post-migration, post-research-heavy
   period)
@@ -135,6 +135,7 @@ Append to `2-mind/garden/audit-log.md` (create if missing):
 
 - 6 issue classes scanned (or explicitly skipped per request scope)
 - Journal entries >3 months moved to `garden/archive/<YYYY-MM>/`
-- All applied changes have Owner ratification
+- T1 changes applied directly (2-mind/ items: garden + forge)
+- T2 changes ratified by Owner per item (3-control/ items only)
 - `2-mind/garden/audit-log.md` updated with this pass
-- `git status` reflects only Owner-accepted commits
+- `git status` reflects all applied changes

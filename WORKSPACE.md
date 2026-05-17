@@ -114,9 +114,12 @@ Filename:
 
 - **Dated content** (logs, drafts, archived spec versions, queue
   items): `{YYYY-MM-DD}_{slug}.md`.
-- **Durable named documents** (`WORKSPACE.md`, `SOUL.md`,
-  `PRINCIPLE.md`, per-agent `AGENTS.md`, individual rule files, skill
-  `SKILL.md`): no date prefix; named by topic.
+- **Durable named documents** (`WORKSPACE.md`, `AGENTS.md`,
+  `SOUL.md`, `PRINCIPLE.md`, `USER.md`, `NEXT.md`,
+  `use-driven-memory.md`, per-agent `AGENTS.md`, individual rule
+  files, skill `SKILL.md`): no date prefix; named by topic.
+  Canonical mandated files use UPPERCASE; supplementary docs use
+  lowercase-hyphenated.
 
 Detailed writing/naming conventions live in `3-control/rule/`.
 

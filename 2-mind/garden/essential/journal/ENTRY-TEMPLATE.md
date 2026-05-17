@@ -25,17 +25,17 @@ or decision benefited.)
 
 ## Open / NEXT
 
-(Items transferred to factory/essential/NEXT.md — keep the snapshot
+(Items transferred to garden/essential/NEXT.md — keep the snapshot
 here for source-monitoring trail.)
 
 ## Owner-signals
 
 (Owner preferences observed; candidates for graduation to
-factory/essential/USER.md or factory/essential/SOUL.md by the `learn`
+garden/essential/USER.md or garden/essential/SOUL.md by the `learn`
 skill.)
 
 ## Consolidations applied (filled by `learn`)
 
 (After `learn` runs against this entry, log what it wrote to USER.md,
-factory/essential/SOUL.md, factory/<topic>.md, or proposed for T2
+garden/essential/SOUL.md, garden/<topic>.md, or proposed for T2
 graduation.)

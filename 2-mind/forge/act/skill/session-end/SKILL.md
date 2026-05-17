@@ -71,8 +71,9 @@ content based on the Open / NEXT items from the journal entry:
 If the session had substantive work (multiple decisions, non-trivial
 work, ≥5 tool calls, errors recovered, Owner corrections, novel
 workflows), invoke `/learn` to consolidate journal signals into
-USER.md, factory/essential/SOUL.md, factory/<topic>.md, and propose
-T2 graduations.
+USER.md, garden/essential/SOUL.md, garden/<topic>.md, new
+skills/scripts in forge/ (T1 autonomous), and propose T2 graduations
+to 3-control/foundation/ + 3-control/rule/ for Owner ratification.
 
 For trivial sessions (e.g., a single quick fix), skip `learn` — the
 journal entry alone is sufficient episodic trace.

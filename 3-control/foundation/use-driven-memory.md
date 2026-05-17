@@ -66,7 +66,7 @@ Concrete caps:
 - `USER.md`: 100 lines hard; consolidate at 80 lines (80%).
 - journal entries: 30–200 lines soft per entry; no hard cap on entry
   count, but `archive/` move applies at 3 months age (see below).
-- factory `<topic>.md`: no fixed cap; `audit` consolidates near-
+- garden `<topic>.md`: no fixed cap; `audit` consolidates near-
   duplicates periodically.
 - `SOUL.md` (canonical and working): no hard cap; content discipline
   via Hermes-style verbatim + sectioned structure.
@@ -95,7 +95,7 @@ declarative memory.
 
 Episodic stores preserve **verbatim** records: each journal entry has
 a timestamp, runtime tag, and source citations back to the session's
-commits / decisions. Semantic stores (`USER.md`, factory `<topic>.md`,
+commits / decisions. Semantic stores (`USER.md`, garden `<topic>.md`,
 foundation docs) hold **synthesized** content, each item with explicit
 citation back to the source journal entry it derives from (format:
 `(journal <YYYY-MM-DD-runtime-NNN>)`).
@@ -111,7 +111,7 @@ Johnson 1993 source monitoring framework.
 
 T1 / T2 split (above). Identity content uses **dual-store**: the
 agent's working observations (`garden/essential/SOUL.md`, T1)
-accumulate freely; canonical identity (`foundation/SOUL.md`, T2) only
+accumulate freely; canonical identity (`3-control/foundation/SOUL.md`, T2) only
 updates via Owner-ratified graduation proposals from the working
 store. The working store is NOT loaded at session-start — it's read
 only by the `learn` skill when preparing graduation proposals.
@@ -141,7 +141,7 @@ Progression: **spec → principle → identity → user → state → recent**.
 Not loaded at session-start (read on demand):
 - `garden/essential/SOUL.md` (working observations — `learn` only)
 - Older journal entries (search via grep when needed)
-- factory `<topic>.md` content (loaded by relevance)
+- garden `<topic>.md` content (loaded by relevance)
 - skills (invoked by description match)
 
 ## 5 lifecycle skills
@@ -151,15 +151,15 @@ Not loaded at session-start (read on demand):
 | `init` | Once after clone or recreation | WORKSPACE, AGENTS (structure verify) | Modifies template seeds (NOT create); records runtime detection | Workspace bootstrap |
 | `session-start` | Every session begin | 7-item read order | Clears NEXT.md after consuming | Load working context |
 | `session-end` | Every session close | Transcript + git diff/log | journal/<new-entry>.md; NEXT.md (fresh) | Episodic trace + handoff |
-| `learn` | Chain from session-end OR mid-session triggers (≥5 tool calls / error recovery / user correction / novel workflow) OR `/learn` | Today's journal entry + prior 1-2 entries; factory/essential/SOUL.md | USER (T1); factory/essential/SOUL.md (T1); factory/<topic>.md (T1); proposes T2 graduations to foundation/SOUL, foundation/PRINCIPLE, new skills, new rules | Consolidation pass (R1) |
-| `audit` | Monthly OR limit breach OR `/audit` | All of factory/ + skills + rules (6 issue classes) | Archives journal entries >3 months to factory/archive/<YYYY-MM>/; proposes T2 consolidations; writes factory/audit-log.md | Periodic maintenance (Ebbinghaus pruning) |
+| `learn` | Chain from session-end OR mid-session triggers (≥5 tool calls / error recovery / Owner correction / novel workflow) OR `/learn` | Today's journal entry + prior 1-2 entries; garden/essential/SOUL.md | T1 (autonomous): USER.md, garden/essential/SOUL.md, garden/<topic>.md, new skills/scripts in forge/. T2 (propose-ratify): 3-control/foundation/SOUL.md, 3-control/foundation/PRINCIPLE.md, 3-control/rule/ | Consolidation pass (R1) |
+| `audit` | Monthly OR limit breach OR `/audit` | All of 2-mind/ (garden + forge) + 3-control/ (6 issue classes) | T1 (direct): archive journal entries >3 months → garden/archive/<YYYY-MM>/; consolidate within 2-mind/. T2 (propose): 3-control/ changes. Writes garden/audit-log.md | Periodic maintenance (Ebbinghaus pruning) |
 
 ## Dual-store identity graduation pipeline
 
 ```
 session                  session-retro             periodic Owner review
    ↓                          ↓                            ↓
-journal entries     →   factory/essential/SOUL.md  →  foundation/SOUL.md
+journal entries     →   garden/essential/SOUL.md  →  3-control/foundation/SOUL.md
 (episodic events)       (T1 working observations)     (T2 canonical, Owner-
                                                        ratified)
 ```
@@ -170,10 +170,10 @@ journal entries     →   factory/essential/SOUL.md  →  foundation/SOUL.md
    `garden/essential/SOUL.md` *Observations* / *Owner-signals*
    sections. T1 autonomous.
 3. **Periodic (also via `learn`)**: agent proposes promising
-   observations as `foundation/SOUL.md` diffs. Owner ratifies per item.
-4. **On ratify**: change lands in `foundation/SOUL.md`; the
+   observations as `3-control/foundation/SOUL.md` diffs. Owner ratifies per item.
+4. **On ratify**: change lands in `3-control/foundation/SOUL.md`; the
    `garden/essential/SOUL.md` entry gets marked
-   `[graduated YYYY-MM-DD → foundation/SOUL.md]` and moves to
+   `[graduated YYYY-MM-DD → 3-control/foundation/SOUL.md]` and moves to
    *Graduated* section (kept for source-monitoring trail per R3).
 
 ## Bounded growth + archival
@@ -184,7 +184,7 @@ journal entries     →   factory/essential/SOUL.md  →  foundation/SOUL.md
 | journal entries | 30–200 lines soft per entry; no entry-count cap |
 | journal/ folder | entries >3 months → `garden/archive/<YYYY-MM>/<filename>.md` via `audit` |
 | `garden/essential/SOUL.md` | no hard cap; *Graduated* section pruned by `audit` for >6 month old graduations |
-| factory `<topic>.md` | no fixed cap; `audit` consolidates near-duplicates |
+| garden `<topic>.md` | no fixed cap; `audit` consolidates near-duplicates |
 | canonical `SOUL.md` / `PRINCIPLE.md` | no caps; Owner-curated cadence |
 
 Archival is **not deletion** — old journal entries move to

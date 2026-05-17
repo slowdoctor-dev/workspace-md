@@ -20,6 +20,6 @@ Format: short paragraph + citation back to source journal entry.)
 
 ## Graduated
 
-(Entries marked `[graduated YYYY-MM-DD → foundation/SOUL.md]` after
-Owner ratifies and they land in canonical. Kept for source-monitoring
-trail.)
+(Entries marked `[graduated YYYY-MM-DD → 3-control/foundation/SOUL.md]`
+after Owner ratifies and they land in canonical. Kept for
+source-monitoring trail.)
