@@ -83,7 +83,7 @@ flags.
 
 For each file, look up its cap and compare current line count.
 Working `SOUL.md` (in garden) has no cap but prune *Graduated*
-section once ≥30 entries.
+entries older than 6 months.
 
 Memory-cap breach in 2-mind/ → split or consolidate directly (T1).
 Spec-cap breach → flag only; Owner decides whether to trim (3-control/
