@@ -51,7 +51,7 @@ Do NOT full-rescan the transcript. Look for:
 - Failures + recoveries (the recovery is the lesson)
 - Owner-declared stances (1st-person quotable for SOUL graduation)
 
-### 2. Categorize signals (use Quick Reference table)
+### 2. Categorize signals (use Quick reference table)
 
 Match each signal to a target. Apply R3 source-monitoring: every
 derived entry MUST cite its source journal as

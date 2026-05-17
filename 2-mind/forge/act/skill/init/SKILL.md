@@ -18,7 +18,7 @@ routine sessions (use `session-start`).
 |---|---|---|
 | 1. Verify structure | `WORKSPACE.md`, repo file tree | — |
 | 2. Detect runtimes | shell `command -v` checks | — |
-| 3. Recommend + ratify cap tier | detected list + R1 tier table | `3-control/runtime/profile.md` (T2) |
+| 3. Recommend + ratify cap tier | detected list + R2 Part B tier table | `3-control/runtime/profile.md` (T2) |
 | 4. Brief read order | `AGENTS.md` § Reading order | — |
 | 5. (Optional) modify seeds | template files in `garden/essential/` | minor edits only |
 
