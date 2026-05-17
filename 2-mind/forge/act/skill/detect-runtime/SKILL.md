@@ -116,11 +116,12 @@ Cross-verify against the known-constants table.
 
 | Provider | Model class | Effective context | Caveat |
 |---|---|---|---|
-| Anthropic | Claude Sonnet/Opus 4.x | 200,000 (1,000,000 with beta header) | full attention across range |
+| Anthropic | Claude Sonnet/Opus 4.x | 200,000 (1,000,000 with beta header) | hosted-large — full attention across range |
 | Anthropic | Claude Haiku | 200,000 | hosted-modest — quality lower past ~64K |
-| OpenAI | GPT-4 family | 128,000 | full attention near full range |
+| OpenAI | GPT-4 family | 128,000 | hosted-large — full attention near full range |
 | OpenAI | GPT-4o-mini | 128,000 | hosted-modest — lower past ~64K |
-| Google | Gemini Pro / Flash | 1,000,000 | claimed full; community ~500K |
+| Google | Gemini Pro | 1,000,000 | hosted-large — claimed full; community ~500K |
+| Google | Gemini Flash | 1,000,000 | hosted-modest-equivalent — smaller model than Pro, attention quality lower past ~64K |
 
 **C. Local endpoint query**:
 
