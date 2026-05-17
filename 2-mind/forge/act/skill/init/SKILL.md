@@ -50,11 +50,15 @@ Map to a cap tier per `use-driven-memory.md §R1`:
 
 | Detected runtime | Recommended tier |
 |---|---|
-| Only hosted CLI(s) (claude / codex / gemini) | `extended` |
-| Local runtime running 30B+ model, OR hosted-modest pairing | `standard` |
-| Local runtime running ≤13B model | `lean` |
-| Mixed (hosted + local) | **most constrained** of the set |
+| Hosted CLI(s) pointing at hosted-large model (Claude Sonnet/Opus, GPT-4, Gemini Pro) | `extended` |
+| Hosted CLI(s) pointing at hosted-modest model (Claude Haiku, GPT-4o-mini) | `standard` |
+| Local runtime, 30B+ model | `standard` |
+| Local runtime, ≤13B model | `lean` |
+| Mixed runtimes | **most constrained** of the set |
 | Nothing detected | `lean` (safe floor) |
+
+CLI detection alone doesn't reveal which model the CLI is pointing
+at — confirm with Owner. Default to `standard` if uncertain.
 
 Draft `3-control/runtime/profile.md`:
 

@@ -14,7 +14,7 @@ bootstrap (use `init` for that).
 
 | Step | Reads | Writes |
 |---|---|---|
-| 1. Quick integrity | repo structure | — |
+| 1. Quick integrity | repo structure + `3-control/runtime/profile.md` | — |
 | 2. Load read order | 7 files (see Procedure §2) | — |
 | 3. Consume NEXT | `garden/essential/NEXT.md` | clears NEXT.md content |
 | 4. Brief Owner | (compiled from loaded files) | — |

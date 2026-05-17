@@ -28,8 +28,8 @@ into `3-control/`. An unused workspace grows nothing.
 
 Operationalized by a cognitive-architecture memory spec — 7 stores +
 2 write-tiers (T1 / T2) + 4 operating rules (R1–R4) + 5 lifecycle
-skills — grounded in Schacter-Tulving, Conway, McGaugh, Miller,
-Ebbinghaus, Loftus, Johnson. Detail:
+skills — grounded in Schacter-Tulving, Conway, Baddeley, McGaugh,
+Miller, Ebbinghaus, Loftus, Johnson. Detail:
 `3-control/foundation/use-driven-memory.md`.
 
 ### Separability *(general SW vocabulary; framing here is spec-specific)*
