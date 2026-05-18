@@ -1,6 +1,9 @@
 # workspace.md
 
 > A workspace-topology specification — sibling to [agents.md](https://agents.md).
+>
+> **Status**: v0.1 pre-stable, starter-template form. Primarily used
+> by the author (sole adopter); public for visibility and feedback.
 
 **workspace.md** describes how a directory shared between a human and
 an AI agent should be organized so the agent can read, write, and
@@ -34,10 +37,12 @@ runtime-agnostic by construction:
 
 - Four mandated top folders (`0-storage/`, `1-active/`, `2-mind/`,
   `3-control/`) — Life-OS-lifecycle ordering, runtime-independent.
-- Cognitive-architecture memory spec — 7 stores, 4 operating rules
-  (R1–R4), 6 lifecycle skills — grounded in established memory
-  theory (Schacter-Tulving, Conway, Baddeley, McGaugh, Miller,
-  Ebbinghaus, Loftus, Johnson).
+- Memory architecture — 7 stores, 4 operating rules (R1–R4), 6
+  lifecycle skills — drawing metaphorical inspiration from
+  cognitive science (Schacter-Tulving, Conway, Baddeley, McGaugh,
+  Miller, Ebbinghaus, Loftus, Johnson). The citations frame the
+  design intent; they do not validate the cap numbers, which are
+  defensibly grounded but not empirically tested.
 - Runtime-tier system (lean / standard / extended) — adapts caps to
   the binding constraint: backend `effective_context`. Local 7-13B
   model? Use `lean`. Hosted Sonnet/Opus? Use `extended`.
@@ -50,17 +55,23 @@ gateway, no binary.
 ```bash
 git clone <this-repo> my-workspace
 cd my-workspace
-
-# In your agent CLI of choice (Claude Code, Codex CLI, Gemini CLI, ...):
-# 1. Read AGENTS.md to load the 7-item read order
-# 2. Run /init — verifies structure, invokes detect-runtime, proposes
-#    a runtime profile for your ratification
-# 3. Customize 3-control/foundation/SOUL.md to your workspace's identity
-#    (the canonical SOUL.md ships with this spec-repo's own caretaker
-#    identity — adopters replace it with their context)
-# 4. Start your first session — session-start loads the 7-item read
-#    order; session-end writes a journal entry on close
 ```
+
+Then, in your agent (Claude Code / Codex CLI / Gemini CLI / Cursor /
+Hermes / ...):
+
+1. Read `AGENTS.md` to load the 7-item read order.
+2. Invoke the `init` skill — the agent follows the procedure in
+   `2-mind/forge/act/skill/init/SKILL.md` (verify structure → invoke
+   `detect-runtime` → propose `profile.md` for ratify). `init` is a
+   markdown-described procedure, not a shell command; your agent
+   reads the SKILL.md and executes the steps.
+3. Customize `3-control/foundation/SOUL.md` to your workspace's
+   identity. The canonical SOUL.md ships with this spec-repo's own
+   caretaker identity — adopters replace the section content,
+   preserving the section structure (per the Adopter note inside).
+4. Start your first session — `session-start` loads the 7-item read
+   order; `session-end` writes a journal entry on close.
 
 After a few sessions, the `dream` skill (auto-invoked at
 substantive-session close) distills journal entries into your
@@ -106,18 +117,23 @@ The two compose. A workspace can adopt both.
 
 ## Contributing
 
-This is a pre-stable spec. Feedback, issues, and pull requests are
-welcome — especially:
+Currently maintained by one author; sole adopter so far. Feedback is
+welcome via issues — especially:
 
 - Adoption reports (which CLI? which backend? what broke?)
 - Empirical cap-number observations (what worked, what didn't)
 - New harnesses or backends to add to `detect-runtime` enums
 - Doc clarity improvements
 
+PRs may not be merged quickly while the spec is pre-stable —
+substantive proposals are better discussed in an issue first.
+
 ## License
 
-[Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)](https://creativecommons.org/licenses/by-sa/4.0/).
-See `LICENSE` for full terms.
+[Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0).
+See `LICENSE` for full terms. Permissive (commercial use allowed,
+no copyleft obligation on adopters' workspaces) with patent grant
+and attribution requirement.
 
 ---
 
