@@ -47,19 +47,23 @@ Keeps the topology *and* the "compounds with use" payoff:
 
 - the 6 lifecycle skills (`init`, `session-start`, `session-end`,
   `dream`, `audit`, `detect-runtime`)
-- the `garden/essential/` memory stores + the R1–R4 memory rules
-- the runtime profile + tier system
+- the `garden/essential/` memory stores + the R1, R3, R4 memory rules
+  (R2 is Core, above)
+- the runtime profile + tier *mechanism*
 
 ### Adapt freely — calibrate to your context
 
 Yours to tune (lazy structure + native-conventions apply):
 
-- cap numbers and tiers — *defensibly grounded but not empirically
-  validated*; adjust to your content + backend
+- the cap *numbers* (the tier mechanism itself is Recommended, above) —
+  *defensibly grounded but not empirically validated*; adjust to your
+  content + backend
 - naming/filename conventions and which optional folders you create
 - your own enforceable rules in `3-control/rule/` (use a non-`Rn`
   prefix — see `WORKSPACE.md §Rule placement`)
-- all identity/person content (`SOUL.md`, `USER.md`) — Owner-authored
+- identity / person content — canonical `SOUL.md` (Owner-authored /
+  ratified) and the agent-grown `USER.md` + working `SOUL.md` — is
+  workspace-specific, not spec-fixed
 
 Rule of thumb: **keep the skeleton and the session rhythm; treat the
 numbers, names, and optional structure as defaults, not law.**
@@ -77,7 +81,7 @@ them (this keeps this file true even when kept verbatim downstream):
 | `AGENTS.md` | "This repo defines the workspace.md specification…" | **Re-home** the intro to describe *your* workspace; keep the §Reading order + per-runtime mapping (or rely on the canonical read order in `use-driven-memory.md`) |
 | `README.md` | public entry for the spec project ("sole adopter…") | **Replace or delete** — it documents the spec project, not your workspace |
 | `WORKSPACE.md`, `PRINCIPLE.md`, `use-driven-memory.md`, `runtime-flexibility.md`, this file | the spec proper | **Keep verbatim** — this is the spec you adopted; upgrade by pulling new spec versions |
-| `garden/essential/{USER,NEXT,SOUL}.md`, `journal/ENTRY-TEMPLATE.md` | empty seeds | **Keep** — they fill via use, never pre-populate |
+| `garden/essential/{USER,NEXT,SOUL}.md`, `journal/ENTRY-TEMPLATE.md` | template seeds (scaffold, no content) | **Keep** — they fill via use, never pre-populate |
 
 The spec deliberately does not auto-rewrite these on clone (no
 generator yet, v0.x). Until a `template/` skeleton is split out, the
@@ -111,9 +115,12 @@ handoff`.
 
 ## Metadata / frontmatter convention
 
-The spec is **metadata-free**: spec files and template seeds carry no
-`domain:` / `data_sensitivity:` (or any) YAML frontmatter. If your
-workspace mandates universal frontmatter, **exempt** the following so
+The spec's **foundation/topology docs and template seeds are
+metadata-free**: they carry no `domain:` / `data_sensitivity:` (or any)
+YAML frontmatter. (Lifecycle `SKILL.md` files do carry native skill
+frontmatter — `name:`/`description:` — which is why they appear in the
+exempt list below, not a violation.) If your workspace mandates
+universal frontmatter, **exempt** the following so
 the carve-out is expected rather than a per-path surprise in your
 linter:
 
