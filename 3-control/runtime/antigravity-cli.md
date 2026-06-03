@@ -18,7 +18,7 @@ external vendor claims; verify before relying.
 |---|---|---|
 | Context files | `AGENTS.md` + `GEMINI.md` auto-loaded, unchanged | no edits needed (✓ compatible) |
 | Skills | `.agents/skills` → `2-mind/forge/act/skill/` (symlink) | Antigravity's native skills dir; skills are `.md`, format-compatible |
-| MCP | `.agents/mcp_config.json` → `3-control/external/mcp/mcp_config.json` | **rendered** form: remote field `url` → `serverUrl` (copied Gemini configs fail silently otherwise). See `3-control/external/mcp/README.md` |
+| MCP | `.agents/mcp_config.json` — **rendered on demand** (not pre-created): created + symlinked to `3-control/external/mcp/mcp_config.json` only after the first server is registered, with `url` → `serverUrl` on remote servers. See `3-control/external/mcp/README.md` |
 | Model | `--model` flag **removed**; runtime auto-selects (Gemini) | `profile.md backend_model` is *descriptive* here — record `auto:gemini-3.5-flash` |
 | Hooks | same JSON hook format + lifecycle events as Gemini CLI | SessionStart hook usable for R2 enforcement |
 | Headless | `agy -p "<prompt>" --output-format json` | lifecycle skills (`init`, `audit`, `dream`) are CI-runnable via headless mode |

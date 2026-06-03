@@ -23,4 +23,5 @@ is **rendered on demand**, not pre-created:
 - `audit`'s duplicate/contradiction scan then keeps the two in sync.
 
 Self-owned MCP servers carry source + config together in
-`3-control/external/mcp/<server-name>/` (see `PRINCIPLE.md §External`).
+`3-control/external/mcp/<server-name>/` (see
+`PRINCIPLE.md §External connections`).

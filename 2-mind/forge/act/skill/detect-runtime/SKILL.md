@@ -40,10 +40,12 @@ Harness is an open enum. Known values:
 
 Optional helper: `2-mind/forge/act/script/detect-runtime.sh`
 automates objective verification only: Sub-step 1B/C/D, Sub-step
-2B/C, Sub-step 3B/C, then Step 4 tier derivation and Step 5 JSON
-emission. It cannot perform Step 0 / Sub-step A agent
-self-introspection. The running agent supplies that primary signal
-before interpreting the helper output.
+2B/C, Sub-step 3C (local endpoint) only, then Step 4 tier derivation
+and Step 5 JSON emission. Hosted Sub-step 3B is the agent's
+cross-check against the SKILL known-constants table, not scripted. The
+helper cannot perform Step 0 / Sub-step A agent self-introspection.
+The running agent supplies that primary signal before interpreting the
+helper output.
 
 ## Procedure
 

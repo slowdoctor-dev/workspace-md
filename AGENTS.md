@@ -14,8 +14,8 @@ human-agent collaboration.
 
 *Convenience summary of the canonical 7-item list in
 `3-control/foundation/use-driven-memory.md §Read order at session-start`
-— keep byte-for-byte in sync. Skills cite the canonical, so this works
-even if an adopter's `AGENTS.md` omits this section.*
+— same 7 items, in order (keep in sync). Skills cite the canonical, so
+this works even if an adopter's `AGENTS.md` omits this section.*
 
 1. `AGENTS.md` (this file) — workspace entry + per-runtime mapping
 2. `WORKSPACE.md` — topology spec

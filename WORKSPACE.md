@@ -155,7 +155,7 @@ carry native skill frontmatter (`name:`/`description:`), which is
 expected. Adopters mandating universal frontmatter should **exempt**
 these — list in `3-control/foundation/adoption.md`.
 
-## Known limitations (v0.1)
+## Known limitations (v0.x)
 
 - **Windows native fragility**: the committed symlinks (`CLAUDE.md`,
   `GEMINI.md`, `.mcp.json`, `.agents/skills`) require

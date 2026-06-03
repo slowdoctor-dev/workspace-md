@@ -46,8 +46,9 @@ Field reference:
   that let the Owner pick the model, this field is prescriptive (what
   the workspace targets). On runtimes that deny override and
   auto-select — e.g. Antigravity CLI removed the `--model` flag and
-  auto-picks Gemini — it is descriptive only: record the observed
-  selection with an `auto:` prefix (e.g. `auto:gemini-3.5-flash`).
+  auto-picks Gemini (see `3-control/runtime/antigravity-cli.md`) — it
+  is descriptive only: record the observed selection with an `auto:`
+  prefix (e.g. `auto:gemini-3.5-flash`).
 - `effective_context` — integer tokens (from `/v1/models` query or
   known constant; see `detect-runtime/SKILL.md` §3)
 - `active_tier` — `lean` | `standard` | `extended` (Owner-ratified;
@@ -86,4 +87,5 @@ always readable by extended sessions; the reverse silently overflows.
 - Adding a new local model that changes the constrained-tier
 - Owner judgment ("we're using more journal detail; bump to extended")
 
-Run `init` again or edit this file directly + commit.
+Run `init` again, or edit the active `profile.md` directly + commit
+(not this `profile.example.md` template).

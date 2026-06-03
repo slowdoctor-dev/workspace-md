@@ -79,8 +79,9 @@ Only when the ratified profile has `harness: antigravity`, expose the
 workspace through Antigravity's `.agents/` convention:
 
 - `.agents/skills` points to `2-mind/forge/act/skill/`
-- `.agents/mcp_config.json` is a rendered config with `serverUrl`,
-  owned by `3-control/external/mcp`
+- after the first MCP server is registered, render
+  `3-control/external/mcp/mcp_config.json` with `serverUrl` fields and
+  symlink `.agents/mcp_config.json` to it
 
 This step is a documentation handoff for the Owner/root-doc pass:
 create or update those root aliases/configs there, not from this
