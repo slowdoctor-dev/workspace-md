@@ -1,8 +1,68 @@
 # Adoption
 
 How to adopt workspace.md — into a fresh repo or one that already has
-content. Covers the spec-vs-adopter boundary, store migration, and the
-conventions adopters most often collide with.
+content. Covers first use, how much to keep vs adapt, the spec-vs-
+adopter boundary, store migration, and the conventions adopters most
+often collide with.
+
+## First use (quick start)
+
+Starting a brand-new workspace? Use this repo as the template:
+
+1. **Clone it as your workspace** — `git clone <repo> my-workspace`.
+2. **Re-home the spec-vs-yours files** — see *Spec repo vs your
+   workspace* below (replace the `SOUL.md` identity, re-home the
+   `AGENTS.md` intro, replace/delete `README.md`).
+3. **Run `init`** — your agent reads
+   `2-mind/forge/act/skill/init/SKILL.md`: it verifies structure, runs
+   `detect-runtime`, and proposes `3-control/runtime/profile.md` for
+   you to ratify (a fresh clone ships none → tier defaults to
+   `standard`).
+4. **Start working** — `session-start` loads the 7-item read order;
+   `session-end` writes a journal entry; `dream` distils journals into
+   `USER.md` + working `SOUL.md` after substantive sessions.
+
+Don't pre-populate the memory seeds (`USER.md`, `NEXT.md`, working
+`SOUL.md`) — they fill through use. (The README's *Quick adoption* is
+the same flow in brief.)
+
+## Conformance & flexibility
+
+workspace.md is *one approach, not THE approach* — adopt the
+load-bearing parts and adapt the rest to your context. Three levels:
+
+### Core — keep (load-bearing)
+
+Without these it isn't workspace.md:
+
+- the 4 top folders (`0-storage/ 1-active/ 2-mind/ 3-control/`)
+- the mandated sub-paths: `2-mind/garden/`, `2-mind/forge/`,
+  `3-control/foundation/SOUL.md`, `3-control/foundation/PRINCIPLE.md`
+- the session-boundary discipline (R2 — writes settle between
+  sessions; `session-start` loads, `session-end` writes)
+
+### Recommended — keep unless you have a reason
+
+Keeps the topology *and* the "compounds with use" payoff:
+
+- the 6 lifecycle skills (`init`, `session-start`, `session-end`,
+  `dream`, `audit`, `detect-runtime`)
+- the `garden/essential/` memory stores + the R1–R4 memory rules
+- the runtime profile + tier system
+
+### Adapt freely — calibrate to your context
+
+Yours to tune (lazy structure + native-conventions apply):
+
+- cap numbers and tiers — *defensibly grounded but not empirically
+  validated*; adjust to your content + backend
+- naming/filename conventions and which optional folders you create
+- your own enforceable rules in `3-control/rule/` (use a non-`Rn`
+  prefix — see `WORKSPACE.md §Rule placement`)
+- all identity/person content (`SOUL.md`, `USER.md`) — Owner-authored
+
+Rule of thumb: **keep the skeleton and the session rhythm; treat the
+numbers, names, and optional structure as defaults, not law.**
 
 ## Spec repo vs your workspace
 
