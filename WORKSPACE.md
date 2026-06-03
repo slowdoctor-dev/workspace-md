@@ -196,4 +196,4 @@ These are acknowledged limits, not bugs (v0.x is pre-stable).
 
 ---
 
-*Version: v0.1.1 — 2026-06-03 (pre-stable)*
+*Version: v0.1.2 — 2026-06-03 (pre-stable)*
