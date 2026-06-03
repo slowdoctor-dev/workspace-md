@@ -43,16 +43,23 @@ budget. **`standard` is the R1 baseline**; `lean` reduces caps for
 constrained runtimes; `extended` raises them for hosted-large
 runtimes.
 
+Caps are in **tokens** (primary unit since v0.1.1); line counts are a
+secondary English-density advisory (≈100/30/200/300 lines at
+`standard`). See `use-driven-memory.md §R1` for why token-primary.
+
 | Tier | USER (hard / consol) | NEXT | journal/<entry> | garden/<topic> flag | Target runtime |
 |---|---|---|---|---|---|
-| **lean** | 60 / 50 | 20 | 100 soft | 200 | local 7-13B (Llama 3.1 8B, Qwen 2.5 7B, Mistral 7B); ≤16K effective |
-| **standard** | 100 / 80 | 30 | 200 soft | 300 | **R1 baseline** — local 30-70B, hosted-modest (Haiku, GPT-4o-mini) |
-| **extended** | 200 / 160 | 50 | 400 soft | 500 | hosted-large (Claude Sonnet/Opus, GPT-4, Gemini Pro) |
+| **lean** | 500 / 400 | 170 | 1200 soft | 2000 | local 7-13B (Llama 3.1 8B, Qwen 2.5 7B, Mistral 7B); ≤16K effective |
+| **standard** | 800 / 640 | 240 | 2000 soft | 3200 | **R1 baseline** — local 30-70B, hosted-modest (Haiku, GPT-4o-mini) |
+| **extended** | 1600 / 1280 | 400 | 4000 soft | 6400 | hosted-large (Claude Sonnet/Opus, GPT-4, Gemini Pro) |
+
+(All values are tokens. Measure with `2-mind/forge/act/script/token-count.sh`.)
 
 Session-start budgets: **lean ≈ 15K · standard ≈ 19K · extended ≈ 29K tokens**.
 
-This is the **canonical home** for the cap numbers. `profile.md`
-may carry a summary, but the source of truth is here.
+This is the **canonical home** for the cap numbers. `profile.md` and
+the skills may carry a summary, but the source of truth is here —
+keep summaries byte-for-byte in sync.
 
 ## Tier-derivation rule
 

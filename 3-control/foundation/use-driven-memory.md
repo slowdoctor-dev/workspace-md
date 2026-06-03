@@ -57,6 +57,11 @@ layer for cultivation-craft adjacency).
 
 ## 4 operating rules
 
+> **Namespace reservation.** `R1`–`R4` are reserved by this spec for
+> the memory rules below; adopter rules in `3-control/rule/` must use a
+> distinct prefix (e.g. `ACME-1`, or `A1, A2…`) so `R2` is never
+> ambiguous. See `WORKSPACE.md §Rule placement`.
+
 ### R1 — Consolidation under capacity
 
 Every store has a capacity bound rooted in cognitive usability —
@@ -71,24 +76,33 @@ R1 caps are **runtime-independent** — they describe what makes a
 store usable *as memory*, not what fits a particular runtime.
 Runtime-tier adjustment is R2's concern.
 
+Caps are **token-primary** (v0.1.1); line counts are a secondary
+advisory. Line-only caps silently overflow the R2 budget for non-Latin
+/ CJK content (~2–3× more tokens per line). Measure tokens with
+`2-mind/forge/act/script/token-count.sh`.
+
 #### Two cap classes
 
 - **Memory caps** (use-grown — hard, enforced by `dream` /
-  consolidate-on-error): `USER.md`, `NEXT.md`, journal entries,
-  `garden/<topic>.md`.
+  consolidate-on-error; measured in **tokens**): `USER.md`, `NEXT.md`,
+  journal entries, `garden/<topic>.md`.
 - **Spec caps** (Owner-curated, growth-by-edit — advisory flags
-  only, reported by `audit`): `README.md`, `AGENTS.md`,
-  `WORKSPACE.md`, `PRINCIPLE.md`, canonical `SOUL.md`,
-  `use-driven-memory.md`, `runtime-flexibility.md`.
+  only, reported by `audit`; measured in **lines** — spec docs are
+  English): `README.md`, `AGENTS.md`, `WORKSPACE.md`, `PRINCIPLE.md`,
+  canonical `SOUL.md`, `use-driven-memory.md`, `runtime-flexibility.md`,
+  `adoption.md`.
 
-#### Natural memory caps (R1 baseline)
+#### Natural memory caps (R1 baseline = `standard` tier)
 
-| Store | Hard cap | Consolidate at | Cognitive rationale |
-|---|---|---|---|
-| `USER.md` | 100 lines | 80 | ~10 × Miller-chunked categories (≈ 7±2 entries per § Preferences / § Patterns / § Tells × 3 sections), with 30-line headroom for section headers + new entries before next consolidate trigger |
-| `NEXT.md` | 30 lines soft | n/a (single-consumption) | one screen worth — agent should read it without scrolling; handoff, not journal |
-| journal entry | 200 lines soft per entry | n/a (per-entry shape) | ~one session's decisions + learnings at human reading pace (8–10 min); long enough for substantive content, short enough to skim |
-| garden `<topic>.md` | flag at 300 lines | split or consolidate | single subject still cohesive without internal sectioning; past 300 → split into `<topic>/<sub>.md` |
+| Store | Hard cap (tokens) | Consolidate at | Line advisory (English) | Cognitive rationale |
+|---|---|---|---|---|
+| `USER.md` | 800 | 640 | ~100 lines | ~10 × Miller-chunked categories (≈ 7±2 entries per § Preferences / § Patterns / § Tells × 3 sections), with headroom before the next consolidate trigger |
+| `NEXT.md` | 240 soft | n/a (single-consumption) | ~30 lines | one screen worth — agent reads it without scrolling; handoff, not journal |
+| journal entry | 2000 soft per entry | n/a (per-entry shape) | ~200 lines | ~one session's decisions + learnings at human reading pace (8–10 min); substantive yet skimmable |
+| garden `<topic>.md` | flag at 3200 | split or consolidate | ~300 lines | single subject still cohesive without internal sectioning; past the flag → split into `<topic>/<sub>.md` |
+
+`dream` and `audit` compare against the token cap (helper falls back
+to `tiktoken cl100k_base`); the line advisory shows in their report.
 
 Working `SOUL.md` (in garden): no cap; *Graduated* entries older
 than 6 months pruned by `audit` (source-trail discipline per R3).
@@ -111,6 +125,7 @@ surface whether the natural caps need adjustment.
 | `SOUL.md` (canonical) | 100 lines (Hermes-style sectioned) |
 | `use-driven-memory.md` | 300 lines |
 | `runtime-flexibility.md` | 200 lines |
+| `adoption.md` | 200 lines |
 
 These are growth-by-edit, not use-grown — flag for Owner review
 when exceeded; never auto-consolidated.
@@ -180,6 +195,10 @@ contract (relaxed here to permit T2-ratified updates).
 
 ## Read order at session-start
 
+**Canonical home for the 7-item read order.** `AGENTS.md §Reading
+order` is a byte-for-byte summary; `init §4` + `session-start §2` cite
+*this* list, so an adopter whose `AGENTS.md` omits it still loads it (#2).
+
 Loaded into the agent's prompt in this sequence:
 
 1. `AGENTS.md` — workspace entry + per-runtime mapping
@@ -234,12 +253,12 @@ journal entries  →   garden/essential/SOUL.md  →  3-control/foundation/SOUL.
 
 | Store | Discipline |
 |---|---|
-| `USER.md` | R1 natural cap 100 hard / consolidate at 80; R2 tier-adjusted |
-| `NEXT.md` | R1 natural cap 30 soft; R2 tier-adjusted; single-consumption |
-| journal entry | R1 natural cap 200 soft per entry; R2 tier-adjusted; no entry-count cap |
+| `USER.md` | R1 natural cap 800 tok hard / consolidate at 640 (~100 lines); R2 tier-adjusted |
+| `NEXT.md` | R1 natural cap 240 tok soft (~30 lines); R2 tier-adjusted; single-consumption |
+| journal entry | R1 natural cap 2000 tok soft per entry (~200 lines); R2 tier-adjusted; no entry-count cap |
 | journal/ folder | entries >3 months → `garden/archive/<YYYY-MM>/<filename>.md` via `audit` |
 | `garden/essential/SOUL.md` | no hard cap; *Graduated* entries >6 months pruned by `audit` |
-| garden `<topic>.md` | R1 flag at 300 lines; R2 tier-adjusted; `audit` consolidates near-duplicates |
+| garden `<topic>.md` | R1 flag at 3200 tok (~300 lines); R2 tier-adjusted; `audit` consolidates near-duplicates |
 | spec docs (6 — see §R1 Spec caps table) | R1 spec-cap advisory flags (runtime-independent); Owner-curated cadence; flag at file-specific threshold |
 
 Archival is **not deletion** — old journal entries move to

@@ -1,3 +1,9 @@
+<!-- Frontmatter intentionally omitted: journal entries are metadata-free
+     (the Started/Closed/Runtime/Working-dir header below is their R3
+     metadata). If your workspace mandates frontmatter, see the journal
+     carve-out in 3-control/foundation/adoption.md. Keep this consistent
+     across runtimes — do not let one CLI add frontmatter and another omit it. -->
+
 # Journal — YYYY-MM-DD <runtime> NNN
 
 **Started**: YYYY-MM-DD HH:MM

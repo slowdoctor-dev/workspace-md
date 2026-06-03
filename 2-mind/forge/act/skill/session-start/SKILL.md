@@ -10,6 +10,12 @@ description: Load read order into agent context at every session begin. Invoke `
 At the beginning of every working session. Not the first-time
 bootstrap (use `init` for that).
 
+## Requires
+
+Requires `3-control/foundation/SOUL.md`,
+`3-control/foundation/PRINCIPLE.md`, and `2-mind/garden/essential/`
+to exist. If any are missing, run `init` instead of continuing.
+
 ## Quick reference
 
 | Step | Reads | Writes |

@@ -12,6 +12,14 @@ filesystem reorganization, or after switching the primary runtime
 (e.g., moving from local-only Ollama to a hosted CLI). Not for
 routine sessions (use `session-start`).
 
+## Requires
+
+Requires `AGENTS.md` and `WORKSPACE.md` at the repo root. During
+bootstrap, verify `3-control/foundation/SOUL.md`,
+`3-control/foundation/PRINCIPLE.md`, and `2-mind/garden/essential/`.
+If any of those are missing, stay in `init` and restore from git or a
+fresh clone before invoking lifecycle skills.
+
 ## Quick reference
 
 | Step | Reads | Writes |
@@ -19,8 +27,9 @@ routine sessions (use `session-start`).
 | 1. Verify structure | `WORKSPACE.md`, repo file tree | — |
 | 2. Invoke `detect-runtime` (bootstrap mode) | runtime self-introspection + env/config/endpoint signals | — (skill returns proposed profile) |
 | 3. Ratify profile.md | detect-runtime result | `3-control/runtime/profile.md` (T2) |
-| 4. Brief read order | `AGENTS.md` § Reading order | — |
-| 5. (Optional) modify seeds | template files in `garden/essential/` | minor edits only |
+| 4. (Optional) expose Antigravity aliases | ratified `harness=antigravity`, MCP registry | `.agents/` aliases/rendered config (Owner-owned setup) |
+| 5. Brief read order | `AGENTS.md` § Reading order | — |
+| 6. (Optional) modify seeds | template files in `garden/essential/` | minor edits only |
 
 ## Procedure
 
@@ -63,7 +72,22 @@ If signal_disagreements were flagged (e.g., agent self-says "Claude
 Sonnet 4.6" but `/v1/models` returns `qwen2.5-coder:32b` →
 proxy-mismatch), surface them explicitly before ratify.
 
-### 4. Brief the Owner on read order
+### 4. (Optional) Expose Antigravity aliases
+
+Only when the ratified profile has `harness: antigravity`, expose the
+workspace through Antigravity's `.agents/` convention:
+
+- `.agents/skills` points to `2-mind/forge/act/skill/`
+- `.agents/mcp_config.json` is a rendered config with `serverUrl`,
+  owned by `3-control/external/mcp`
+
+This step is a documentation handoff for the Owner/root-doc pass:
+create or update those root aliases/configs there, not from this
+forge-only procedure edit. If Antigravity and Gemini CLI are both
+present, keep the detect-runtime collision warning visible while
+reviewing these aliases.
+
+### 5. Brief the Owner on read order
 
 From `AGENTS.md` § Reading order (7 items):
 1. `AGENTS.md`
@@ -74,7 +98,14 @@ From `AGENTS.md` § Reading order (7 items):
 6. `2-mind/garden/essential/NEXT.md` (consume + clear)
 7. `2-mind/garden/essential/journal/<most-recent>.md`
 
-### 5. (Optional) Modify template seeds
+#### Existing AGENTS.md Handoff
+
+Treat `AGENTS.md` as the current session-start handoff until the
+canonical read-order home is ratified elsewhere. Do not duplicate or
+rewrite the read-order definition during `init`; point the Owner to
+the existing `AGENTS.md` list and continue with profile ratification.
+
+### 6. (Optional) Modify template seeds
 
 If templates (`garden/essential/{USER,NEXT,SOUL}.md`,
 `journal/ENTRY-TEMPLATE.md`) have placeholder slots that benefit

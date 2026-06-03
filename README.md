@@ -4,6 +4,10 @@
 >
 > **Status**: v0.1 pre-stable, starter-template form. Primarily used
 > by the author (sole adopter); public for visibility and feedback.
+>
+> *Adopters*: this README describes the **spec project** — replace or
+> delete it in your own workspace. See
+> [`3-control/foundation/adoption.md`](3-control/foundation/adoption.md).
 
 **workspace.md** describes how a directory shared between a human and
 an AI agent should be organized so the agent can read, write, and
@@ -11,8 +15,10 @@ accumulate value with use. While `agents.md` describes how agents
 behave, `workspace.md` describes the workspace they operate within.
 
 Compatible with any LLM runtime — hosted CLIs (Claude Code, Codex CLI,
-Gemini CLI, Cursor) and local backends (Ollama, LM Studio, MLX,
-llama.cpp, vLLM). One spec, all harnesses, runtime-flexible.
+Gemini CLI / Antigravity CLI [`agy`], Cursor) and local backends
+(Ollama, LM Studio, MLX, llama.cpp, vLLM). One spec, all harnesses,
+runtime-flexible. (Gemini CLI sunsets 2026-06-18 for free/Pro/Ultra →
+`agy` successor; Code Assist Enterprise keeps Gemini CLI.)
 
 ## What's here
 
