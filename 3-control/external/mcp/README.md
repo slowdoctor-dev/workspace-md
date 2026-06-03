@@ -1,23 +1,26 @@
 # MCP — canonical external connections
 
-LLM-agnostic MCP registry. Two rendered forms of the same servers; the
-canonical content is identical, only the runtime-native shape differs.
+LLM-agnostic MCP registry. The canonical server list lives in
+`registry.json` (the `.mcp.json` standard, symlinked from repo-root
+`.mcp.json`), used by Claude Code / Codex / Gemini CLI.
 
-| File | For | Remote-server field |
-|---|---|---|
-| `registry.json` | Claude Code / Codex / Gemini CLI (the `.mcp.json` standard) — symlinked from repo-root `.mcp.json` | `url` |
-| `mcp_config.json` | **Antigravity CLI** — symlinked from repo-root `.agents/mcp_config.json` | `serverUrl` |
+`registry.json` ships **intentionally empty** (`{"mcpServers":{}}`) as
+the committed reference target for the symlink-alias pattern — see
+`WORKSPACE.md §Layout`. Add your servers there.
 
-**Why two files.** Antigravity CLI moved MCP out of inline
-`settings.json` into a dedicated `mcp_config.json` and renamed the
-remote-server field `url` → `serverUrl`. Copied Gemini CLI configs
-**fail silently on remote servers** if the field is not renamed.
-Keeping a separate rendered file is the cleanest way to honor the
-*one canonical home* value without the rename corrupting the standard
-form.
+## Antigravity CLI (`mcp_config.json`)
 
-**Sync discipline.** When you add/edit a server, update both files:
-the only difference is the `url` ↔ `serverUrl` key on remote (URL)
-servers. `stdio`/command servers are identical in both. `audit`'s
-duplicate/contradiction scan flags drift between them. (Both currently
-empty — no servers registered.)
+Antigravity CLI reads `.agents/mcp_config.json` and renames the
+remote-server field `url` → `serverUrl` (copied Gemini configs **fail
+silently on remote servers** otherwise). To avoid shipping a second
+empty config (sync burden before any content exists), `mcp_config.json`
+is **rendered on demand**, not pre-created:
+
+- When you register your first server in `registry.json`, render
+  `3-control/external/mcp/mcp_config.json` from it (identical, with
+  `url` → `serverUrl` on remote/URL servers; `stdio`/command servers
+  unchanged) and symlink `.agents/mcp_config.json` → it.
+- `audit`'s duplicate/contradiction scan then keeps the two in sync.
+
+Self-owned MCP servers carry source + config together in
+`3-control/external/mcp/<server-name>/` (see `PRINCIPLE.md §External`).

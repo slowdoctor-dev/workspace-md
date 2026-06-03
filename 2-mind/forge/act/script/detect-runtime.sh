@@ -22,8 +22,8 @@
 # procedure; adopters may use this script, replace it, or execute
 # the procedure manually.
 #
-# Requirements: bash, curl, jq. Falls back gracefully if a tool is
-# missing.
+# Requirements: bash + jq. curl/network probes degrade gracefully when
+# unavailable; jq is required for JSON parsing/emission.
 
 set -eu
 
@@ -70,7 +70,7 @@ if [ -n "${GEMINI_PROJECT_DIR:-}" ] || [ -d ".gemini" ] || [ -d "${HOME}/.gemini
 fi
 
 if [ "$agy_signal" = "true" ] && [ "$gemini_signal" = "true" ]; then
-  add_signal "WARNING: gemini-cli and antigravity signals both present; shared ~/.gemini/GEMINI.md can leak rules across runtimes (gemini-cli#16058)"
+  add_signal "WARNING: gemini-cli and antigravity signals both present; see 3-control/runtime/antigravity-cli.md"
 fi
 
 # --- Sub-step 1: Detect harness ---
@@ -143,9 +143,12 @@ fi
 # --- Sub-step 3: Determine effective_context ---
 effective_context=0
 case "$backend_provider" in
-  anthropic) effective_context=200000 ;;
-  openai)    effective_context=128000 ;;
-  google)    effective_context=1000000 ;;
+  anthropic|openai|google)
+    # Hosted effective_context comes from agent self-knowledge
+    # (Sub-step A) cross-checked against the canonical known-constants
+    # table in detect-runtime/SKILL.md; this helper cannot infer it
+    # without a hosted model id.
+    ;;
   ollama|lm-studio|mlx|llama-cpp|vllm|custom)
     if [ -n "$backend_endpoint" ] && [ -n "$backend_model" ]; then
       # Try common context fields in /v1/models response

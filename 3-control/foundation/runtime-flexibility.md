@@ -58,8 +58,10 @@ secondary English-density advisory (≈100/30/200/300 lines at
 Session-start budgets: **lean ≈ 15K · standard ≈ 19K · extended ≈ 29K tokens**.
 
 This is the **canonical home** for the cap numbers. `profile.md` and
-the skills may carry a summary, but the source of truth is here —
-keep summaries byte-for-byte in sync.
+the skills may carry a summary table; those legitimately differ in
+column shape, so the discipline is that the **numeric cap values must
+match** this table (not byte-for-byte layout). The source of truth is
+here.
 
 ## Tier-derivation rule
 
@@ -83,11 +85,12 @@ extended sessions; the reverse silently overflows.
 
 ## Active selection
 
-Stored at `3-control/runtime/profile.md` — T2 (Owner-ratified) at
-`init` time, re-ratify on runtime change detected by
-`session-start`. `dream` and `audit` read profile.md for active
-caps. Default if `profile.md` absent: `standard` (R1 baseline
-applies as-is).
+Stored at `3-control/runtime/profile.md` — T2 (Owner-ratified),
+created by `init` from the shipped `profile.example.md` template, and
+re-ratified on runtime change detected by `session-start`. `dream` and
+`audit` read profile.md for active caps. A fresh clone ships no
+`profile.md`; default if absent: `standard` (R1 baseline applies
+as-is).
 
 profile.md is the per-workspace state file; this doc is the
 universal spec. profile.md fields are defined here; profile.md's
@@ -132,10 +135,11 @@ Real-functioning guarantees when detection is partial or impossible:
 
 ## Freshness discipline
 
-The known-constants table inside `detect-runtime/SKILL.md` carries
-`last_verified: YYYY-MM-DD` per row. `audit`'s stale-scan flags
-entries older than 6 months for Owner re-verification (matches the
-existing freshness pattern). New model classes (Claude 5, Gemini
+The known-constants table inside `detect-runtime/SKILL.md` carries a
+single section-level `last_verified: YYYY-MM-DD` marker. `audit`'s
+stale-scan greps for `last_verified:` markers (frontmatter *or*
+section-level) and flags any older than 6 months for Owner
+re-verification. New model classes (Claude 5, Gemini
 Ultra, GPT-5, etc.) are added by Owner edit — not auto-discovered.
 
 ## Enum policy

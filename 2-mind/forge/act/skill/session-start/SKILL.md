@@ -36,7 +36,7 @@ escalate to `init`.
 
 Invoke `detect-runtime` skill in drift-check mode (cheap re-detect
 using cached self-introspection where possible). Compare against
-`3-control/runtime/profile.md`:
+active `3-control/runtime/profile.md`:
 
 - **profile.md present + detection matches** → silent pass; use
   profile.md's active_tier
@@ -45,14 +45,17 @@ using cached self-introspection where possible). Compare against
   re-ratify; default behavior = continue with profile.md's tier for
   this session
 - **profile.md absent** → default `active_tier = standard` (R1
-  baseline) for this session; remind Owner to run `/init` to
-  ratify the proper tier
+  baseline) for this session; remind Owner to run `/init` to create
+  active `profile.md` from `3-control/runtime/profile.example.md`
 - **detect-runtime fails or returns uncertain** (no shell access,
   headless, network unreachable) → continue silently with profile.md's
   tier (or `standard` if absent); record the failure in the audit-log
   next time `audit` runs
 
 ### 2. Load read order (7 items, in sequence)
+
+Canonical: `3-control/foundation/use-driven-memory.md` §Read order.
+Keep this operational list numerically in sync with that source.
 
 1. `AGENTS.md` — workspace entry + per-runtime mapping
 2. `WORKSPACE.md` — topology spec

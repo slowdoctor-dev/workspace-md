@@ -1,14 +1,21 @@
-# Runtime profile
+# Runtime profile — EXAMPLE / template
 
-**Purpose**: T2-ratification record of the active runtime tier for
-this workspace. Tier governs USER / NEXT / journal / garden caps
-used by `dream` and `audit`. Written by `init` after Owner ratifies
-detection results from `detect-runtime`; read by all memory skills.
-Drift between this file and a fresh `detect-runtime` run triggers a
-re-ratify prompt at `session-start`.
+> **This is `profile.example.md`, not an active profile.** A fresh
+> clone ships **no** `profile.md`, so the documented *absent → default
+> `standard`* path applies until `init` runs. `init` copies this
+> template to `3-control/runtime/profile.md` and fills it after Owner
+> ratifies `detect-runtime` results. Do not treat the values below as
+> ratified state.
 
-T2 (Owner-ratified). Default if absent: `standard` (R1 baseline
-applies as-is). See `3-control/foundation/runtime-flexibility.md`
+**Purpose**: the active `profile.md` is the T2-ratification record of
+the runtime tier for this workspace. Tier governs USER / NEXT / journal
+/ garden caps used by `dream` and `audit`. Written by `init` after
+Owner ratifies detection from `detect-runtime`; read by all memory
+skills. Drift between `profile.md` and a fresh `detect-runtime` run
+triggers a re-ratify prompt at `session-start`.
+
+T2 (Owner-ratified). Default if `profile.md` absent: `standard` (R1
+baseline applies as-is). See `3-control/foundation/runtime-flexibility.md`
 for the full mechanism (tier system, derivation rule, detection,
 graceful degradation).
 

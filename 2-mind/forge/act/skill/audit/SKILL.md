@@ -44,7 +44,7 @@ Plus two mechanical steps that serve **R3 source-trail integrity**:
 
 May invoke `detect-runtime` skill in freshness-check mode to
 re-verify hosted-backend known-constants table when its
-`last_verified` is >6 months old.
+`last_verified:` marker is >6 months old.
 
 ## Procedure
 
@@ -66,7 +66,8 @@ resolve (e.g., references to pre-restructure paths like `4-control/`
 or `3-playbook/`).
 
 **B. `last_verified` freshness** — entries with `last_verified:`
-frontmatter older than 6 months. Highest-stake target:
+markers older than 6 months. Markers may be frontmatter or
+section-level. Highest-stake target:
 `2-mind/forge/act/skill/detect-runtime/SKILL.md` known-constants
 table (hosted-backend effective_context values evolve with model
 releases). If detect-runtime's known-constants are >6 months stale,
@@ -98,16 +99,24 @@ issues are surfaced for Owner since they cross-cut tier boundaries.
   `rules/` (if exists in `forge/role/<agent>/rules/`)
 - Scan USER.md for repeated entries
 - Scan `forge/act/skill/` for skills with overlapping scope
-- **Convenience-summary drift**: check that acknowledged duplicate
-  tables match their canonical sources. Two known pairs (single-
-  canonical-home exceptions for operator convenience):
-  - `3-control/runtime/profile.md` *Tier reference* summary ↔
-    `3-control/foundation/runtime-flexibility.md` *Tier system* canonical
+- **Convenience-summary drift**: check acknowledged summaries against
+  their canonical sources. Summary columns may differ for operator
+  convenience; numeric cap values, rows/list items, and ordering must
+  match the canonical source.
+  - Active `3-control/runtime/profile.md` (created from
+    `profile.example.md`) *Tier reference* summary ↔
+    `3-control/foundation/runtime-flexibility.md` *Tier system*
+  - `2-mind/forge/act/skill/dream/SKILL.md` cap summary ↔
+    `3-control/foundation/runtime-flexibility.md` *Tier system*
+  - `2-mind/forge/act/skill/audit/SKILL.md` cap summary below ↔
+    `3-control/foundation/runtime-flexibility.md` *Tier system*
+  - `AGENTS.md` read-order summary ↔
+    `3-control/foundation/use-driven-memory.md` §Read order
   - `2-mind/forge/act/skill/detect-runtime/SKILL.md` §Sub-step 4
-    tier-derivation table ↔ `runtime-flexibility.md` *Tier-derivation
-    rule* canonical
-  Numbers + rows must match the canonical source byte-for-byte.
-  Drift is unacceptable.
+    tier-derivation summary ↔ `runtime-flexibility.md`
+    *Tier-derivation rule*
+  Drift is unacceptable; point summaries at the canonical source when
+  exact synchronization is too costly.
 
 In 2-mind/ → merge directly (T1). In 3-control/ → propose (T2).
 
@@ -137,7 +146,9 @@ Cap sources:
   SOUL, use-driven-memory, runtime-flexibility) — fixed advisory
   line-count flags, runtime-independent.
 
-Canonical token tier table for use-grown memory stores:
+Operational token tier summary for use-grown memory stores. Numeric cap
+values must match `3-control/foundation/runtime-flexibility.md`;
+columns may differ for operator convenience.
 
 | Tier | USER (hard / consol) | NEXT | journal/<entry> | garden-topic |
 |---|---|---|---|---|

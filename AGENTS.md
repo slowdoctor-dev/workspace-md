@@ -40,9 +40,10 @@ all pointing at this `AGENTS.md`:
 - **Gemini CLI** — reads `GEMINI.md` → symlinked to `AGENTS.md`, or
   configure `context.fileName: ["AGENTS.md", "GEMINI.md"]` in
   `~/.gemini/settings.json`.
-- **Antigravity CLI** (`agy`, Gemini CLI's successor — sunset
-  2026-06-18) — auto-loads `AGENTS.md` + `GEMINI.md` unchanged; native
-  skills under `.agents/skills` → `2-mind/forge/act/skill/`.
+- **Antigravity CLI** (`agy`, Gemini CLI's successor) — auto-loads
+  `AGENTS.md` + `GEMINI.md` unchanged; native skills under
+  `.agents/skills` → `2-mind/forge/act/skill/`. Full adapter +
+  transition details: `3-control/runtime/antigravity-cli.md`.
 
 ## Status
 

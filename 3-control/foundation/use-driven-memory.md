@@ -57,10 +57,10 @@ layer for cultivation-craft adjacency).
 
 ## 4 operating rules
 
-> **Namespace reservation.** `R1`–`R4` are reserved by this spec for
-> the memory rules below; adopter rules in `3-control/rule/` must use a
-> distinct prefix (e.g. `ACME-1`, or `A1, A2…`) so `R2` is never
-> ambiguous. See `WORKSPACE.md §Rule placement`.
+> **Namespace reservation.** `R1`–`R4` are reserved for the memory
+> rules below; adopter rules in `3-control/rule/` use a distinct prefix
+> (`ACME-1`, `A1…`) so `R2` is never ambiguous. See `WORKSPACE.md
+> §Rule placement`.
 
 ### R1 — Consolidation under capacity
 
@@ -76,21 +76,19 @@ R1 caps are **runtime-independent** — they describe what makes a
 store usable *as memory*, not what fits a particular runtime.
 Runtime-tier adjustment is R2's concern.
 
-Caps are **token-primary** (v0.1.1); line counts are a secondary
-advisory. Line-only caps silently overflow the R2 budget for non-Latin
-/ CJK content (~2–3× more tokens per line). Measure tokens with
-`2-mind/forge/act/script/token-count.sh`.
+Caps are **token-primary** (v0.1.1); line counts are advisory.
+Line-only caps overflow the R2 budget for non-Latin/CJK content (~2–3×
+tokens/line). Measure with `2-mind/forge/act/script/token-count.sh`.
 
 #### Two cap classes
 
 - **Memory caps** (use-grown — hard, enforced by `dream` /
   consolidate-on-error; measured in **tokens**): `USER.md`, `NEXT.md`,
   journal entries, `garden/<topic>.md`.
-- **Spec caps** (Owner-curated, growth-by-edit — advisory flags
-  only, reported by `audit`; measured in **lines** — spec docs are
-  English): `README.md`, `AGENTS.md`, `WORKSPACE.md`, `PRINCIPLE.md`,
-  canonical `SOUL.md`, `use-driven-memory.md`, `runtime-flexibility.md`,
-  `adoption.md`.
+- **Spec caps** (Owner-curated, growth-by-edit — advisory flags from
+  `audit`; measured in **lines**, English): `README.md`, `AGENTS.md`,
+  `WORKSPACE.md`, `PRINCIPLE.md`, canonical `SOUL.md`,
+  `use-driven-memory.md`, `runtime-flexibility.md`, `adoption.md`.
 
 #### Natural memory caps (R1 baseline = `standard` tier)
 
@@ -101,18 +99,19 @@ advisory. Line-only caps silently overflow the R2 budget for non-Latin
 | journal entry | 2000 soft per entry | n/a (per-entry shape) | ~200 lines | ~one session's decisions + learnings at human reading pace (8–10 min); substantive yet skimmable |
 | garden `<topic>.md` | flag at 3200 | split or consolidate | ~300 lines | single subject still cohesive without internal sectioning; past the flag → split into `<topic>/<sub>.md` |
 
-`dream` and `audit` compare against the token cap (helper falls back
-to `tiktoken cl100k_base`); the line advisory shows in their report.
+`dream` and `audit` compare against the token cap (helper: backend
+tokenizer → `tiktoken cl100k_base` → an **advisory rough estimate** if
+neither, flagged non-canonical — don't gate consolidation on it alone).
+Line advisory shows in their report.
 
-Working `SOUL.md` (in garden): no cap; *Graduated* entries older
-than 6 months pruned by `audit` (source-trail discipline per R3).
+Working `SOUL.md` (in garden): no cap; *Graduated* entries >6 months
+pruned by `audit` (R3 source-trail).
 
 *Theory*: McGaugh consolidation (hippocampus → cortex via replay);
 Miller 1956 7±2 working-memory capacity; Ebbinghaus forgetting curve.
 
 The numbers are *defensibly grounded* but not *empirically validated*
-— this is a pre-stable spec; first real adopter workloads will
-surface whether the natural caps need adjustment.
+— pre-stable; adopter workloads will surface needed adjustments.
 
 #### Spec caps (advisory flags)
 
@@ -155,21 +154,22 @@ backend `effective_context`. See
 — two-axis framing, three patterns, tier system + derivation rule,
 detection procedure, graceful degradation, freshness discipline.
 
-Quick reference: `lean` for ≤16K effective; `standard` 16-64K
-(= R1 baseline); `extended` >64K hosted-large. Default if
-`profile.md` absent: `standard`.
+Quick reference: `lean` ≤16K · `standard` 16-64K (= R1 baseline) ·
+`extended` >64K hosted-large; default if `profile.md` absent:
+`standard`. *Theory*: sleep-boundary consolidation.
 
-*Theory*: sleep-boundary consolidation in the standard model of
-declarative memory.
+### R3 — Timestamped episodic, synthesized semantic
 
-### R3 — Verbatim episodic, synthesized semantic
-
-Episodic stores (journal entries) preserve **verbatim** records with
-timestamp, runtime tag, and citations to the session's commits and
-decisions. Semantic stores (`USER.md`, garden `<topic>.md`, foundation
-docs) hold **synthesized** content; each item carries an explicit
-citation back to its source journal entry in the form
-`(journal <YYYY-MM-DD>-<runtime>-<NNN>)`.
+Episodic stores (journal entries) are **recorded at the time, not
+re-synthesized** — concise per-session digests with timestamp, runtime
+tag, and citations to the session's commits/decisions (the raw
+turn-by-turn trace lives in the runtime transcript — see §7). **T1
+semantic stores** (`USER.md`, working `SOUL.md`, garden `<topic>.md`)
+hold **synthesized** content; each item cites its source journal as
+`(journal <YYYY-MM-DD>-<runtime>-<NNN>)`. **T2 foundation docs** are
+also synthesized but change by Owner-ratified diff and cite external
+theory / a graduation trail — *not* journals (so `audit`'s
+citation-gap scan covers only T1 stores).
 
 A synthesized claim is always traceable to its raw observation. This
 prevents source-attribution errors and compression-driven drift.
@@ -196,8 +196,8 @@ contract (relaxed here to permit T2-ratified updates).
 ## Read order at session-start
 
 **Canonical home for the 7-item read order.** `AGENTS.md §Reading
-order` is a byte-for-byte summary; `init §4` + `session-start §2` cite
-*this* list, so an adopter whose `AGENTS.md` omits it still loads it (#2).
+order` mirrors it; `init`/`session-start` cite *this* list, so an
+adopter whose `AGENTS.md` omits the section still loads it (#2).
 
 Loaded into the agent's prompt in this sequence:
 
@@ -259,7 +259,7 @@ journal entries  →   garden/essential/SOUL.md  →  3-control/foundation/SOUL.
 | journal/ folder | entries >3 months → `garden/archive/<YYYY-MM>/<filename>.md` via `audit` |
 | `garden/essential/SOUL.md` | no hard cap; *Graduated* entries >6 months pruned by `audit` |
 | garden `<topic>.md` | R1 flag at 3200 tok (~300 lines); R2 tier-adjusted; `audit` consolidates near-duplicates |
-| spec docs (6 — see §R1 Spec caps table) | R1 spec-cap advisory flags (runtime-independent); Owner-curated cadence; flag at file-specific threshold |
+| spec docs (see §R1 Spec caps table) | R1 spec-cap advisory flags (runtime-independent); Owner-curated cadence; flag at file-specific threshold |
 
 Archival is **not deletion** — old journal entries move to
 `garden/archive/` and remain searchable (grep), just not auto-loaded
