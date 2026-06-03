@@ -75,9 +75,9 @@ optionally invoke `detect-runtime` skill in freshness-check mode +
 present updated constants to Owner for re-ratify of the table.
 
 **C. Symlink integrity** — verify committed symlinks (`CLAUDE.md`,
-`GEMINI.md`, `.mcp.json`) still resolve. WSL DrvFs has been observed
-to silently convert symlinks to regular files; `git ls-files -s` +
-mode `120000` check + target-exists check.
+`GEMINI.md`, `.mcp.json`, `.agents/skills`) still resolve. WSL DrvFs
+has been observed to silently convert symlinks to regular files;
+`git ls-files -s` + mode `120000` check + target-exists check.
 
 **D. profile.md health** — for `3-control/runtime/profile.md`
 (when present):
@@ -143,7 +143,7 @@ Cap sources:
   `3-control/runtime/profile.md` (default `standard` = R1 baseline
   unchanged).
 - **R1 spec caps** (README, AGENTS, WORKSPACE, PRINCIPLE, canonical
-  SOUL, use-driven-memory, runtime-flexibility) — fixed advisory
+  SOUL, use-driven-memory, runtime-flexibility, adoption) — fixed advisory
   line-count flags, runtime-independent.
 
 Operational token tier summary for use-grown memory stores. Numeric cap
@@ -250,7 +250,8 @@ Append to `2-mind/garden/audit-log.md` (create if missing):
 
 - 7 issue classes scanned (or explicitly skipped per request scope)
 - Journal entries >3 months moved to `garden/archive/<YYYY-MM>/`
-- Symlinks (`CLAUDE.md`, `GEMINI.md`, `.mcp.json`) verified to resolve
+- Symlinks (`CLAUDE.md`, `GEMINI.md`, `.mcp.json`, `.agents/skills`)
+  verified to resolve
 - `profile.md` (when present) checked for 6-field completeness +
   `last_updated` recency
 - Citation-gap scan ran over `USER.md`, `garden/essential/SOUL.md`,
