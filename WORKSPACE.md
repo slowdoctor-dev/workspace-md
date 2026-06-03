@@ -191,7 +191,7 @@ These are acknowledged limits, not bugs (v0.x is pre-stable).
 - `README.md` — public-facing repo entry (start here if browsing on GitHub).
 - `AGENTS.md` — workspace AAIF entry: reading order + per-runtime mapping for AI agents.
 - `3-control/foundation/adoption.md` — adopting into a new/existing
-  workspace (spec-vs-adopter boundary, store migration, metadata).
+  workspace (first use, what to keep vs adapt, store migration, metadata).
 - `LICENSE` — Apache License 2.0.
 
 ---

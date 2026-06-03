@@ -163,7 +163,7 @@ Quick reference: `lean` ≤16K · `standard` 16-64K (= R1 baseline) ·
 Episodic stores (journal entries) are **recorded at the time, not
 re-synthesized** — concise per-session digests with timestamp, runtime
 tag, and citations to the session's commits/decisions (the raw
-turn-by-turn trace lives in the runtime transcript — see §7). **T1
+turn-by-turn trace lives in the runtime transcript — see §7 stores). **T1
 semantic stores** (`USER.md`, working `SOUL.md`, garden `<topic>.md`)
 hold **synthesized** content; each item cites its source journal as
 `(journal <YYYY-MM-DD>-<runtime>-<NNN>)`. **T2 foundation docs** are

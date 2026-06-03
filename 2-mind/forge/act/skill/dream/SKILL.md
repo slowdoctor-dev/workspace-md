@@ -123,7 +123,8 @@ without cap (managed by graduation + *Graduated* section). Append
 with citations.
 
 **garden/<topic>.md** — create on second occurrence of a topic; cite
-sources; no fixed cap; `audit` consolidates.
+sources; no hard cap; `audit` flags/splits at the tiered garden-topic
+threshold (3200 standard, R2-scaled).
 
 **New skills/scripts in forge/** — on ≥5-tool-call trigger + reusable
 pattern → `2-mind/forge/act/skill/<name>/SKILL.md`. Mechanical task
