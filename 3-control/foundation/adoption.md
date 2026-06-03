@@ -6,9 +6,10 @@ conventions adopters most often collide with.
 
 ## Spec repo vs your workspace
 
-This repo is **both** the spec definition and the clonable starter
-template. That dual role means some shipped files describe *this spec
-project*, not *your workspace*. On adoption, re-home them:
+The **upstream workspace.md repo** is both the spec definition and the
+clonable starter template. That dual role means some shipped files
+describe *the spec project*, not *your workspace*. On adoption, re-home
+them (this keeps this file true even when kept verbatim downstream):
 
 | File | Ships as | On adoption |
 |---|---|---|

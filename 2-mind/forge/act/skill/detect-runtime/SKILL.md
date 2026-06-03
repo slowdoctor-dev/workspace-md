@@ -1,14 +1,14 @@
 ---
 name: detect-runtime
-description: Detect (harness, backend, effective_context) for this workspace and derive the recommended R2 tier. Invoked by `init` (bootstrap), `session-start` (drift check), or explicit `/detect-runtime`. Owner ratifies results into `3-control/runtime/profile.md` per T2 discipline.
+description: Detect (harness, backend, effective_context) for this workspace and derive the recommended R2 tier. Invoked by `init` (bootstrap), `session-start` (drift check), or explicit `/detect-runtime`. Owner ratifies results into active `3-control/runtime/profile.md` per T2 discipline.
 ---
 
 # detect-runtime
 
 ## When to use
 
-- **From `init`** — bootstrap; produce initial profile.md draft for Owner ratify
-- **From `session-start`** — cheap re-detect every session; compare against profile.md; propose re-ratify on drift
+- **From `init`** — bootstrap; produce initial profile.md draft for Owner ratify from `profile.example.md`
+- **From `session-start`** — cheap re-detect every session; compare against active profile.md when present; propose re-ratify on drift
 - **Explicit `/detect-runtime`** — Owner invocation after switching harness or backend
 - **From `audit`** (rare) — freshness re-check of `last_verified` constants
 
@@ -103,9 +103,9 @@ signal. Conflict → ask Owner. No signals at all → `custom`.
 
 **Gemini / Antigravity collision warning**: if both Gemini CLI and
 Antigravity signals are present, emit a warning in
-`signal_disagreements`. They can share `~/.gemini/GEMINI.md`, which
-risks rule leakage across runtimes (gemini-cli#16058). Surface this
-to Owner; do not silently treat the two harnesses as equivalent.
+`signal_disagreements`. Surface this to Owner and point to the
+canonical adapter notes at `3-control/runtime/antigravity-cli.md`; do
+not silently treat the two harnesses as equivalent.
 
 ### Sub-step 2 — Detect backend (provider + endpoint + model)
 
@@ -143,9 +143,9 @@ but `/v1/models` returns `qwen2.5-coder:32b`) → likely proxy
 mismatch; surface to Owner.
 
 If objective detection returns an unknown or empty model, do not infer
-a tier from the absence. Detection is advisory; the ratified
+a tier from the absence. Detection is advisory; the ratified active
 `3-control/runtime/profile.md` value remains authoritative for the
-current session. If profile.md is absent or unfilled, fall back to
+current session. If active profile.md is absent, fall back to
 `standard` and flag uncertainty for Owner ratification.
 
 ### Sub-step 3 — Determine effective_context
@@ -154,7 +154,9 @@ current session. If profile.md is absent or unfilled, fall back to
 — hosted-large models typically know their published max.
 Cross-verify against the known-constants table.
 
-**B. Known constants (hosted backends, `last_verified: 2026-05-17`):**
+**B. Known constants (hosted backends):**
+
+last_verified: 2026-05-17
 
 | Provider | Model class | Effective context | Caveat |
 |---|---|---|---|
@@ -221,10 +223,11 @@ recommended_tier:    <derived per rule>     # → active_tier on ratify
 Plus any `signal_disagreements:` flagged for Owner attention.
 
 **Bootstrap mode** (called from `init`): present result to Owner
-for field-by-field T2 ratify; write profile.md on accept.
+for field-by-field T2 ratify; create active profile.md from
+`3-control/runtime/profile.example.md` on accept.
 
 **Drift-check mode** (called from `session-start`): compare result
-against existing profile.md. If `harness`, `backend_model`, or
+against active profile.md when present. If `harness`, `backend_model`, or
 `effective_context` differ → surface diff + propose re-ratify.
 Default on drift = continue with profile.md's tier for this session;
 do not silently change. Return value: `{matches: true|false, diff: …}`
@@ -234,9 +237,9 @@ plus the standard result fields.
 the known-constants table (above, §3 B) against current vendor
 documentation. If any constant has shifted (e.g., Claude Sonnet
 context bumped, GPT-5 family released) → propose updates to Owner
-with new `last_verified:` date. Do not auto-apply — the table is
+with a new section-level `last_verified:` date. Do not auto-apply — the table is
 T1 in `detect-runtime/SKILL.md` but its accuracy affects every
-detection downstream; Owner-ratify per row.
+detection downstream; Owner-ratify the table update.
 
 ## Pitfalls
 
@@ -250,13 +253,13 @@ detection downstream; Owner-ratify per row.
   Disagreement IS the signal.
 - **Guessing from an empty model**: unknown model/context means
   detection is uncertain. Use profile.md's active tier for the
-  current session, or `standard` if no ratified profile exists.
-- **Ignoring Gemini / Antigravity collisions**: both may be installed
-  and share `~/.gemini/GEMINI.md`. Emit the warning, then let Owner
-  decide whether separate runtime config is needed.
+  current session, or `standard` if no active profile exists.
+- **Ignoring Gemini / Antigravity collisions**: emit the warning, point
+  to `3-control/runtime/antigravity-cli.md`, then let Owner decide
+  whether separate runtime config is needed.
 - **Auto-bumping known-constants without re-verification**: model
   vendors change context windows (e.g., Claude beta header). Update
-  the `last_verified:` date when you change a row.
+  the section-level `last_verified:` date when you change the table.
 - **Skipping the attention-quality cliff for local**: model cards
   claim 128K but quality cliffs at 16K for 7-13B. Always clamp.
 - **Running detect-runtime in non-interactive context expecting
@@ -275,10 +278,10 @@ detection downstream; Owner-ratify per row.
 - Tier derivation matches the canonical rule in
   `runtime-flexibility.md`
 - Signal disagreements surfaced to Owner; not silently resolved
-- For bootstrap mode: profile.md written only on Owner ratify; all
+- For bootstrap mode: active profile.md created only on Owner ratify; all
   6 fields persisted; `last_updated` set to today
 - For drift-check mode: re-ratify proposed if `harness`,
   `backend_model`, or `effective_context` differ; current session
   continues with existing profile.md tier
-- For freshness-check mode: known-constants table re-verified; per-row
-  updates Owner-ratified; `last_verified:` date bumped on changed rows
+- For freshness-check mode: known-constants table re-verified; table
+  updates Owner-ratified; section-level `last_verified:` date bumped

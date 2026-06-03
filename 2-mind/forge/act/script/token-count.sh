@@ -9,6 +9,9 @@
 # - tiktoken fallback (o200k_base for newer OpenAI models, else cl100k_base)
 # - last-resort rough estimate if tiktoken is not installed
 #
+# The rough estimate is non-canonical/advisory only. Install tiktoken or
+# use a provider/local tokenizer for cap-enforcement decisions.
+#
 # Usage:
 #   token-count.sh [file ...]
 #   printf '%s' "text" | token-count.sh

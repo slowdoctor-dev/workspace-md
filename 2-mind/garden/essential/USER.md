@@ -1,9 +1,10 @@
 # USER
 
 Semantic model of the Owner — preferences, patterns, communication
-tells. Natural cap (R1): **100 lines hard, consolidate at 80**.
-Runtime tier (R2) may scale: lean → 60/50, extended → 200/160. See
-`3-control/runtime/profile.md` for active tier.
+tells. Natural cap (R1): **800 tokens hard, consolidate at 640**
+(~100 lines, advisory). Runtime tier (R2) may scale: lean → 500/400,
+extended → 1600/1280. See `3-control/runtime/profile.md` for active
+tier; measure with `2-mind/forge/act/script/token-count.sh`.
 
 Loaded at session-start (item 5). Frozen-at-session-start: entries
 written here appear in the *next* session, not the current.

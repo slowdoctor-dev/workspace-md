@@ -26,9 +26,9 @@ fresh clone before invoking lifecycle skills.
 |---|---|---|
 | 1. Verify structure | `WORKSPACE.md`, repo file tree | — |
 | 2. Invoke `detect-runtime` (bootstrap mode) | runtime self-introspection + env/config/endpoint signals | — (skill returns proposed profile) |
-| 3. Ratify profile.md | detect-runtime result | `3-control/runtime/profile.md` (T2) |
+| 3. Ratify profile.md | detect-runtime result + `3-control/runtime/profile.example.md` | `3-control/runtime/profile.md` (T2 active state) |
 | 4. (Optional) expose Antigravity aliases | ratified `harness=antigravity`, MCP registry | `.agents/` aliases/rendered config (Owner-owned setup) |
-| 5. Brief read order | `AGENTS.md` § Reading order | — |
+| 5. Brief read order | `3-control/foundation/use-driven-memory.md` §Read order | — |
 | 6. (Optional) modify seeds | template files in `garden/essential/` | minor edits only |
 
 ## Procedure
@@ -53,7 +53,7 @@ mode. It produces a proposed profile with 6 fields populated:
 `harness`, `backend_provider`, `backend_endpoint`, `backend_model`,
 `effective_context`, `recommended_tier` (derived per
 `runtime-flexibility.md`'s canonical rule — becomes `active_tier`
-in profile.md on Owner ratify), plus any `signal_disagreements`
+in active profile.md on Owner ratify), plus any `signal_disagreements`
 flagged.
 
 Optional helper available at
@@ -65,8 +65,9 @@ otherwise execute the skill's procedure manually.
 Present the detect-runtime result to Owner field-by-field. For each
 field: accept detection's value, override with Owner's choice, or
 mark `(uncertain — <reason>)`. On accept, write
-`3-control/runtime/profile.md` per its schema; set `last_updated`
-to today.
+`3-control/runtime/profile.md` from
+`3-control/runtime/profile.example.md`; set `last_updated` to today.
+Fresh clones ship only the example, not an active profile.
 
 If signal_disagreements were flagged (e.g., agent self-says "Claude
 Sonnet 4.6" but `/v1/models` returns `qwen2.5-coder:32b` →
@@ -89,21 +90,16 @@ reviewing these aliases.
 
 ### 5. Brief the Owner on read order
 
-From `AGENTS.md` § Reading order (7 items):
-1. `AGENTS.md`
-2. `WORKSPACE.md`
-3. `3-control/foundation/PRINCIPLE.md`
-4. `3-control/foundation/SOUL.md`
-5. `2-mind/garden/essential/USER.md`
-6. `2-mind/garden/essential/NEXT.md` (consume + clear)
-7. `2-mind/garden/essential/journal/<most-recent>.md`
+Use the canonical 7-item read order at
+`3-control/foundation/use-driven-memory.md` §Read order. Root
+`AGENTS.md` may summarize it for runtime discovery, but `init` should
+not duplicate or rewrite the list.
 
 #### Existing AGENTS.md Handoff
 
-Treat `AGENTS.md` as the current session-start handoff until the
-canonical read-order home is ratified elsewhere. Do not duplicate or
-rewrite the read-order definition during `init`; point the Owner to
-the existing `AGENTS.md` list and continue with profile ratification.
+Treat an existing `AGENTS.md` as the runtime-discovery handoff. Do not
+rewrite adopter instructions during `init`; point the Owner to the
+canonical read-order home and continue with profile ratification.
 
 ### 6. (Optional) Modify template seeds
 
@@ -117,7 +113,7 @@ Don't add substantive content — templates fill via use.
 - **Creating new memory files**: templates ship in the repo. `init`
   only modifies templates; never creates memory content. If a
   template is missing, the spec repo itself is broken — restore.
-- **Skipping the tier-ratify step**: without `profile.md`, `dream`
+- **Skipping the tier-ratify step**: without active `profile.md`, `dream`
   and `audit` default to `standard` (R1 baseline). Fine on
   hosted-modest / local 30B+; under-protective on local 7-13B
   (lean would fit better). Always offer the tier proposal.
@@ -131,7 +127,8 @@ Don't add substantive content — templates fill via use.
 
 - `find . -not -path './.git*' \( -type f -o -type l \)` shows all
   mandated files present
-- Read order in `AGENTS.md` matches the 7-item list above
+- Read order summaries point at / numerically match the canonical list
+  in `3-control/foundation/use-driven-memory.md`
 - `3-control/runtime/profile.md` exists with all 6 fields Owner-
   ratified: `harness`, `backend_provider`, `backend_endpoint`,
   `backend_model`, `effective_context`, `active_tier` (or

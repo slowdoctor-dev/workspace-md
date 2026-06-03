@@ -14,11 +14,11 @@ an AI agent should be organized so the agent can read, write, and
 accumulate value with use. While `agents.md` describes how agents
 behave, `workspace.md` describes the workspace they operate within.
 
-Compatible with any LLM runtime — hosted CLIs (Claude Code, Codex CLI,
-Gemini CLI / Antigravity CLI [`agy`], Cursor) and local backends
-(Ollama, LM Studio, MLX, llama.cpp, vLLM). One spec, all harnesses,
-runtime-flexible. (Gemini CLI sunsets 2026-06-18 for free/Pro/Ultra →
-`agy` successor; Code Assist Enterprise keeps Gemini CLI.)
+Designed to be runtime-flexible across LLM runtimes — hosted CLIs
+(Claude Code, Codex CLI, Gemini CLI / Antigravity CLI [`agy`], Cursor…)
+and local backends (Ollama, LM Studio, MLX, llama.cpp, vLLM…). The
+lists are illustrative, not exhaustive. (On the Gemini CLI → Antigravity
+transition, see `3-control/runtime/antigravity-cli.md`.)
 
 ## What's here
 
@@ -33,8 +33,10 @@ runtime-flexible. (Gemini CLI sunsets 2026-06-18 for free/Pro/Ultra →
   agent uses to keep the workspace alive
 - **`2-mind/garden/essential/`** — template seeds for adopter memory
   (USER, NEXT, SOUL working, journal/)
-- **`3-control/runtime/profile.md`** — per-workspace runtime profile
-  template (filled at `init` time)
+- **`3-control/runtime/profile.example.md`** — runtime-profile
+  template; `init` copies it to `profile.md` (the active profile) and
+  fills it. A fresh clone has no `profile.md` → tier defaults to
+  `standard`.
 
 ## Why
 
@@ -53,8 +55,9 @@ runtime-agnostic by construction:
   the binding constraint: backend `effective_context`. Local 7-13B
   model? Use `lean`. Hosted Sonnet/Opus? Use `extended`.
 
-The spec is markdown-only. The agent runs it; no daemon, no
-gateway, no binary.
+The spec is mostly markdown, plus a couple of optional helper scripts
+(`detect-runtime.sh`, `token-count.sh`). The agent runs it; no daemon,
+no gateway, no binary service.
 
 ## Quick adoption
 
@@ -143,4 +146,4 @@ and attribution requirement.
 
 ---
 
-*Version: v0.1 (pre-stable). One approach among many.*
+*Version: v0.1.1 (pre-stable). One approach among many.*

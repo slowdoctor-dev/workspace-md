@@ -75,7 +75,9 @@ the active tier from `3-control/runtime/profile.md`; line counts are
 advisory report context only. At or above the tier's consolidate
 threshold, run CONSOLIDATE (below) before append.
 
-Canonical token tier table:
+Operational token tier summary. Numeric cap values must match
+`3-control/foundation/runtime-flexibility.md`; columns may differ for
+operator convenience.
 
 | Tier | USER (hard / consol) | NEXT | journal/<entry> | garden-topic |
 |---|---|---|---|---|

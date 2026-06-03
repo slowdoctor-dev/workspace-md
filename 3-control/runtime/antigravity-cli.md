@@ -6,6 +6,14 @@ AI Pro / AI Ultra / org installs; Code Assist Standard/Enterprise keep
 Gemini CLI. This file is the per-workspace adapter convention (T2);
 the universal mechanism lives in `runtime-flexibility.md`.
 
+**This doc is the canonical home for the Antigravity/Gemini-transition
+facts** (sunset date, `agy` binary, MCP rename, collision, model
+auto-select). README / WORKSPACE / AGENTS / profile mention it briefly
+and point here — they don't restate the volatile details. These are
+external vendor claims; verify before relying.
+
+`last_verified: 2026-05-24`
+
 | Surface | Mapping | Notes |
 |---|---|---|
 | Context files | `AGENTS.md` + `GEMINI.md` auto-loaded, unchanged | no edits needed (✓ compatible) |
@@ -38,3 +46,19 @@ subagent rules in the agent-local home, not workspace-wide
 
 `curl -fsSL https://antigravity.google/cli/install.sh | bash`
 (PowerShell variant on Windows). Part of the Antigravity 2.0 platform.
+
+## Sources (`last_verified: 2026-05-24`)
+
+- Google Developers Blog — Transitioning Gemini CLI to Antigravity CLI:
+  <https://developers.googleblog.com/an-important-update-transitioning-gemini-cli-to-antigravity-cli/>
+- Google Cloud Blog — Choosing Antigravity or Gemini CLI:
+  <https://cloud.google.com/blog/topics/developers-practitioners/choosing-antigravity-or-gemini-cli>
+- Antigravity codelab (agents.md + skills.md, `.agents/` layout):
+  <https://codelabs.developers.google.com/autonomous-ai-developer-pipelines-antigravity>
+- Migration guide (`url`→`serverUrl`, `--model` removal, hook format):
+  <https://www.aimadetools.com/blog/migrate-gemini-cli-to-antigravity-cli/>
+- `~/.gemini/GEMINI.md` cross-tool collision (closed "not planned"):
+  <https://github.com/google-gemini/gemini-cli/issues/16058>
+
+Re-verify against current vendor docs (`audit` freshness scan flags
+this `last_verified` after 6 months).
