@@ -2,7 +2,7 @@
 
 > A workspace-topology specification — sibling to [agents.md](https://agents.md).
 >
-> **Status**: v0.1 pre-stable, starter-template form. Primarily used
+> **Status**: v0.1.1 pre-stable, starter-template form. Primarily used
 > by the author (sole adopter); public for visibility and feedback.
 >
 > *Adopters*: this README describes the **spec project** — replace or
@@ -105,7 +105,7 @@ If you're new to the spec, read in this order:
 
 ## Status
 
-**v0.1 pre-stable** — breaking changes possible. The spec matures
+**v0.1.1 pre-stable** — breaking changes possible. The spec matures
 with usage. Numbers (caps, thresholds) are *defensibly grounded but
 not empirically validated*; first real adopter workloads will surface
 where they need adjustment. See `WORKSPACE.md` §Known limitations
