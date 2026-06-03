@@ -3,7 +3,7 @@
 #
 # Emits a JSON object on stdout:
 #   {
-#     "harness":              "<claude-code|codex-cli|gemini-cli|cursor|hermes|opencode|continue|custom>",
+#     "harness":              "<claude-code|codex-cli|gemini-cli|antigravity|cursor|hermes|opencode|continue|custom>",
 #     "backend_provider":     "<anthropic|openai|google|ollama|lm-studio|mlx|llama-cpp|vllm|custom>",
 #     "backend_endpoint":     "<URL>",
 #     "backend_model":        "<model id>",
@@ -11,6 +11,11 @@
 #     "recommended_tier":     "<lean|standard|extended>",
 #     "signal_disagreements": [<list of strings, may be empty>]
 #   }
+#
+# This helper automates objective checks only: env/config/endpoint
+# verification plus tier derivation and JSON emission. It cannot
+# perform agent self-introspection; the running agent must supply that
+# primary signal per detect-runtime/SKILL.md Step 0 / Sub-step A.
 #
 # This is one reference implementation. The skill at
 # 2-mind/forge/act/skill/detect-runtime/SKILL.md describes the
@@ -22,12 +27,60 @@
 
 set -eu
 
+profile_path="3-control/runtime/profile.md"
+
+profile_value() {
+  field="$1"
+  if [ -f "$profile_path" ]; then
+    sed -n "s/^\*\*${field}\*\*: //p" "$profile_path" | head -n 1
+  fi
+}
+
+is_integer() {
+  case "${1:-}" in
+    ''|*[!0-9]*) return 1 ;;
+    *) return 0 ;;
+  esac
+}
+
+profile_effective_context="$(profile_value "effective_context" || true)"
+profile_active_tier="$(profile_value "active_tier" || true)"
+signal_disagreements="[]"
+
+add_signal() {
+  signal_disagreements="$(printf '%s' "$signal_disagreements" | jq -c --arg msg "$1" '. + [$msg]')"
+}
+
+has_agy_env="false"
+if env | grep -q '^AGY_'; then
+  has_agy_env="true"
+fi
+
+agy_signal="false"
+if [ "$has_agy_env" = "true" ] \
+  || { command -v agy >/dev/null 2>&1 && agy --version >/dev/null 2>&1; } \
+  || [ -f "${HOME}/.config/agy/credentials.json" ] \
+  || [ -d "${HOME}/.gemini/antigravity-cli" ]; then
+  agy_signal="true"
+fi
+
+gemini_signal="false"
+if [ -n "${GEMINI_PROJECT_DIR:-}" ] || [ -d ".gemini" ] || [ -d "${HOME}/.gemini" ]; then
+  gemini_signal="true"
+fi
+
+if [ "$agy_signal" = "true" ] && [ "$gemini_signal" = "true" ]; then
+  add_signal "WARNING: gemini-cli and antigravity signals both present; shared ~/.gemini/GEMINI.md can leak rules across runtimes (gemini-cli#16058)"
+fi
+
 # --- Sub-step 1: Detect harness ---
 harness="custom"
 if [ -n "${CLAUDE_PROJECT_DIR:-}" ] || [ -d ".claude" ]; then
   harness="claude-code"
 elif [ -n "${CODEX_PROJECT_DIR:-}" ] || [ -f ".codex/config.toml" ]; then
   harness="codex-cli"
+elif [ "$agy_signal" = "true" ]; then
+  harness="antigravity"
 elif [ -n "${GEMINI_PROJECT_DIR:-}" ] || [ -d ".gemini" ]; then
   harness="gemini-cli"
 elif [ -d ".cursor" ]; then
@@ -82,7 +135,8 @@ if [ -z "$backend_endpoint" ]; then
   case "$harness" in
     claude-code) backend_provider="anthropic"; backend_endpoint="https://api.anthropic.com" ;;
     codex-cli)   backend_provider="openai";    backend_endpoint="https://api.openai.com" ;;
-    gemini-cli)  backend_provider="google";    backend_endpoint="https://generativelanguage.googleapis.com" ;;
+    gemini-cli|antigravity)
+                  backend_provider="google";    backend_endpoint="https://generativelanguage.googleapis.com" ;;
   esac
 fi
 
@@ -101,21 +155,32 @@ case "$backend_provider" in
             '.data[] | select(.id==$m) | (.context_length // .max_model_len // .n_ctx // 0)' \
         2>/dev/null || echo 0)
     fi
-    # If runtime returned no usable context value, default to lean-safe
-    # (16K) — uncertain → conservative.
+    # If runtime returned no usable context value, leave it unknown.
+    # Detection is advisory; profile.md remains authoritative for
+    # session behavior when detection lacks model/context evidence.
     # If runtime DID return a value, trust it: the tier-derivation rule
     # in Sub-step 4 already clamps appropriately per the attention-
     # quality cliff. Do NOT silently clamp legitimate high values
     # (e.g., a 70B-class model configured for 32K context).
-    if [ "$effective_context" -eq 0 ]; then
-      effective_context=16384
-    fi
     ;;
 esac
 
 # --- Sub-step 4: Derive tier ---
 recommended_tier="standard"
-if [ "$effective_context" -le 16384 ]; then
+detection_uncertain="false"
+if [ -z "$backend_model" ] || [ "$effective_context" -eq 0 ]; then
+  detection_uncertain="true"
+  if is_integer "$profile_effective_context"; then
+    effective_context="$profile_effective_context"
+  else
+    effective_context=0
+  fi
+  case "$profile_active_tier" in
+    lean|standard|extended) recommended_tier="$profile_active_tier" ;;
+    *) recommended_tier="standard" ;;
+  esac
+  add_signal "detection uncertain: empty model/context; using profile.md tier when available"
+elif [ "$effective_context" -le 16384 ]; then
   recommended_tier="lean"
 elif [ "$effective_context" -le 65536 ]; then
   recommended_tier="standard"
@@ -141,6 +206,7 @@ jq -n \
   --arg bm "$backend_model" \
   --argjson ec "$effective_context" \
   --arg rt "$recommended_tier" \
+  --argjson sd "$signal_disagreements" \
   '{
     harness: $harness,
     backend_provider: $bp,
@@ -148,5 +214,5 @@ jq -n \
     backend_model: $bm,
     effective_context: $ec,
     recommended_tier: $rt,
-    signal_disagreements: []
+    signal_disagreements: $sd
   }'

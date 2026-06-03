@@ -10,6 +10,12 @@ description: Close a session — summarize changes, suggest commits, write a jou
 Before disconnecting (end of work block, switching workspaces, etc.).
 Every session ends with a journal entry — the episodic trace per R3.
 
+## Requires
+
+Requires `3-control/foundation/SOUL.md`,
+`3-control/foundation/PRINCIPLE.md`, and `2-mind/garden/essential/`
+to exist. If any are missing, run `init` instead of continuing.
+
 ## Quick reference
 
 | Step | Reads | Writes |
@@ -42,7 +48,7 @@ default). Wait for Owner confirm before committing.
 
 Path: `2-mind/garden/essential/journal/<YYYY-MM-DD>-<runtime>-<NNN>.md`
 - `YYYY-MM-DD` = today
-- `<runtime>` = `claude` / `codex` / `gemini` / `cron` / etc.
+- `<runtime>` = canonical runtime slug (see registry below)
 - `<NNN>` = zero-padded ordinal within day+runtime (`001`, `002`,
   …; check existing entries to determine)
 
@@ -51,14 +57,43 @@ Two sections need cross-action: *Open / NEXT* items also transfer to
 fresh NEXT.md (step 4); *Consolidations applied* stays empty until
 `dream` runs (step 5).
 
-### 4. Write fresh NEXT.md
+#### Runtime slug registry
 
-Replace any content in `garden/essential/NEXT.md` (which should
-already be cleared by session-start of this session) with fresh
-content based on the Open / NEXT items from the journal entry:
+Use one of these canonical filename slugs:
+
+| Slug | Runtime |
+|---|---|
+| `claude` | Claude Code |
+| `codex` | Codex CLI |
+| `gemini` | Gemini CLI |
+| `antigravity` | Antigravity |
+| `cron` | headless scheduled run |
+| `other` | any runtime not yet registered |
+
+The registry is extensible. Add a new lowercase ASCII slug here when a
+runtime recurs and `other` would stop being informative.
+
+### 4. Merge fresh NEXT.md handoff
+
+Append or update the three content blocks in
+`garden/essential/NEXT.md` based on the Open / NEXT items from the
+journal entry. Preserve existing entries from other contributors
+unless they are clearly superseded.
+
 - Outstanding (in-progress, paused mid-task)
 - Open questions (decisions deferred for Owner)
 - Next-session priorities (what to tackle first)
+
+Merge protocol:
+
+1. Read existing `NEXT.md`; do not full-file overwrite.
+2. Under `## Outstanding`, `## Open questions`, and
+   `## Next-session priorities`, append new items or update matching
+   items in place.
+3. Add a `Contributors:` line to each touched block, listing runtime
+   slugs that contributed entries, e.g. `Contributors: claude, codex`.
+4. If two contributors name the same task differently, keep the more
+   specific wording and preserve both contributors on the line.
 
 ### 5. Chain to `dream` (substantive sessions)
 
@@ -82,12 +117,15 @@ entry alone suffices as episodic trace.
   USER.md entries. Only chain when substantive.
 - **Not transferring Open / NEXT to fresh NEXT.md**: loses handoff
   context for the next session.
+- **Overwriting another contributor's NEXT items**: this workspace may
+  have adjacent panes sharing one tree. Merge block-by-block and keep
+  `Contributors:` current instead of replacing the file wholesale.
 
 ## Verification
 
 - `git status` reflects only Owner-accepted commits
 - New journal entry exists at correct path with all sections filled
-- `garden/essential/NEXT.md` has fresh content matching Open / NEXT
-  in the journal entry
+- `garden/essential/NEXT.md` has merged content matching Open / NEXT
+  in the journal entry, with touched blocks carrying `Contributors:`
 - For substantive sessions: `dream` has run (check
   "Consolidations applied" footer of journal entry)

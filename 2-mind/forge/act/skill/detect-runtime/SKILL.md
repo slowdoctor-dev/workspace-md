@@ -12,6 +12,12 @@ description: Detect (harness, backend, effective_context) for this workspace and
 - **Explicit `/detect-runtime`** — Owner invocation after switching harness or backend
 - **From `audit`** (rare) — freshness re-check of `last_verified` constants
 
+## Requires
+
+Requires `3-control/foundation/SOUL.md`,
+`3-control/foundation/PRINCIPLE.md`, and `2-mind/garden/essential/`
+to exist. If any are missing, run `init` instead of continuing.
+
 Operationalizes the detection mechanism described in
 `3-control/foundation/runtime-flexibility.md §Detection mechanism`.
 
@@ -22,26 +28,42 @@ agent self-introspection is the primary signal; objective signals
 (env vars, config files, endpoint queries) cross-check. Mismatch =
 report to Owner; never silently resolve.
 
+Harness is an open enum. Known values:
+`claude-code`, `codex-cli`, `gemini-cli`, `antigravity`, `cursor`,
+`hermes`, `opencode`, `continue`, `custom`.
+
 | Sub-step | Primary signal | Verification | Fallback |
 |---|---|---|---|
 | 1. Harness | Agent self-introspection | Env var → repo config folder → user-level config | `custom` |
 | 2. Backend (provider + endpoint + model) | Agent self-identification | Per-harness config read; if local-via-proxy, probe localhost ports for `/v1/models` | Ask Owner |
 | 3. Effective context | Agent self-knowledge | Hosted: known-constants table (below); Local: `/v1/models` response + attention-cliff clamp | Owner declaration |
 
-Optional helper: `2-mind/forge/act/script/detect-runtime.sh` runs
-the full 5-step procedure (3 detection sub-steps + tier derivation
-+ JSON emission) when shell is available; otherwise execute the
-procedure manually.
+Optional helper: `2-mind/forge/act/script/detect-runtime.sh`
+automates objective verification only: Sub-step 1B/C/D, Sub-step
+2B/C, Sub-step 3B/C, then Step 4 tier derivation and Step 5 JSON
+emission. It cannot perform Step 0 / Sub-step A agent
+self-introspection. The running agent supplies that primary signal
+before interpreting the helper output.
 
 ## Procedure
+
+### Step 0 — Agent self-introspection (cannot be scripted)
+
+Before running any helper, the agent records its own primary signal:
+which harness loaded it, which model it is using, and what context
+window it believes it has. This comes from the runtime's system
+context, visible tools, loaded discovery file, and model
+self-knowledge. Scripts cannot see this layer, so their output is
+advisory verification, not the complete detection result.
 
 ### Sub-step 1 — Detect harness
 
 **A. Agent self-introspection** (primary): the agent introspects
 "What harness loaded me?" — answers come from its system prompt
 content, discovery file path (`CLAUDE.md` → claude-code; `AGENTS.md`
-direct → codex-cli; `GEMINI.md` → gemini-cli), env vars visible to
-it, and which tools / MCP servers are registered.
+direct → codex-cli; `GEMINI.md` → gemini-cli; `.agents/` aliases →
+antigravity), env vars visible to it, and which tools / MCP servers
+are registered.
 
 **B. Env var verification** (objective):
 
@@ -50,6 +72,7 @@ it, and which tools / MCP servers are registered.
 | `CLAUDE_PROJECT_DIR` | `claude-code` |
 | `CODEX_PROJECT_DIR` | `codex-cli` |
 | `GEMINI_PROJECT_DIR` | `gemini-cli` |
+| `AGY_*` (various) | `antigravity` |
 | `CURSOR_*` (various) | `cursor` |
 | `HERMES_*` (varies) | `hermes` |
 
@@ -60,6 +83,7 @@ it, and which tools / MCP servers are registered.
 | `.claude/settings.json` | `claude-code` |
 | `.codex/config.toml` | `codex-cli` |
 | `.gemini/settings.json` | `gemini-cli` |
+| `.agents/...` | `antigravity` |
 | `.cursor/...` | `cursor` |
 | `.config/opencode/opencode.json` | `opencode` |
 | `.continue/config.yaml` | `continue` |
@@ -68,11 +92,20 @@ it, and which tools / MCP servers are registered.
 
 | Path exists | Harness available |
 |---|---|
+| `agy --version` succeeds | `antigravity` |
+| `~/.config/agy/credentials.json` | `antigravity` |
+| `~/.gemini/antigravity-cli/` | `antigravity` |
 | `~/.hermes/config.yaml` | `hermes` |
 | `~/.continue/config.yaml` | `continue` |
 
 **Resolution**: self-introspection result must match ≥1 objective
 signal. Conflict → ask Owner. No signals at all → `custom`.
+
+**Gemini / Antigravity collision warning**: if both Gemini CLI and
+Antigravity signals are present, emit a warning in
+`signal_disagreements`. They can share `~/.gemini/GEMINI.md`, which
+risks rule leakage across runtimes (gemini-cli#16058). Surface this
+to Owner; do not silently treat the two harnesses as equivalent.
 
 ### Sub-step 2 — Detect backend (provider + endpoint + model)
 
@@ -108,6 +141,12 @@ curl -s http://localhost:8000/v1/models    # vLLM default
 endpoint result. Disagreement (e.g., self says "Claude Sonnet 4.6"
 but `/v1/models` returns `qwen2.5-coder:32b`) → likely proxy
 mismatch; surface to Owner.
+
+If objective detection returns an unknown or empty model, do not infer
+a tier from the absence. Detection is advisory; the ratified
+`3-control/runtime/profile.md` value remains authoritative for the
+current session. If profile.md is absent or unfilled, fall back to
+`standard` and flag uncertainty for Owner ratification.
 
 ### Sub-step 3 — Determine effective_context
 
@@ -160,6 +199,10 @@ Apply the canonical tier-derivation rule from
 | > 64K | hosted-modest (Haiku, GPT-4o-mini, Gemini Flash) | `standard` (attention cap) |
 | uncertain / detection failed | — | `standard` (R1 baseline) |
 
+In drift-check mode, profile.md is authoritative when detection is
+uncertain. Use the detected tier only as a proposed change after
+Owner re-ratification; do not silently replace the active tier.
+
 ### Sub-step 5 — Produce result
 
 Emit a profile-draft proposal with 6 detected fields. The tier
@@ -199,8 +242,18 @@ detection downstream; Owner-ratify per row.
 
 - **Trusting self-identification blindly**: local fine-tunes may
   misreport. Always cross-verify against objective signals.
+- **Treating the helper as full detection**: the script cannot perform
+  Step 0 / Sub-step A self-introspection. Combine helper output with
+  the running agent's own runtime signal before deciding whether
+  signals match.
 - **Silently picking on signal disagreement**: surface to Owner.
   Disagreement IS the signal.
+- **Guessing from an empty model**: unknown model/context means
+  detection is uncertain. Use profile.md's active tier for the
+  current session, or `standard` if no ratified profile exists.
+- **Ignoring Gemini / Antigravity collisions**: both may be installed
+  and share `~/.gemini/GEMINI.md`. Emit the warning, then let Owner
+  decide whether separate runtime config is needed.
 - **Auto-bumping known-constants without re-verification**: model
   vendors change context windows (e.g., Claude beta header). Update
   the `last_verified:` date when you change a row.

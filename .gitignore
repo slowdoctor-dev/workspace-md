@@ -1,3 +1,10 @@
+# workspace.md baseline .gitignore.
+#
+# Adopters SHOULD extend this file for their own toolchain — doing so is
+# CONFORMANT. The spec mandates folder topology (0-storage/ 1-active/
+# 2-mind/ 3-control/), not a byte-identical .gitignore. Keep the
+# Credentials block below intact; extend everything else freely.
+
 # OS
 .DS_Store
 Thumbs.db
@@ -10,7 +17,7 @@ desktop.ini
 *.swo
 *~
 
-# Credentials — never commit
+# Credentials — never commit (keep these; secrets live OUTSIDE the workspace)
 .env
 .env.*
 !.env.example
@@ -24,9 +31,23 @@ auth.json
 *.log
 logs/
 
-# Build artifacts (workspace-specific; adopters may extend)
+# Build / dependency artifacts (extend per your stack)
 node_modules/
 dist/
 build/
+out/
+target/
 __pycache__/
 *.pyc
+.venv/
+venv/
+.mypy_cache/
+.pytest_cache/
+coverage/
+*.coverage
+
+# 0-storage/ — general file storage (LLM-passive: binaries, media, archives).
+# Small reference assets MAY be committed. Large / binary / regenerable
+# assets are commonly kept out of git; uncomment and tune to taste:
+# 0-storage/**
+# !0-storage/.gitkeep

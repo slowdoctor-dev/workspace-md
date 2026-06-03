@@ -11,7 +11,8 @@ operate within*.
 
 Compatible with any LLM runtime:
 
-- *Hosted agent CLIs* — Claude Code, Gemini CLI, Codex CLI
+- *Hosted agent CLIs* — Claude Code, Codex CLI, Gemini CLI /
+  Antigravity CLI (`agy`, Gemini CLI's successor — see Known limitations)
 - *Local LLM backends* — Ollama, LM Studio, MLX (Apple Silicon)
 
 Hosted CLIs provide the agent loop and read instruction files; local
@@ -94,6 +95,13 @@ configs are not pre-created):
     .codex/config.toml        Codex CLI project config (trust required)
     .gemini/settings.json     Gemini CLI project settings
     .mcp.json                 → 3-control/external/mcp/registry.json
+    .agents/skills            → 2-mind/forge/act/skill/  (Antigravity native skills dir)
+    .agents/mcp_config.json   Antigravity MCP (rendered; url→serverUrl)
+
+`.agents/` uses the symlink-alias policy (one canonical home under
+`2-mind/forge/` + `3-control/external/`, exposed at the native path).
+`mcp_config.json` is *rendered* (not symlinked) for the `url`→`serverUrl`
+rename; see `3-control/external/mcp/`.
 
 ## Rule placement
 
@@ -106,6 +114,12 @@ Three rule homes by scope:
 
 (Three-home convention proposed by this spec; not borrowed from an
 established standard.)
+
+**Rule numbering.** The spec reserves `R1`–`R4` for its four memory
+rules (`3-control/foundation/use-driven-memory.md §4`). Adopter rules
+in `3-control/rule/` must use a *distinct* namespace (a project tag
+like `ACME-1`, or a letter series `A1, A2…`) so `R2` is never
+ambiguous between a memory rule and an adopter rule.
 
 Workspace operating *principles* — distinct from rules — live in
 `3-control/foundation/`. Principles shape *how* the workspace is
@@ -132,19 +146,37 @@ Filename:
 
 Detailed writing/naming conventions live in `3-control/rule/`.
 
+**Metadata / frontmatter.** The spec is **metadata-free** — spec files
+and template seeds carry no YAML frontmatter. Adopters who mandate
+universal frontmatter should **exempt** the spec/template files
+(details + exempt list in `3-control/foundation/adoption.md`). The
+carve-out is expected, not a violation.
+
 ## Known limitations (v0.1)
 
-- **Windows native fragility**: the three committed symlinks
-  (`CLAUDE.md`, `GEMINI.md`, `.mcp.json`) require
+- **Windows native fragility**: the committed symlinks (`CLAUDE.md`,
+  `GEMINI.md`, `.mcp.json`, `.agents/skills`) require
   `git config --global core.symlinks true` + admin terminal to
   materialize after clone on Windows native. Linux / macOS / WSL work
   out of the box.
+- **Symlinks clobbered by in-place rewriters**: `sed -i` (temp-file +
+  rename) replaces a symlink with a regular file of the followed
+  content — silently breaking `CLAUDE.md`/`GEMINI.md` → `AGENTS.md`.
+  Edit the *target*, or re-create the link (`ln -sf AGENTS.md
+  CLAUDE.md`); `audit`'s symlink check catches drift.
+- **Gemini CLI sunset (2026-06-18)**: free/Pro/Ultra/org installs stop;
+  successor is **Antigravity CLI** (`agy`); Enterprise keeps Gemini CLI.
+  Both hard-code `~/.gemini/GEMINI.md`, so running both leaks rules
+  (gemini-cli#16058, "not planned"); `detect-runtime` warns when both
+  `gemini` and `agy` are installed.
 - **Authorization / per-agent permission semantics**: not modeled in
   the spec. Encode your own in `3-control/rule/` and per-agent
   `AGENTS.md` when needed.
-- **Hook availability varies by harness**: the three major CLIs
-  (Claude Code, Codex CLI, Gemini CLI) support SessionStart hooks
-  for stronger R2 enforcement; hook-less harnesses (Hermes Agent,
+- **Hook availability varies by harness**: the major CLIs
+  (Claude Code, Codex CLI, Gemini CLI / Antigravity CLI — which
+  inherits Gemini CLI's JSON hook format + lifecycle events) support
+  SessionStart hooks for stronger R2 enforcement; hook-less harnesses
+  (Hermes Agent, OpenCode, Continue.dev) rely on declarative
   OpenCode, Continue.dev) rely on declarative `profile.md` +
   adaptive capability detection (per `runtime-flexibility.md` +
   `detect-runtime` skill). The spec degrades gracefully —
@@ -157,6 +189,9 @@ matures with usage.
 
 - `README.md` — public-facing repo entry (start here if browsing on GitHub).
 - `AGENTS.md` — workspace AAIF entry: reading order + per-runtime mapping for AI agents.
+- `3-control/foundation/adoption.md` — adopting into a new or
+  existing workspace (spec-vs-adopter boundary, store migration,
+  metadata carve-out).
 - `LICENSE` — Apache License 2.0.
 
 ---

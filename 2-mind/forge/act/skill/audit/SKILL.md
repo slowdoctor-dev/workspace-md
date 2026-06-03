@@ -18,6 +18,12 @@ things tidy. Each scan class serves a specific value or rule (see
 Quick reference). Companion to `dream`: `dream` accumulates +
 consolidates at write-time; `audit` verifies + prunes periodically.
 
+## Requires
+
+Requires `3-control/foundation/SOUL.md`,
+`3-control/foundation/PRINCIPLE.md`, and `2-mind/garden/essential/`
+to exist. If any are missing, run `init` instead of continuing.
+
 ## Quick reference
 
 Each scan class enforces a specific value or rule:
@@ -119,8 +125,9 @@ annotate older.
 
 Cap sources:
 - **R1 natural memory caps** (USER, NEXT, journal entry, garden
-  topic) — content-discipline baselines, defined in
-  `3-control/foundation/use-driven-memory.md §R1`.
+  topic) — token-primary content-discipline baselines, defined in
+  `3-control/foundation/use-driven-memory.md §R1` and counted with
+  `2-mind/forge/act/script/token-count.sh`.
 - **R2 runtime-tier override** — scales R1 caps down (lean) or up
   (extended) per the active runtime profile. Tier system + rule:
   `3-control/foundation/runtime-flexibility.md`. Active selection:
@@ -128,17 +135,27 @@ Cap sources:
   unchanged).
 - **R1 spec caps** (README, AGENTS, WORKSPACE, PRINCIPLE, canonical
   SOUL, use-driven-memory, runtime-flexibility) — fixed advisory
-  flags, runtime-independent.
+  line-count flags, runtime-independent.
 
-For each file, look up its effective cap (R1 × R2 tier scale) and
-compare current line count. Working `SOUL.md` (in garden) has no
-cap but prune *Graduated* entries older than 6 months.
+Canonical token tier table for use-grown memory stores:
+
+| Tier | USER (hard / consol) | NEXT | journal/<entry> | garden-topic |
+|---|---|---|---|---|
+| `lean` | 500 / 400 | 170 | 1200 | 2000 |
+| `standard` | 800 / 640 | 240 | 2000 | 3200 |
+| `extended` | 1600 / 1280 | 400 | 4000 | 6400 |
+
+For each memory file, look up its effective token cap (R1 × R2 tier
+scale) and compare `token-count.sh <path>` output. Include line count
+as advisory context in the report, but do not use it to decide
+memory-cap compliance. Working `SOUL.md` (in garden) has no cap but
+prune *Graduated* entries older than 6 months.
 
 Memory-cap breach in `2-mind/garden/` + `2-mind/forge/` → split or
 consolidate directly (T1). Memory-cap breach in `2-mind/atelier/`
 (T2-when-content-exists exception) → propose to Owner.
-Spec-cap breach → flag only; Owner decides whether to trim (3-control/
-content is T2).
+Spec-cap breach remains line-based → flag only; Owner decides whether
+to trim (3-control/ content is T2).
 
 ### 6. Orphan + broken-ref scan
 

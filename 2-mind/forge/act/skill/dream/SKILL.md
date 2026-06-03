@@ -22,6 +22,12 @@ Anthropic Auto Dream); session-end → dream → session-start completes
 a sleep cycle (lay down memory → consolidate during quiescence →
 wake to refined context).
 
+## Requires
+
+Requires `3-control/foundation/SOUL.md`,
+`3-control/foundation/PRINCIPLE.md`, and `2-mind/garden/essential/`
+to exist. If any are missing, run `init` instead of continuing.
+
 ## Quick reference
 
 | Signal type | Target | Tier |
@@ -63,12 +69,19 @@ derived entry MUST cite its source journal as
 
 ### 3. Apply T1 writes
 
-**USER.md** — R1 natural cap = 100 lines / consolidate at 80. R2
-runtime-tier (read `3-control/runtime/profile.md` for active_tier;
-default `standard` = R1 unchanged; canonical tier table in
-`3-control/foundation/runtime-flexibility.md`) may scale:
-lean → 60 / 50, extended → 200 / 160. At ≥80% of the effective hard
-cap, run CONSOLIDATE (below) before append.
+**USER.md** — memory caps are token-primary. Use
+`2-mind/forge/act/script/token-count.sh` to compare the file against
+the active tier from `3-control/runtime/profile.md`; line counts are
+advisory report context only. At or above the tier's consolidate
+threshold, run CONSOLIDATE (below) before append.
+
+Canonical token tier table:
+
+| Tier | USER (hard / consol) | NEXT | journal/<entry> | garden-topic |
+|---|---|---|---|---|
+| `lean` | 500 / 400 | 170 | 1200 | 2000 |
+| `standard` | 800 / 640 | 240 | 2000 | 3200 |
+| `extended` | 1600 / 1280 | 400 | 4000 | 6400 |
 
 **CONSOLIDATE procedure** (R1 write-time enforcement):
 
@@ -88,10 +101,11 @@ cap, run CONSOLIDATE (below) before append.
    removal in the journal entry's *Consolidations applied* section
    (R3: removal trail preserved in episodic store even if removed
    from semantic store).
-5. **Verify post-consolidation**: USER.md is ≤cap, every remaining
-   entry still has its `(journal …)` citation(s), no information
-   loss against the journal entries that fed it (the journal
-   entries are unchanged).
+5. **Verify post-consolidation**: USER.md is ≤ its token hard cap
+   according to `token-count.sh`; line count is recorded only as an
+   advisory. Every remaining entry still has its `(journal …)`
+   citation(s), with no information loss against the journal entries
+   that fed it (the journal entries are unchanged).
 6. **If consolidation can't reduce below cap** — all entries are
    distinct and current. Two paths:
    - If the new entry is itself a near-duplicate / supersedes
@@ -149,8 +163,9 @@ Append to today's journal *Consolidations applied* section:
   skipping `(journal …)` citations, or loading
   `garden/essential/SOUL.md` at session-start — each breaks a rule
   (R4 / R3 / R4 respectively).
-- **Skipping consolidate-on-error**: USER.md must consolidate at 80%
-  of its effective cap (R1 natural × R2 tier scale) before append.
+- **Skipping consolidate-on-error**: USER.md must consolidate at the
+  active tier's token threshold before append. Line counts are
+  advisory and must not decide memory-cap compliance.
 - **Dropping citations on merge**: merging two USER entries on the
   same topic must carry forward *both* journal citations. Losing one
   breaks R3 source trail.
@@ -161,10 +176,10 @@ Append to today's journal *Consolidations applied* section:
 ## Verification
 
 - All sourced signals categorized to a target (or explicitly deferred)
-- USER.md within its effective hard cap (R1 × R2 tier); if
-  consolidation ran, the post-consolidation file is ≤cap, all
-  remaining entries retain their citations, no information loss
-  against feeding journal entries
+- USER.md within its effective token hard cap (R1 × R2 tier via
+  `token-count.sh`); if consolidation ran, the post-consolidation file
+  is ≤cap, all remaining entries retain their citations, no
+  information loss against feeding journal entries
 - All written entries have `(journal <YYYY-MM-DD>-<runtime>-<NNN>)`
   citations (merged entries carry *all* source citations)
 - T2 proposals presented with diffs; Owner ratified per item
