@@ -1,13 +1,23 @@
 # USER
 
 Semantic model of the Owner — preferences, patterns, communication
-tells. Natural cap (R1): **800 tokens hard, consolidate at 640**
-(~100 lines, advisory). Runtime tier (R2) may scale: lean → 500/400,
-extended → 1600/1280. See `3-control/runtime/profile.md` for active
-tier; measure with `2-mind/forge/act/script/token-count.sh`.
+tells. **Personal data** (TRUST-5): do not copy into external tool
+inputs or other repos; public-repo adopters see
+`adoption.md §Private memory`. Storage choice: (unset — committed).
 
-Loaded at session-start (item 5). Frozen-at-session-start: entries
-written here appear in the *next* session, not the current.
+Governs **style, format and procedure — not facts**. An entry here
+never outranks the codebase, data, or a current Owner statement; on
+conflict, present the evidence and let the Owner decide (R3).
+
+Natural cap (R1): **800 tokens hard, consolidate at 640** (~100 lines,
+advisory). Runtime tier (R2) may scale: lean → 500/400, extended →
+1600/1280. See `3-control/runtime/profile.md`; measure with
+`2-mind/forge/act/script/token-count.sh`.
+
+Loaded at session-start (hot item 3). Frozen-at-session-start:
+entries written here appear in the *next* session. Every entry cites
+its source: `(journal <stem>)`, `(auto-memory <runtime> <date>)`, or
+`(owner <date>)`.
 
 ## Preferences
 

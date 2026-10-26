@@ -1,13 +1,17 @@
 ---
 name: session-end
-description: Close a session — summarize changes, suggest commits, write a journal entry (episodic trace), write fresh NEXT.md (handoff). Chains to `dream` for substantive sessions.
+description: Close a session — summarize changes, suggest commits, write a journal entry (episodic trace), append a NEXT.md handoff block. Chains to `dream` for substantive sessions. Also writes the PreCompact checkpoint block when invoked by that cue.
 ---
 
 # session-end
 
 ## When to use
 
-Before disconnecting (end of work block, switching workspaces, etc.).
+- Before disconnecting (end of work block, switching workspaces).
+- **Checkpoint mode** — invoked by the `context.precompact` cue
+  (`2-mind/forge/cue/lifecycle.md`): write only the `NEXT.md`
+  *Outstanding* block, no journal.
+
 Every session ends with a journal entry — the episodic trace per R3.
 
 ## Requires
@@ -21,10 +25,12 @@ to exist. If any are missing, run `init` instead of continuing.
 | Step | Reads | Writes |
 |---|---|---|
 | 1. Summarize | git diff/log + session transcript | — |
-| 2. Suggest commits | (per workspace convention) | Owner-accepted commits |
-| 3. Write journal entry | session transcript, decisions | `garden/essential/journal/<YYYY-MM-DD>-<runtime>-<NNN>.md` |
-| 4. Write fresh NEXT.md | outstanding work + open items | `garden/essential/NEXT.md` |
-| 5. Chain to `dream` (optional) | (handoff) | — |
+| 2. Suggest commits | workspace convention | Owner-accepted commits |
+| 3. Write journal entry | transcript, decisions | `garden/essential/journal/<YYYY-MM-DD>-<runtime>-<sid>.md` |
+| 4. Append NEXT.md block | outstanding work + open items | `garden/essential/NEXT.md` (append-only) |
+| 5. Chain to `dream` (substantive sessions) | handoff | — |
+
+Checkpoint mode runs step 4 only (*Outstanding* section).
 
 ## Procedure
 
@@ -40,92 +46,90 @@ Show the Owner a digest: "This session added X, modified Y, did Z."
 
 ### 2. Suggest commits
 
-For each meaningful uncommitted work unit, propose a commit message
-in the workspace's convention (`YYYY-MM-DD <short English summary>`
-default). Wait for Owner confirm before committing.
+Propose a commit message per meaningful unit in the workspace's
+convention (`YYYY-MM-DD <short English summary>` default). Wait for
+Owner confirm. **In a worktree / feature branch** (R5): commit journal
++ `NEXT.md` separately from code, message prefixed `memory:`, so the
+Owner can merge memory first. Headless runs commit without asking and
+open a PR (T2 by merge).
 
 ### 3. Write journal entry
 
-Path: `2-mind/garden/essential/journal/<YYYY-MM-DD>-<runtime>-<NNN>.md`
+Path: `2-mind/garden/essential/journal/<YYYY-MM-DD>-<runtime>-<sid>.md`
 - `YYYY-MM-DD` = today
-- `<runtime>` = canonical runtime slug (see registry below)
-- `<NNN>` = zero-padded ordinal within day+runtime (`001`, `002`,
-  …; check existing entries to determine)
+- `<runtime>` = slug from the registry below
+- `<sid>` = session id: first 6 chars of the harness session id if
+  exposed, else `HHMMSS` of session start. Strictly sequential
+  single-session workspaces may keep the legacy `NNN` ordinal
+  (`001`, `002`, …) — pick one scheme per workspace and record it in
+  `ENTRY-TEMPLATE.md`'s comment.
 
 Fill the structure from `garden/essential/journal/ENTRY-TEMPLATE.md`.
-Two sections need cross-action: *Open / NEXT* items also transfer to
-fresh NEXT.md (step 4); *Consolidations applied* stays empty until
-`dream` runs (step 5).
+*Open / NEXT* items also go into the `NEXT.md` block (step 4);
+*Consolidations applied* stays empty until `dream` runs (step 5).
 
 #### Runtime slug registry
 
-Use one of these canonical filename slugs:
-
 | Slug | Runtime |
 |---|---|
-| `claude` | Claude Code |
+| `claude` | Claude Code (terminal, desktop) |
 | `codex` | Codex CLI |
-| `gemini` | Gemini CLI |
-| `antigravity` | Antigravity |
+| `antigravity` | Antigravity CLI (`agy`) |
+| `cursor` | Cursor |
+| `cloud` | remote interactive session (Claude Code on the web, Codex cloud) |
 | `cron` | headless scheduled run |
+| `ci` | CI / pipeline run |
+| `gemini` | Gemini CLI — *legacy* (retired 2026-06-18 outside Enterprise) |
 | `other` | any runtime not yet registered |
 
-The registry is extensible. Add a new lowercase ASCII slug here when a
-runtime recurs and `other` would stop being informative.
+Add a lowercase ASCII slug when a runtime recurs and `other` stops
+being informative.
 
-### 4. Merge fresh NEXT.md handoff
+### 4. Append the NEXT.md handoff block
 
-Append or update the three content blocks in
-`garden/essential/NEXT.md` based on the Open / NEXT items from the
-journal entry. Preserve existing entries from other contributors
-unless they are clearly superseded.
+`NEXT.md` is **append-only** (R5). Never rewrite or merge other
+blocks. Append:
 
-- Outstanding (in-progress, paused mid-task)
-- Open questions (decisions deferred for Owner)
-- Next-session priorities (what to tackle first)
+```
+### <runtime>/<sid> @ <YYYY-MM-DDTHH:MM>
+**Outstanding**: …           (in progress, exactly where it stopped)
+**Open questions**: …        (decisions deferred for the Owner)
+**Next-session priorities**: …
+```
 
-Merge protocol:
-
-1. Read existing `NEXT.md`; do not full-file overwrite.
-2. Under `## Outstanding`, `## Open questions`, and
-   `## Next-session priorities`, append new items or update matching
-   items in place.
-3. Add a `Contributors:` line to each touched block, listing runtime
-   slugs that contributed entries, e.g. `Contributors: claude, codex`.
-4. If two contributors name the same task differently, keep the more
-   specific wording and preserve both contributors on the line.
+Keep the block within the tier's NEXT cap share (240 tok total at
+`standard` across all unconsumed blocks); terse — handoff, not
+journal. **Checkpoint mode** writes the block with *Outstanding* only
+and the suffix `(checkpoint — pre-compaction)`.
 
 ### 5. Chain to `dream` (substantive sessions)
 
-If the session was substantive (multiple decisions / non-trivial work
-/ ≥5 tool calls / error recovery / Owner correction / novel workflow),
-invoke `/dream` — consolidates journal signals into T1 stores and
-proposes T2 graduations for Owner ratification.
-
-For trivial sessions (single quick fix), skip `dream`; the journal
-entry alone suffices as episodic trace.
+Substantive = multiple decisions / non-trivial work / ≥5 tool calls /
+error recovery / Owner correction / novel workflow → invoke `/dream`
+(prefer a forked subagent so this session's cache prefix is
+untouched). **From a worktree or feature branch, skip `dream`** — T1
+consolidation runs from the primary checkout (R5); the journal entry
+carries the signals. Trivial sessions skip `dream`.
 
 ## Pitfalls
 
-- **Committing without Owner accept**: always wait for explicit
-  accept, even under fast workspace conventions.
-- **Skipping the journal entry**: every session writes one — the
-  episodic trace per R3 is non-negotiable.
-- **Wrong filename format**: `<YYYY-MM-DD>-<runtime>-<NNN>.md`; NNN
-  increments within today's runtime-matched entries.
-- **Auto-running `dream` on trivial sessions**: produces thin
-  USER.md entries. Only chain when substantive.
-- **Not transferring Open / NEXT to fresh NEXT.md**: loses handoff
-  context for the next session.
-- **Overwriting another contributor's NEXT items**: this workspace may
-  have adjacent panes sharing one tree. Merge block-by-block and keep
-  `Contributors:` current instead of replacing the file wholesale.
+- **Committing without Owner accept** (interactive sessions).
+- **Skipping the journal entry**: non-negotiable (R3).
+- **Wrong filename**: `<YYYY-MM-DD>-<runtime>-<sid>.md`; two concurrent
+  sessions must not share a `<sid>`.
+- **Rewriting NEXT.md**: append a block; another session may be
+  writing too. `session-start` is the only consumer.
+- **Running `dream` from a worktree**: strands garden writes on a
+  branch (R5).
+- **Auto-running `dream` on trivial sessions**: thin USER.md entries.
+- **Dropping the checkpoint**: on `PreCompact` write the block — the
+  summary may lose the handoff otherwise.
 
 ## Verification
 
-- `git status` reflects only Owner-accepted commits
-- New journal entry exists at correct path with all sections filled
-- `garden/essential/NEXT.md` has merged content matching Open / NEXT
-  in the journal entry, with touched blocks carrying `Contributors:`
-- For substantive sessions: `dream` has run (check
-  "Consolidations applied" footer of journal entry)
+- `git status` reflects only Owner-accepted commits (or a `memory:`
+  commit / PR in headless and worktree cases)
+- Journal entry exists at the correct path with all sections filled
+- `NEXT.md` has a new block whose items match *Open / NEXT*
+- Substantive sessions on the integration branch: `dream` has run
+  (*Consolidations applied* footer filled)

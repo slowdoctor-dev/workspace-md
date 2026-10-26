@@ -1,7 +1,7 @@
 # Runtime flexibility
 
 How workspace.md adapts to different runtimes so R2 Part B (session-
-start load fits runtime budget) is enforced. Sibling to
+start load fits the attention budget) is enforced. Sibling to
 `use-driven-memory.md` — separates runtime concerns from cognitive
 architecture.
 
@@ -10,52 +10,62 @@ architecture.
 "Runtime" is a pair: **(harness, backend)**.
 
 - **Harness** = the agent CLI / UI wrapping the agent loop (Claude
-  Code, Codex CLI, Gemini CLI, Cursor, Hermes Agent, OpenCode,
+  Code, Codex CLI, Antigravity CLI, Cursor, Hermes Agent, OpenCode,
   Continue.dev, custom scripts, …).
 - **Backend** = the LLM that generates tokens (hosted: Anthropic /
   OpenAI / Google APIs; local: Ollama, LM Studio, MLX/omlx,
   llama.cpp, vLLM).
 
 The two are independent: a hosted CLI can point at a local backend
-via OpenAI-compat proxy (e.g., Claude Code → LiteLLM → Ollama).
-Tier depends on **backend `effective_context`**; harness determines
-which enforcement mechanisms (hooks, MCP) are available.
+via an OpenAI-compat proxy (e.g., Claude Code → LiteLLM → Ollama).
+Tier depends on the backend's **model class**; harness determines
+which enforcement mechanisms (hooks, MCP, subagents) are available.
 
 ## Three patterns
 
-How runtime pairings combine in practice:
-
 - **Pattern A — hosted CLI + hosted backend** (Claude Code direct,
-  Codex CLI direct, Gemini CLI direct). Tier inferable from known
-  constants.
+  Codex CLI direct, Antigravity CLI direct). Model class is known from
+  the model id.
 - **Pattern B — hosted CLI + local backend via OpenAI-compat**
-  (Claude Code → LiteLLM → Ollama). Tier driven by local backend's
-  effective context; query `/v1/models` of the local endpoint.
-- **Pattern C — hook-less harness with native capability detection**
-  (Hermes Agent, OpenCode, Continue.dev). Same detection mechanism;
-  harness lacks hook surface but `detect-runtime` still works.
+  (Claude Code → LiteLLM → Ollama). Model class from the local model's
+  parameter count; query `/v1/models` of the local endpoint.
+- **Pattern C — hook-less harness** (Hermes Agent, OpenCode,
+  Continue.dev). Same detection; declarative enforcement only.
+
+## Why model class, not context size (v0.2)
+
+Through v0.1 the tier was derived from `effective_context`. By late
+2026 that axis stopped discriminating: hosted models of every size
+ship ≥1M-token windows and local models ship 128K+. The binding
+constraint moved to **attention quality** (context rot: output quality
+degrades well before the advertised window), **cost**, and **prompt-
+cache stability**. Model class is a proxy for the first; R2 Part B's
+hot-load budget caps the other two. `effective_context` remains a
+sanity check for misconfigured local runtimes (Ollama's default
+window can be 2–4K regardless of the model card).
 
 ## Tier system
 
 Three tiers — `lean`, `standard`, `extended` — override R1 natural
-caps when the runtime constrains or expands the session-start
-budget. **`standard` is the R1 baseline**; `lean` reduces caps for
-constrained runtimes; `extended` raises them for hosted-large
-runtimes.
+caps. **`standard` is the R1 baseline**; `lean` reduces caps for
+constrained runtimes; `extended` raises them for frontier runtimes.
 
 Caps are in **tokens** (primary unit since v0.1.1); line counts are a
 secondary English-density advisory (≈100/30/200/300 lines at
 `standard`). See `use-driven-memory.md §R1` for why token-primary.
 
-| Tier | USER (hard / consol) | NEXT | journal/<entry> | garden/<topic> flag | Target runtime |
+| Tier | USER (hard / consol) | NEXT | journal/<entry> | garden/<topic> flag | Target model class |
 |---|---|---|---|---|---|
-| **lean** | 500 / 400 | 170 | 1200 soft | 2000 | local 7-13B (Llama 3.1 8B, Qwen 2.5 7B, Mistral 7B); ≤16K effective |
-| **standard** | 800 / 640 | 240 | 2000 soft | 3200 | **R1 baseline** — local 30-70B, hosted-modest (Haiku, GPT-4o-mini) |
-| **extended** | 1600 / 1280 | 400 | 4000 soft | 6400 | hosted-large (Claude Sonnet/Opus, GPT-4, Gemini Pro) |
+| **lean** | 500 / 400 | 170 | 1200 soft | 2000 | `local-small` (≤13B) |
+| **standard** | 800 / 640 | 240 | 2000 soft | 3200 | **R1 baseline** — `local-large` (30B+), `hosted-small` |
+| **extended** | 1600 / 1280 | 400 | 4000 soft | 6400 | `hosted-frontier` |
 
 (All values are tokens. Measure with `2-mind/forge/act/script/token-count.sh`.)
 
-Session-start budgets: **lean ≈ 15K · standard ≈ 19K · extended ≈ 29K tokens**.
+**Hot-load budget** (R2 Part B — the 5-item session-start load):
+**lean ≈ 4K · standard ≈ 6K · extended ≈ 9K tokens**. Reference docs
+(`WORKSPACE.md`, `PRINCIPLE.md`, this file, `use-driven-memory.md`)
+are read on demand and do not count against it.
 
 This is the **canonical home** for the cap numbers. `profile.md` and
 the skills may carry a summary table; those legitimately differ in
@@ -63,18 +73,36 @@ column shape, so the discipline is that the **numeric cap values must
 match** this table (not byte-for-byte layout). The source of truth is
 here.
 
+## Model classes (open enum)
+
+| `model_class` | Meaning | Examples (illustrative, Oct 2026) |
+|---|---|---|
+| `hosted-frontier` | vendor's top tier; full attention over long contexts | Claude Opus / Fable, GPT-5.x (non-mini), Gemini 3.x Pro |
+| `hosted-small` | vendor's fast/cheap tier | Claude Haiku, GPT-5.x mini/nano, Gemini Flash |
+| `local-large` | ≥30B parameters (dense or active MoE) | Qwen3 32B+, Llama 4 Maverick, DeepSeek-V3 class |
+| `local-small` | ≤13B parameters | Llama 3.x 8B, Qwen3 8B, Gemma 3 12B, Mistral 7B |
+| `uncertain` | detection failed or conflicting | — |
+
+Hosted mid-tier models (Claude Sonnet, Gemini Pro non-3.x, etc.) are
+`hosted-frontier` for tier purposes. Mid-size local models (14–27B)
+are `local-large` if quantization is ≥Q5, else `local-small` — Owner
+judgment; record it in `profile.md notes`.
+
 ## Tier-derivation rule
 
-`detect-runtime` skill produces the inputs; this rule maps them to
-a tier:
+`detect-runtime` produces the inputs; this rule maps them to a tier:
 
-| effective_context | Model class | Tier |
-|---|---|---|
-| ≤ 16K | any | `lean` |
-| 16K - 64K | any | `standard` |
-| > 64K | hosted-large (Sonnet/Opus, GPT-4, Gemini Pro) | `extended` |
-| > 64K | hosted-modest (Haiku, GPT-4o-mini, Gemini Flash) | `standard` (attention-quality cap) |
-| uncertain / detection failed | — | `standard` (R1 baseline) |
+| `model_class` | Tier |
+|---|---|
+| `hosted-frontier` | `extended` |
+| `hosted-small` | `standard` |
+| `local-large` | `standard` |
+| `local-small` | `lean` |
+| `uncertain` | `standard` (R1 baseline) |
+
+**Override**: if `effective_context` is known and ≤16K tokens (a
+misconfigured local window), the tier is `lean` whatever the class,
+and `detect-runtime` flags the misconfiguration.
 
 ## Mixed-runtime rule
 
@@ -93,60 +121,47 @@ re-ratified on runtime change detected by `session-start`. `dream` and
 as-is).
 
 profile.md is the per-workspace state file; this doc is the
-universal spec. profile.md fields are defined here; profile.md's
-`active_tier` must be one of the tiers defined here.
+universal spec. profile.md fields are defined here; its
+`active_tier` must be one of the tiers above and its `model_class`
+one of the classes above (or a documented custom value).
 
 ## Detection mechanism
 
-Runtime detection is owned by the `detect-runtime` skill
-(`2-mind/forge/act/skill/detect-runtime/SKILL.md`). It runs three
-sub-steps:
+Owned by the `detect-runtime` skill
+(`2-mind/forge/act/skill/detect-runtime/SKILL.md`). Three sub-steps:
 
-1. **Harness** — agent self-introspection + env-var / folder
-   verification
+1. **Harness** — agent self-introspection + env-var / folder check
 2. **Backend** (provider + endpoint + model) — agent
    self-identification + per-harness config + `/v1/models` probe
-3. **Effective context** — agent self-knowledge + hosted constants
-   table OR local endpoint query
+3. **Model class** — from the model id (hosted) or parameter count
+   (local); `effective_context` recorded when cheaply available
+   (Models API `max_input_tokens`, `/v1/models` `context_length`)
 
-Invoked in three modes: by `init` (bootstrap), by `session-start`
-(drift check, every session), and rarely by `audit` (freshness
-re-check of the known-constants table when `last_verified` is
->6 months old). Owner can also invoke `/detect-runtime` directly
-after switching backends. Optional helper script at
-`2-mind/forge/act/script/detect-runtime.sh` automates the procedure
-for shell-capable harnesses.
+Invoked by `init` (bootstrap), by `session-start` (drift check), or
+explicitly (`/detect-runtime`) after switching backends. The spec
+carries **no vendor constants table** (removed in v0.2): the agent
+knows its own model, and the class enum is coarse enough to survive
+model releases without edits.
 
 ## Graceful degradation
 
-Real-functioning guarantees when detection is partial or impossible:
-
-- **Detection sub-step returns uncertain** → record
-  `(uncertain — <reason>)` in profile.md `notes` and proceed with
-  `standard` tier.
-- **Agents without shell/network access** (some constrained
-  harnesses) → skip endpoint queries; rely on agent self-
-  introspection + Owner declaration only.
-- **Headless / non-interactive runs** (cron, CI) → can't ratify
-  mid-job; assume `standard` and flag for next interactive session.
-- **Signal disagreement** (e.g., agent self-says "Claude Sonnet 4.6"
-  but `/v1/models` returns "qwen2.5-coder:32b") → surface to Owner;
-  never silently pick.
-
-## Freshness discipline
-
-The known-constants table inside `detect-runtime/SKILL.md` carries a
-single section-level `last_verified: YYYY-MM-DD` marker. `audit`'s
-stale-scan greps for `last_verified:` markers (frontmatter *or*
-section-level) and flags any older than 6 months for Owner
-re-verification. New model classes (Claude 5, Gemini
-Ultra, GPT-5, etc.) are added by Owner edit — not auto-discovered.
+- **Detection sub-step uncertain** → record `(uncertain — <reason>)`
+  in profile.md `notes`; proceed with `standard`.
+- **No shell / network** → skip endpoint queries; self-introspection
+  + Owner declaration only.
+- **Headless / non-interactive runs** (cron, CI, cloud) → can't
+  ratify mid-job; assume `standard` and queue the proposal
+  (`use-driven-memory.md §Ratification channels`).
+- **Signal disagreement** (agent self-says "Claude Opus 5.5" but
+  `/v1/models` returns `qwen3:32b`) → surface to Owner; never
+  silently pick.
+- **Hook-less harness** → R2 enforcement is declarative (skills +
+  `profile.md`) rather than hook-driven; the universal floor.
 
 ## Enum policy
 
-`harness` and `backend_provider` in profile.md are **open enums** —
-listed values are common cases; `custom` is the always-valid
-catch-all. Adding a new harness or provider does not break existing
-profiles. The tier-derivation rule above operates on
-`effective_context` (numeric), so unknown harness/provider values
-still flow through correctly.
+`harness`, `backend_provider`, and `model_class` in profile.md are
+**open enums** — listed values are common cases; `custom` /
+`uncertain` are always valid. Adding a new harness or provider does
+not break existing profiles. The tier-derivation rule operates on
+`model_class`, so unknown harness/provider values still flow through.

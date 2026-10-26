@@ -1,26 +1,27 @@
 # MCP — canonical external connections
 
 LLM-agnostic MCP registry. The canonical server list lives in
-`registry.json` (the `.mcp.json` standard, symlinked from repo-root
-`.mcp.json`), used by Claude Code / Codex / Gemini CLI.
+`registry.json` (the `.mcp.json` format, symlinked from repo-root
+`.mcp.json` for harnesses that read it — Claude Code, Cursor, others).
 
 `registry.json` ships **intentionally empty** (`{"mcpServers":{}}`) as
 the committed reference target for the symlink-alias pattern — see
-`WORKSPACE.md §Layout`. Add your servers there.
+`WORKSPACE.md §Native discovery paths`. Add your servers there.
 
-## Antigravity CLI (`mcp_config.json`)
+## Rendered copies (harnesses with another format)
 
-Antigravity CLI reads `.agents/mcp_config.json` and renames the
-remote-server field `url` → `serverUrl` (copied Gemini configs **fail
-silently on remote servers** otherwise). To avoid shipping a second
-empty config (sync burden before any content exists), `mcp_config.json`
-is **rendered on demand**, not pre-created:
+Some harnesses cannot read `.mcp.json`; their config is **rendered on
+demand** from `registry.json` when the first server is registered, and
+`audit` keeps the copies in sync (class 8, TRUST-2 — MCP configs
+execute, so renders are T2):
 
-- When you register your first server in `registry.json`, render
-  `3-control/external/mcp/mcp_config.json` from it (identical, with
-  `url` → `serverUrl` on remote/URL servers; `stdio`/command servers
-  unchanged) and symlink `.agents/mcp_config.json` → it.
-- `audit`'s duplicate/contradiction scan then keeps the two in sync.
+| Harness | Rendered file | Transform |
+|---|---|---|
+| Antigravity CLI | `3-control/external/mcp/mcp_config.json`, symlinked as `.agents/mcp_config.json` | remote servers: `url` → `serverUrl`; stdio servers unchanged |
+| Codex CLI | `[mcp_servers.<name>]` tables in `.codex/config.toml` | JSON → TOML; keys per Codex docs |
+
+Each rendered file carries a `rendered_from: registry.json @ <sha>`
+note (comment or sibling `.rendered` file).
 
 Self-owned MCP servers carry source + config together in
 `3-control/external/mcp/<server-name>/` (see

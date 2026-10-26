@@ -18,8 +18,8 @@ drives the loop.
 | Self canonical | `3-control/foundation/SOUL.md` | T2 | Conway core self-schema |
 | Self working | `2-mind/garden/essential/SOUL.md` | T1 | Conway working-self observations |
 | Semantic person | `2-mind/garden/essential/USER.md` (R1 natural cap; R2 tier-adjusted) | T1 | Conway external person-schema |
-| Working buffer | `2-mind/garden/essential/NEXT.md` (single-consumption) | T1 | Baddeley 2000 episodic buffer |
-| Episodic | `2-mind/garden/essential/journal/<YYYY-MM-DD>-<runtime>-<NNN>.md` | T1 | Tulving 1972 episodic store |
+| Working buffer | `2-mind/garden/essential/NEXT.md` (single-consumption, append-only blocks) | T1 | Baddeley 2000 episodic buffer |
+| Episodic | `2-mind/garden/essential/journal/<YYYY-MM-DD>-<runtime>-<sid>.md` | T1 | Tulving 1972 episodic store |
 | Semantic domain | `2-mind/garden/` (whole folder; sub-org per lazy-structure) | T1 | Tulving semantic store |
 | Procedural | `2-mind/forge/` (whole layer) | T1 | Schacter-Tulving 1994 procedural |
 
@@ -28,272 +28,249 @@ Garden = declarative memory in full (semantic + episodic + working);
 memory; agent creates new skills, scripts, role specs, triggers when
 patterns recur.
 
-The runtime's turn-by-turn transcript (e.g., Claude Code's session
-SQLite) plays the role of pre-consolidation hippocampal trace —
-searched on demand, not loaded at session-start.
+**Harness-native memory (T0 — inbox, not a store).** Harnesses keep
+their own memories outside the repo (Claude Code auto memory at
+`~/.claude/projects/<project>/memory/`, Codex `~/.codex/memories/`,
+subagent `memory:` dirs). These are *not canonical* and *not loaded by
+the spec's read order*: `dream` ingests them like a transcript — items
+promote into T1 stores with an `(auto-memory <runtime> <YYYY-MM-DD>)`
+citation and may then be removed at the source. Adopters may disable
+harness memory instead (adapter notes in `3-control/runtime/`). The
+runtime transcript plays the same pre-consolidation role — searched on
+demand, never loaded at session-start.
 
 ## 2 write-tiers
 
-- **T1 — agent autonomous within capacity**: `2-mind/garden/`
-  (declarative memory) + `2-mind/forge/` (procedural memory). Agent
-  writes without ratification, bounded by per-store capacity rules
-  (R1).
+- **T1 — agent autonomous within capacity**: `2-mind/garden/` +
+  `2-mind/forge/`. Agent writes without ratification, bounded by
+  per-store capacity rules (R1).
 - **T2 — agent-proposes, Owner-ratifies**: all of `3-control/` —
-  `foundation/` (canonical identity + operating principles +
-  architecture detail), `rule/` (enforceable rules), `external/`
-  (MCP/OpenAPI/webhook configs), `runtime/` (local LLM adapters) —
-  plus `2-mind/atelier/` when content exists (Owner-stance bin;
-  optional). Agent presents a diff; Owner accepts per item.
+  `foundation/`, `rule/`, `external/`, `runtime/` — plus
+  `2-mind/atelier/` when content exists, plus **any runtime-native
+  config that executes** (`.claude/settings.json` hooks,
+  `.codex/config.toml`, `.agents/mcp_config.json`, `.mcp.json`
+  target). Agent presents a diff; Owner accepts per item.
 
-There is no T3 (Owner-only-no-touch). Even canonical SOUL.md (T2)
-permits agent-proposed graduations; the firewall is *ratification*,
-not *no-touch*.
+There is no T3 (Owner-only-no-touch). Even canonical SOUL.md permits
+agent-proposed graduations; the firewall is *ratification*.
 
 **Tier-by-location heuristic**: 2-mind/garden/ + 2-mind/forge/ = T1;
-3-control/ + 2-mind/atelier/ = T2. Folder location answers "do I need
-to ratify?" — atelier is the one exception that crosses the 2-mind/3-
-control boundary (it is Owner-stance content placed inside the mind
-layer for cultivation-craft adjacency).
+3-control/ + 2-mind/atelier/ + executing native configs = T2.
 
-## 4 operating rules
+### Ratification channels
 
-> **Namespace reservation.** `R1`–`R4` are reserved for the memory
+1. **Interactive** — agent presents the diff in-session; Owner accepts
+   per item (default).
+2. **Pull request** — for headless / cloud / scheduled sessions: the
+   agent commits T2 changes to a branch and opens a PR; **merge = ratify**.
+   Pending proposals are also recorded in
+   `1-active/proposals/<YYYY-MM-DD>_<slug>.md` (lazy; status
+   `proposed | ratified | declined`) so nothing is lost between runs.
+
+## 5 operating rules
+
+> **Namespace reservation.** `R1`–`R5` are reserved for the memory
 > rules below; adopter rules in `3-control/rule/` use a distinct prefix
-> (`ACME-1`, `A1…`) so `R2` is never ambiguous. See `WORKSPACE.md
-> §Rule placement`.
+> (`ACME-1`, `TRUST-1`…). See `WORKSPACE.md §Rule placement`.
 
 ### R1 — Consolidation under capacity
 
-Every store has a capacity bound rooted in cognitive usability —
-how much content a memory store can hold before it stops *being*
-memory (scan-ability drops, signal dilutes in noise, near-duplicates
-accumulate). Reaching the bound triggers in-place consolidation
-(merge near-duplicates / drop superseded entries), never
-write-rejection. Regular replay via `dream` consolidates
-independently of size pressure.
+Every store has a capacity bound rooted in cognitive usability — how
+much content a store can hold before it stops *being* memory
+(scan-ability drops, signal dilutes, near-duplicates accumulate).
+Reaching the bound triggers in-place consolidation (merge
+near-duplicates / drop superseded), never write-rejection. `dream`
+replays independently of size pressure. Caps are **runtime-
+independent**; tier adjustment is R2's concern. Caps are
+**token-primary**; line counts are advisory (line-only caps overflow
+for CJK content, ~2–3× tokens/line). Measure with
+`2-mind/forge/act/script/token-count.sh`.
 
-R1 caps are **runtime-independent** — they describe what makes a
-store usable *as memory*, not what fits a particular runtime.
-Runtime-tier adjustment is R2's concern.
-
-Caps are **token-primary** (v0.1.1); line counts are advisory.
-Line-only caps overflow the R2 budget for non-Latin/CJK content (~2–3×
-tokens/line). Measure with `2-mind/forge/act/script/token-count.sh`.
+Small, consolidated stores are a feature, not a compromise: 2026
+agent-memory work (Auto-Dreamer) reports a memory bank an order of
+magnitude smaller than baselines *outperforming* them.
 
 #### Two cap classes
 
-- **Memory caps** (use-grown — hard, enforced by `dream` /
-  consolidate-on-error; measured in **tokens**): `USER.md`, `NEXT.md`,
-  journal entries, `garden/<topic>.md`.
+- **Memory caps** (use-grown — hard, enforced by `dream`
+  consolidate-on-error; **tokens**): `USER.md`, `NEXT.md`, journal
+  entries, `garden/<topic>.md`.
 - **Spec caps** (Owner-curated, growth-by-edit — advisory flags from
-  `audit`; measured in **lines**, English): `README.md`, `AGENTS.md`,
-  `WORKSPACE.md`, `PRINCIPLE.md`, canonical `SOUL.md`,
-  `use-driven-memory.md`, `runtime-flexibility.md`, `adoption.md`.
+  `audit`; **lines**, English): the spec docs listed below.
 
 #### Natural memory caps (R1 baseline = `standard` tier)
 
-| Store | Hard cap (tokens) | Consolidate at | Line advisory (English) | Cognitive rationale |
+| Store | Hard cap (tokens) | Consolidate at | Line advisory | Rationale |
 |---|---|---|---|---|
-| `USER.md` | 800 | 640 | ~100 lines | ~10 × Miller-chunked categories (≈ 7±2 entries per § Preferences / § Patterns / § Tells × 3 sections), with headroom before the next consolidate trigger |
-| `NEXT.md` | 240 soft | n/a (single-consumption) | ~30 lines | one screen worth — agent reads it without scrolling; handoff, not journal |
-| journal entry | 2000 soft per entry | n/a (per-entry shape) | ~200 lines | ~one session's decisions + learnings at human reading pace (8–10 min); substantive yet skimmable |
-| garden `<topic>.md` | flag at 3200 | split or consolidate | ~300 lines | single subject still cohesive without internal sectioning; past the flag → split into `<topic>/<sub>.md` |
+| `USER.md` | 800 | 640 | ~100 | ~10 Miller-chunked categories (7±2 entries × 3 sections) with headroom |
+| `NEXT.md` | 240 soft (total at consumption) | n/a | ~30 | one screen; handoff, not journal |
+| journal entry | 2000 soft | n/a | ~200 | one session's decisions + learnings at reading pace |
+| garden `<topic>.md` | flag at 3200 | split or consolidate | ~300 | single subject cohesive without internal sectioning |
 
-`dream` and `audit` compare against the token cap (helper: backend
-tokenizer → `tiktoken cl100k_base` → an **advisory rough estimate** if
-neither, flagged non-canonical — don't gate consolidation on it alone).
-Line advisory shows in their report.
+Working `SOUL.md` (garden): no cap; *Graduated* entries >6 months
+pruned by `audit`. Journal entries >3 months → `garden/archive/<YYYY-MM>/`
+(archival is not deletion — still grep-searchable). The numbers are
+*defensibly grounded* but not *empirically validated*; `audit` now
+logs store sizes per pass so adopter data can recalibrate them.
 
-Working `SOUL.md` (in garden): no cap; *Graduated* entries >6 months
-pruned by `audit` (R3 source-trail).
+#### Spec caps (advisory flags, lines)
 
-*Theory*: McGaugh consolidation (hippocampus → cortex via replay);
-Miller 1956 7±2 working-memory capacity; Ebbinghaus forgetting curve.
+`README.md` 150 · `AGENTS.md` 80 · `WORKSPACE.md` 200 ·
+`PRINCIPLE.md` 250 · canonical `SOUL.md` 100 · this file 300 ·
+`runtime-flexibility.md` 200 · `adoption.md` 200. Growth-by-edit;
+flag for Owner review when exceeded, never auto-consolidated.
 
-The numbers are *defensibly grounded* but not *empirically validated*
-— pre-stable; adopter workloads will surface needed adjustments.
-
-#### Spec caps (advisory flags)
-
-| File | Flag at |
-|---|---|
-| `README.md` | 150 lines (public-facing entry — keep scan-able) |
-| `AGENTS.md` | 80 lines (entry doc — keep terse) |
-| `WORKSPACE.md` | 200 lines |
-| `PRINCIPLE.md` | 250 lines |
-| `SOUL.md` (canonical) | 100 lines (Hermes-style sectioned) |
-| `use-driven-memory.md` | 300 lines |
-| `runtime-flexibility.md` | 200 lines |
-| `adoption.md` | 200 lines |
-
-These are growth-by-edit, not use-grown — flag for Owner review
-when exceeded; never auto-consolidated.
+*Theory*: McGaugh consolidation; Miller 1956; Ebbinghaus.
 
 ### R2 — Session-boundary discipline
 
-The session boundary is the workspace's sync point. Two parts:
+A **session is one context-window lifetime**, not one terminal
+lifetime. Boundaries: `startup` (full session-start), and
+**re-entries** — `compact`, `resume`, `fork` — where the harness
+rebuilds context mid-work. Hook-capable harnesses expose these as
+events (`2-mind/forge/cue/lifecycle.md`); hook-less ones rely on the
+skills' declarative discipline.
 
 #### Part A — Writes settle between sessions
 
-Memory writes appear in the **next session's** loaded context, never
-the current one. This:
-- Preserves prompt-cache stability (no mid-session cache thrash)
-- Mirrors sleep consolidation (writes settle during quiescence)
-- Prevents the agent from reacting to its own just-written claims
+Memory writes appear in the **next full session's** loaded context,
+never the current one: preserves prompt-cache stability, mirrors
+sleep consolidation, prevents reacting to one's own just-written
+claims. **Re-entry** re-injects the hot load *as it was at startup*
+(do not re-read T1 stores written this session) and does **not**
+consume `NEXT.md`. Before compaction, write a `NEXT.md` checkpoint
+block (Outstanding only) so the handoff survives the summary.
 
-Agent writes to T1 stores any time during a session (typically via
-`session-end` and `dream`); the *loaded-context effect* manifests
-only at the next `session-start`.
+#### Part B — Session-start load fits the attention budget
 
-#### Part B — Session-start load fits runtime budget
-
-The 7-item session-start load must fit the runtime's *effective*
-context. "Runtime" is a pair (harness, backend); tier is driven by
-backend `effective_context`. See
-`3-control/foundation/runtime-flexibility.md` for the full mechanism
-— two-axis framing, three patterns, tier system + derivation rule,
-detection procedure, graceful degradation, freshness discipline.
-
-Quick reference: `lean` ≤16K · `standard` 16-64K (= R1 baseline) ·
-`extended` >64K hosted-large; default if `profile.md` absent:
-`standard`. *Theory*: sleep-boundary consolidation.
+The 5-item hot load must stay small enough not to dilute attention:
+≈6K tokens at `standard` (tier table in `runtime-flexibility.md`).
+Raw context size is **not** the constraint — every current hosted
+model has ≥1M — attention quality, cost, and cache stability are.
+Reference docs are read on demand, never at startup. *Theory*:
+context rot (quality degrades well below the advertised window);
+sleep-boundary consolidation.
 
 ### R3 — Timestamped episodic, synthesized semantic
 
 Episodic stores (journal entries) are **recorded at the time, not
-re-synthesized** — concise per-session digests with timestamp, runtime
-tag, and citations to the session's commits/decisions (the raw
-turn-by-turn trace lives in the runtime transcript — see §7 stores). **T1
-semantic stores** (`USER.md`, working `SOUL.md`, garden `<topic>.md`)
-hold **synthesized** content; each item cites its source journal as
-`(journal <YYYY-MM-DD>-<runtime>-<NNN>)`. **T2 foundation docs** are
-also synthesized but change by Owner-ratified diff and cite external
-theory / a graduation trail — *not* journals (so `audit`'s
-citation-gap scan covers only T1 stores).
+re-synthesized** — per-session digests with timestamp, runtime tag,
+and citations to commits/decisions. **T1 semantic stores** hold
+**synthesized** content; each item cites its source as
+`(journal <filename-stem>)`, `(auto-memory <runtime> <date>)`, or
+`(owner <date>)` for a direct Owner statement. **T2 foundation docs**
+change by Owner-ratified diff and cite theory or a graduation trail,
+not journals (so `audit`'s citation-gap scan covers T1 only).
 
-A synthesized claim is always traceable to its raw observation. This
-prevents source-attribution errors and compression-driven drift.
+**Reconsolidation on retrieval**: when a T1 item is *used* in-session
+and found wrong or stale, correct it in place at that moment, keep the
+old citation, add the new one. A synthesized claim is always traceable
+to its raw observation. *Theory*: Loftus 1974; Johnson 1993.
 
-*Theory*: Loftus 1974 reconstructive memory + misinformation effect;
-Johnson 1993 source monitoring framework.
+**Person-model is not evidence**: `USER.md` governs style, format and
+procedure. It never outranks the codebase, data, or a current Owner
+statement; on conflict present the evidence and let the Owner decide
+(memory over-personalization is a documented 2026 failure mode).
 
 ### R4 — Two-tier authority with mirrored identity
 
-T1 / T2 as above. Identity content uses **dual-store**: the agent's
-working observations (`garden/essential/SOUL.md`, T1) accumulate
-freely; canonical identity (`3-control/foundation/SOUL.md`, T2)
-updates only via Owner-ratified graduation from the working store.
-The working store is **not** loaded at session-start — `dream` reads
-it only when preparing graduation proposals.
+Identity uses **dual-store**: working observations
+(`garden/essential/SOUL.md`, T1) accumulate freely; canonical identity
+(`3-control/foundation/SOUL.md`, T2) updates only via Owner-ratified
+graduation. The working store is **not** loaded at session-start —
+`dream` reads it only when preparing graduations. *Theory*: Conway
+self-memory system; Hermes Agent SOUL contract (relaxed to permit
+T2-ratified updates).
 
-This mirrors Conway's self-memory system: the working self
-(contextual, observational) is distinct from the core self (stable,
-protected), and updates the core only through deliberate consolidation.
+### R5 — Concurrency: memory lives on the integration branch
 
-*Theory*: Conway self-memory system; Hermes Agent verbatim-SOUL
-contract (relaxed here to permit T2-ratified updates).
+Parallel sessions (worktrees, subagents, cloud runs) are the norm.
+
+- **Branch**: `2-mind/garden/` writes belong to the integration branch
+  (`main`). A worktree / feature-branch session writes **only its
+  journal entry** and a `NEXT.md` block; `dream`'s T1 consolidation
+  runs from the primary checkout (or lands via a `memory:`-prefixed
+  commit the Owner merges first). `audit` scans unmerged branches for
+  stranded garden writes.
+- **Identity**: journal filenames carry a session id
+  (`<sid>` = harness session-id prefix or `HHMMSS`); `NNN` ordinals
+  remain valid for strictly sequential single-session use.
+- **Buffer**: `NEXT.md` is **append-only blocks** (`### <runtime>/<sid>
+  @ <ISO>`), never rewritten by a writer; `session-start` consumes
+  all blocks then clears. Blocks merge cleanly in git.
+- **Subagents**: role specs live in `2-mind/forge/role/<name>/`
+  (canonical) and are exposed at harness-native paths
+  (`.claude/agents/<name>.md` etc.). Subagent harness memory is T0.
+  Heavy passes (`dream`, `audit`) should run as a **forked subagent**
+  so the main session's cache prefix stays intact.
 
 ## Read order at session-start
 
-**Canonical home for the 7-item read order.** `AGENTS.md §Reading
-order` mirrors it; `init`/`session-start` cite *this* list, so an
-adopter whose `AGENTS.md` omits the section still loads it (#2).
+**Canonical home for the hot read order.** `AGENTS.md §Reading order`
+mirrors it; `init`/`session-start` cite *this* list.
 
-Loaded into the agent's prompt in this sequence:
+Hot load (every full session start, in sequence):
 
-1. `AGENTS.md` — workspace entry + per-runtime mapping
-2. `WORKSPACE.md` — topology spec
-3. `3-control/foundation/PRINCIPLE.md` — operating principles
-4. `3-control/foundation/SOUL.md` — canonical identity
-5. `2-mind/garden/essential/USER.md` — semantic person-model
-6. `2-mind/garden/essential/NEXT.md` — working buffer (consume + clear)
-7. `2-mind/garden/essential/journal/<most-recent>.md` — recent-session continuity
+1. `AGENTS.md` — operational card (entry + hot order + T1/T2 line)
+2. `3-control/foundation/SOUL.md` — canonical identity
+3. `2-mind/garden/essential/USER.md` — semantic person-model
+4. `2-mind/garden/essential/NEXT.md` — working buffer (consume + clear)
+5. `2-mind/garden/essential/journal/<most-recent>.md` — continuity
+   (skip if >30 days old)
 
-Progression: **spec → principle → identity → user → state → recent**.
+Progression: **entry → identity → user → state → recent**.
 
-Not loaded at session-start (read on demand):
-- `garden/essential/SOUL.md` (working observations — `dream` only)
-- Older journal entries (search via grep when needed)
-- garden `<topic>.md` content (loaded by relevance)
-- skills (invoked by description match)
+Reference set (on demand, never at startup): `WORKSPACE.md`,
+`3-control/foundation/PRINCIPLE.md`, this file,
+`runtime-flexibility.md`, `adoption.md`, `3-control/rule/*`. Skills
+cite the section they need. Not loaded: `garden/essential/SOUL.md`
+(`dream` only), older journals (grep), garden `<topic>.md` (by
+relevance), skills (by description match), harness memory (T0).
 
 ## 6 lifecycle skills
 
 | Skill | When | Role |
 |---|---|---|
-| `init` | Once after clone (or major restructure) | Workspace bootstrap — verify structure; invoke `detect-runtime`; ratify profile.md |
-| `session-start` | Every session begin | Load 7-item read order; invoke `detect-runtime` for drift check; consume + clear `NEXT.md` |
-| `session-end` | Every session close | Write journal entry + fresh `NEXT.md`; chain `dream` for substantive sessions |
-| `dream` | Chain from `session-end`, mid-session triggers, or `/dream` | Sleep-consolidation pass — **R1 primary enforcer** (consolidate-on-error at write-time); replay journal → T1 writes; propose T2 graduations |
-| `audit` | Monthly, limit-breach, or `/audit` | General-purpose maintenance — cross-cutting enforcement: One canonical home (duplicates/contradictions/orphans), Use-driven evolution (low-utility prune + journal archival), **R1 backstop** (over-grown scan), **R3 backstop** (citation-gap scan), R3 source-trail (audit-log) |
-| `detect-runtime` | From `init`, `session-start`, or `/detect-runtime` | Detect (harness, backend, effective_context); derive recommended tier per `runtime-flexibility.md` rule |
+| `init` | Once after clone (or major restructure) | Verify structure; `detect-runtime`; ratify profile.md; expose native aliases |
+| `session-start` | Every session begin (`startup`); light mode on re-entry | Load hot order; drift check; consume + clear `NEXT.md`; brief |
+| `session-end` | Every session close | Journal entry + `NEXT.md` block; chain `dream` for substantive sessions |
+| `dream` | Chained, mid-session triggers, or `/dream` | **R1 primary enforcer**; replay journal + T0 inbox → T1; reconsolidate on retrieval; propose T2 graduations |
+| `audit` | Monthly, limit-breach, or `/audit` | One canonical home + use-driven pruning; **R1/R3/R5 backstop**; metrics line; audit-log |
+| `detect-runtime` | From `init`, `session-start`, or `/detect-runtime` | Detect (harness, backend, model_class); recommend tier |
 
 Detail per skill at `2-mind/forge/act/skill/<name>/SKILL.md`.
 
 ## Dual-store identity graduation pipeline
 
 ```
-session                dream skill            periodic Owner review
-   ↓                       ↓                          ↓
-journal entries  →   garden/essential/SOUL.md  →  3-control/foundation/SOUL.md
-(episodic)           (T1 working observations)     (T2 canonical, Owner-ratified)
+session → journal (episodic) → dream → garden/essential/SOUL.md (T1 working)
+       → dream, periodic → 3-control/foundation/SOUL.md (T2, Owner-ratified)
 ```
 
-1. **Session**: agent observes Owner-stance signals → records in
-   journal entry's *Owner-signals* section.
-2. **`dream`**: distills signals from journals into
-   `garden/essential/SOUL.md` *Observations* / *Owner-signals* (T1).
-3. **`dream`, periodic**: agent proposes promising observations as
-   `3-control/foundation/SOUL.md` diffs; Owner ratifies per item.
-4. **On ratify**: change lands in canonical; the source entry gets
-   marked `[graduated YYYY-MM-DD → 3-control/foundation/SOUL.md]` and
-   moves to *Graduated* section (R3 source trail preserved).
-
-## Bounded growth + archival
-
-| Store | Discipline |
-|---|---|
-| `USER.md` | R1 natural cap 800 tok hard / consolidate at 640 (~100 lines); R2 tier-adjusted |
-| `NEXT.md` | R1 natural cap 240 tok soft (~30 lines); R2 tier-adjusted; single-consumption |
-| journal entry | R1 natural cap 2000 tok soft per entry (~200 lines); R2 tier-adjusted; no entry-count cap |
-| journal/ folder | entries >3 months → `garden/archive/<YYYY-MM>/<filename>.md` via `audit` |
-| `garden/essential/SOUL.md` | no hard cap; *Graduated* entries >6 months pruned by `audit` |
-| garden `<topic>.md` | R1 flag at 3200 tok (~300 lines); R2 tier-adjusted; `audit` consolidates near-duplicates |
-| spec docs (see §R1 Spec caps table) | R1 spec-cap advisory flags (runtime-independent); Owner-curated cadence; flag at file-specific threshold |
-
-Archival is **not deletion** — old journal entries move to
-`garden/archive/` and remain searchable (grep), just not auto-loaded
-at session-start. Preserves source-monitoring trail (R3).
+On ratify the source entry is marked `[graduated YYYY-MM-DD →
+3-control/foundation/SOUL.md]` and moved to *Graduated* (R3 trail).
 
 ## Cross-runtime continuity
 
 Memory stores are **workspace-canonical** — written to and read from
 the repo, not runtime cache. Sessions in Claude Code, Codex CLI, and
-Gemini CLI all share the same `garden/essential/USER.md`, `NEXT.md`,
-and `journal/` (entries distinguished by `<runtime>` tag in filename).
-Each runtime's auto-loaded instruction file (`CLAUDE.md`, `AGENTS.md`,
-`GEMINI.md` — symlinks at repo root) points at the workspace
-`AGENTS.md`, from which the agent reads the 7-item order regardless
-of runtime.
+Antigravity CLI share the same `USER.md`, `NEXT.md`, and `journal/`
+(entries distinguished by `<runtime>` tag). Every harness reads
+`AGENTS.md` (natively or via its fallback file) and from there the hot
+read order.
 
 ## References
 
-Cognitive theory:
-- Schacter, D. L., & Tulving, E. (1994). *Memory Systems 1994*. MIT Press.
-- Tulving, E. (1972). "Episodic and semantic memory." In E. Tulving & W. Donaldson (eds.), *Organization of Memory*.
-- Baddeley, A. D. (2000). "The episodic buffer: a new component of working memory?" *Trends in Cognitive Sciences* 4(11).
-- Conway, M. A. (2005). "Memory and the self." *Journal of Memory and Language* 53(4).
-- McGaugh, J. L. (2000). "Memory — a century of consolidation." *Science* 287.
-- Miller, G. A. (1956). "The magical number seven, plus or minus two." *Psychological Review* 63(2).
-- Ebbinghaus, H. (1885). *Über das Gedächtnis*.
-- Loftus, E. F., & Palmer, J. C. (1974). "Reconstruction of automobile destruction." *Journal of Verbal Learning and Verbal Behavior* 13.
-- Johnson, M. K., Hashtroudi, S., & Lindsay, D. S. (1993). "Source monitoring." *Psychological Bulletin* 114(1).
+Cognitive theory: Schacter & Tulving 1994 *Memory Systems*; Tulving
+1972; Baddeley 2000 *TiCS* 4(11); Conway 2005 *JML* 53(4); McGaugh 2000
+*Science* 287; Miller 1956; Ebbinghaus 1885; Loftus & Palmer 1974;
+Johnson, Hashtroudi & Lindsay 1993.
 
 LLM-agent systems:
 - Hermes Agent (Nous Research): <https://hermes-agent.nousresearch.com/docs/>
-- Anthropic Auto Dream: <https://claudefa.st/blog/guide/mechanics/auto-dream>
-- Reflexion (Shinn et al., 2023): <https://arxiv.org/abs/2303.11366>
-- MemGPT / Letta (Packer et al., 2023): <https://arxiv.org/abs/2310.08560>
-- Generative Agents (Park et al., 2023): <https://arxiv.org/abs/2304.03442>
-- Mem0 (2024): <https://arxiv.org/abs/2504.19413>
-- A-MEM (Xu, 2025): <https://arxiv.org/abs/2502.12110>
+- Letta MemFS (git-backed markdown memory): <https://docs.letta.com/concepts/memfs>
+- Claude Code memory & auto memory: <https://code.claude.com/docs/en/memory>
+- Reflexion (Shinn 2023): <https://arxiv.org/abs/2303.11366>; MemGPT (Packer 2023): <https://arxiv.org/abs/2310.08560>
+- Generative Agents (Park 2023): <https://arxiv.org/abs/2304.03442>; Mem0 (2024): <https://arxiv.org/abs/2504.19413>; A-MEM (Xu 2025): <https://arxiv.org/abs/2502.12110>
+- Auto-Dreamer (2026): <https://arxiv.org/abs/2605.20616>; Human-Inspired Memory Architecture (2026): <https://arxiv.org/abs/2605.08538>
+- Context rot (Chroma 2025): <https://research.trychroma.com/context-rot>; AGENTS.md evaluation (ETH 2026): <https://arxiv.org/abs/2602.11988>

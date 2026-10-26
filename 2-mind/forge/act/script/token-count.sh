@@ -6,7 +6,7 @@
 # - Anthropic Messages count_tokens API
 # - Gemini countTokens API
 # - local /api/tokenize endpoint
-# - tiktoken fallback (o200k_base for newer OpenAI models, else cl100k_base)
+# - tiktoken fallback (o200k_base by default; cl100k_base for legacy GPT-4-era ids)
 # - last-resort rough estimate if tiktoken is not installed
 #
 # The rough estimate is non-canonical/advisory only. Install tiktoken or
@@ -118,7 +118,10 @@ import sys
 
 text = sys.stdin.read()
 model = (os.environ.get("TOKEN_COUNT_MODEL") or "").lower()
-encoding_name = "o200k_base" if any(x in model for x in ("gpt-4o", "gpt-5", "o1", "o3", "o4")) else "cl100k_base"
+# o200k_base is the closest public tokenizer to current-generation models;
+# cl100k_base only for legacy GPT-4-era ids.
+legacy = "gpt-3.5" in model or ("gpt-4" in model and "gpt-4o" not in model)
+encoding_name = "cl100k_base" if legacy else "o200k_base"
 
 try:
     import tiktoken

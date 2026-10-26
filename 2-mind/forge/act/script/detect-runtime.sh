@@ -1,221 +1,108 @@
 #!/usr/bin/env bash
-# Optional helper for the detect-runtime skill.
+# Optional helper for the detect-runtime skill (objective checks only).
 #
-# Emits a JSON object on stdout:
+# Emits JSON on stdout:
 #   {
-#     "harness":              "<claude-code|codex-cli|gemini-cli|antigravity|cursor|hermes|opencode|continue|custom>",
+#     "harness":              "<claude-code|codex-cli|antigravity|gemini-cli|cursor|hermes|opencode|continue|custom>",
 #     "backend_provider":     "<anthropic|openai|google|ollama|lm-studio|mlx|llama-cpp|vllm|custom>",
 #     "backend_endpoint":     "<URL>",
 #     "backend_model":        "<model id>",
-#     "effective_context":    <integer tokens>,
+#     "model_class":          "<hosted-frontier|hosted-small|local-large|local-small|uncertain>",
+#     "effective_context":    <integer tokens, 0 = unknown>,
 #     "recommended_tier":     "<lean|standard|extended>",
-#     "signal_disagreements": [<list of strings, may be empty>]
+#     "signal_disagreements": [<strings>]
 #   }
 #
-# This helper automates objective checks only: env/config/endpoint
-# verification plus tier derivation and JSON emission. It cannot
-# perform agent self-introspection; the running agent must supply that
-# primary signal per detect-runtime/SKILL.md Step 0 / Sub-step A.
-#
-# This is one reference implementation. The skill at
-# 2-mind/forge/act/skill/detect-runtime/SKILL.md describes the
-# procedure; adopters may use this script, replace it, or execute
-# the procedure manually.
-#
-# Requirements: bash + jq. curl/network probes degrade gracefully when
-# unavailable; jq is required for JSON parsing/emission.
+# It cannot perform agent self-introspection (SKILL.md Step 0); the
+# running agent supplies that primary signal and reconciles. One
+# reference implementation — adopters may replace it or run the skill
+# procedure manually. Requirements: bash + jq; curl optional.
 
 set -eu
 
 profile_path="3-control/runtime/profile.md"
+profile_value() { [ -f "$profile_path" ] && sed -n "s/^\*\*$1\*\*: //p" "$profile_path" | head -n 1 || true; }
+profile_tier="$(profile_value active_tier)"
 
-profile_value() {
-  field="$1"
-  if [ -f "$profile_path" ]; then
-    sed -n "s/^\*\*${field}\*\*: //p" "$profile_path" | head -n 1
-  fi
-}
+signals="[]"
+add_signal() { signals="$(printf '%s' "$signals" | jq -c --arg m "$1" '. + [$m]')"; }
 
-is_integer() {
-  case "${1:-}" in
-    ''|*[!0-9]*) return 1 ;;
-    *) return 0 ;;
-  esac
-}
+# --- Sub-step 1: harness ---
+agy="false"
+if env | grep -q '^AGY_' || command -v agy >/dev/null 2>&1 || [ -d "${HOME}/.config/agy" ]; then agy="true"; fi
+gemini="false"
+if [ -n "${GEMINI_PROJECT_DIR:-}" ] || [ -d ".gemini" ]; then gemini="true"; fi
+[ "$agy" = "true" ] && [ "$gemini" = "true" ] && add_signal "WARNING: gemini-cli and antigravity signals both present; see 3-control/runtime/antigravity-cli.md"
 
-profile_effective_context="$(profile_value "effective_context" || true)"
-profile_active_tier="$(profile_value "active_tier" || true)"
-signal_disagreements="[]"
-
-add_signal() {
-  signal_disagreements="$(printf '%s' "$signal_disagreements" | jq -c --arg msg "$1" '. + [$msg]')"
-}
-
-has_agy_env="false"
-if env | grep -q '^AGY_'; then
-  has_agy_env="true"
-fi
-
-agy_signal="false"
-if [ "$has_agy_env" = "true" ] \
-  || { command -v agy >/dev/null 2>&1 && agy --version >/dev/null 2>&1; } \
-  || [ -f "${HOME}/.config/agy/credentials.json" ] \
-  || [ -d "${HOME}/.gemini/antigravity-cli" ]; then
-  agy_signal="true"
-fi
-
-gemini_signal="false"
-if [ -n "${GEMINI_PROJECT_DIR:-}" ] || [ -d ".gemini" ] || [ -d "${HOME}/.gemini" ]; then
-  gemini_signal="true"
-fi
-
-if [ "$agy_signal" = "true" ] && [ "$gemini_signal" = "true" ]; then
-  add_signal "WARNING: gemini-cli and antigravity signals both present; see 3-control/runtime/antigravity-cli.md"
-fi
-
-# --- Sub-step 1: Detect harness ---
 harness="custom"
-if [ -n "${CLAUDE_PROJECT_DIR:-}" ] || [ -d ".claude" ]; then
-  harness="claude-code"
-elif [ -n "${CODEX_PROJECT_DIR:-}" ] || [ -f ".codex/config.toml" ]; then
-  harness="codex-cli"
-elif [ "$agy_signal" = "true" ]; then
-  harness="antigravity"
-elif [ -n "${GEMINI_PROJECT_DIR:-}" ] || [ -d ".gemini" ]; then
-  harness="gemini-cli"
-elif [ -d ".cursor" ]; then
-  harness="cursor"
-elif [ -f "${HOME}/.hermes/config.yaml" ]; then
-  harness="hermes"
-elif [ -f ".config/opencode/opencode.json" ]; then
-  harness="opencode"
-elif [ -f ".continue/config.yaml" ]; then
-  harness="continue"
+if   [ -n "${CLAUDE_PROJECT_DIR:-}" ] || [ -d ".claude" ]; then harness="claude-code"
+elif [ -n "${CODEX_PROJECT_DIR:-}" ] || [ -f ".codex/config.toml" ]; then harness="codex-cli"
+elif [ "$agy" = "true" ]; then harness="antigravity"
+elif [ "$gemini" = "true" ]; then harness="gemini-cli"
+elif [ -d ".cursor" ]; then harness="cursor"
+elif [ -f "${HOME}/.hermes/config.yaml" ]; then harness="hermes"
+elif [ -f ".config/opencode/opencode.json" ]; then harness="opencode"
+elif [ -f ".continue/config.yaml" ]; then harness="continue"
 fi
 
-# --- Sub-step 2: Detect backend ---
-backend_provider="custom"
-backend_endpoint=""
-backend_model=""
-
-# OPENAI_BASE_URL hint: if Owner has pointed harness at a non-standard
-# local endpoint (e.g., LiteLLM proxy on :4000), try that first.
-if [ -n "${OPENAI_BASE_URL:-}" ]; then
-  hint_url="${OPENAI_BASE_URL%/}/models"
-  if response=$(curl -s -m 2 "$hint_url" 2>/dev/null) \
-     && echo "$response" | jq -e '.data' >/dev/null 2>&1; then
-    backend_endpoint="$hint_url"
-    backend_provider="custom"
-    backend_model=$(echo "$response" | jq -r '.data[0].id // empty')
-  fi
-fi
-
-# Local-port probe (covers most local-LLM cases regardless of harness)
-if [ -z "$backend_endpoint" ]; then
-  for port in 11434 1234 8080 8000; do
-    url="http://localhost:${port}/v1/models"
-    if response=$(curl -s -m 2 "$url" 2>/dev/null) && [ -n "$response" ]; then
-      if echo "$response" | jq -e '.data' >/dev/null 2>&1; then
-        backend_endpoint="$url"
-        case "$port" in
-          11434) backend_provider="ollama" ;;
-          1234)  backend_provider="lm-studio" ;;
-          8080)  backend_provider="llama-cpp" ;;
-          8000)  backend_provider="vllm" ;;
-        esac
-        backend_model=$(echo "$response" | jq -r '.data[0].id // empty')
-        break
-      fi
-    fi
+# --- Sub-step 2: backend ---
+provider="custom"; endpoint=""; model=""; ctx=0
+probe() {  # $1 = URL of /models; sets endpoint/model on success
+  local r
+  r=$(curl -s -m 2 "$1" 2>/dev/null) || return 1
+  printf '%s' "$r" | jq -e '.data' >/dev/null 2>&1 || return 1
+  endpoint="$1"; model=$(printf '%s' "$r" | jq -r '.data[0].id // empty')
+  ctx=$(printf '%s' "$r" | jq -r --arg m "$model" '.data[] | select(.id==$m) | (.context_length // .max_model_len // .n_ctx // 0)' 2>/dev/null || echo 0)
+  return 0
+}
+base="${OPENAI_BASE_URL:-${ANTHROPIC_BASE_URL:-}}"
+if [ -n "$base" ] && probe "${base%/}/models"; then provider="custom"; fi
+if [ -z "$endpoint" ]; then
+  for p in 11434:ollama 1234:lm-studio 8080:llama-cpp 8000:vllm; do
+    if probe "http://localhost:${p%%:*}/v1/models"; then provider="${p#*:}"; break; fi
   done
 fi
-
-# Hosted detection if no local backend found
-if [ -z "$backend_endpoint" ]; then
+if [ -z "$endpoint" ]; then
   case "$harness" in
-    claude-code) backend_provider="anthropic"; backend_endpoint="https://api.anthropic.com" ;;
-    codex-cli)   backend_provider="openai";    backend_endpoint="https://api.openai.com" ;;
-    gemini-cli|antigravity)
-                  backend_provider="google";    backend_endpoint="https://generativelanguage.googleapis.com" ;;
+    claude-code) provider="anthropic"; endpoint="https://api.anthropic.com" ;;
+    codex-cli)   provider="openai";    endpoint="https://api.openai.com" ;;
+    antigravity|gemini-cli) provider="google"; endpoint="https://generativelanguage.googleapis.com" ;;
   esac
 fi
+[ "$ctx" -gt 0 ] 2>/dev/null || ctx=0
 
-# --- Sub-step 3: Determine effective_context ---
-effective_context=0
-case "$backend_provider" in
+# --- Sub-step 3: model class (heuristic; agent reconciles) ---
+class="uncertain"
+m="$(printf '%s' "$model" | tr '[:upper:]' '[:lower:]')"
+case "$provider" in
   anthropic|openai|google)
-    # Hosted effective_context comes from agent self-knowledge
-    # (Sub-step A) cross-checked against the canonical known-constants
-    # table in detect-runtime/SKILL.md; this helper cannot infer it
-    # without a hosted model id.
-    ;;
-  ollama|lm-studio|mlx|llama-cpp|vllm|custom)
-    if [ -n "$backend_endpoint" ] && [ -n "$backend_model" ]; then
-      # Try common context fields in /v1/models response
-      models_response=$(curl -s -m 2 "$backend_endpoint" 2>/dev/null || echo "{}")
-      effective_context=$(echo "$models_response" \
-        | jq -r --arg m "$backend_model" \
-            '.data[] | select(.id==$m) | (.context_length // .max_model_len // .n_ctx // 0)' \
-        2>/dev/null || echo 0)
-    fi
-    # If runtime returned no usable context value, leave it unknown.
-    # Detection is advisory; profile.md remains authoritative for
-    # session behavior when detection lacks model/context evidence.
-    # If runtime DID return a value, trust it: the tier-derivation rule
-    # in Sub-step 4 already clamps appropriately per the attention-
-    # quality cliff. Do NOT silently clamp legitimate high values
-    # (e.g., a 70B-class model configured for 32K context).
-    ;;
+    case "$m" in
+      "") class="uncertain" ;;
+      *haiku*|*mini*|*nano*|*flash*|*lite*) class="hosted-small" ;;
+      *) class="hosted-frontier" ;;
+    esac ;;
+  *)
+    params=$(printf '%s' "$m" | grep -oE '[0-9]+(\.[0-9]+)?b' | head -n1 | tr -d b)
+    if [ -n "$params" ]; then
+      if   awk "BEGIN{exit !($params>=30)}"; then class="local-large"
+      elif awk "BEGIN{exit !($params<=13)}"; then class="local-small"
+      else add_signal "mid-size local model (${params}B): Owner decides local-large vs local-small"; fi
+    elif [ -n "$model" ]; then add_signal "could not parse parameter count from model id '$model'"; fi ;;
 esac
+[ -z "$model" ] && add_signal "detection uncertain: no model id; profile.md tier applies when present"
 
-# --- Sub-step 4: Derive tier ---
-recommended_tier="standard"
-detection_uncertain="false"
-if [ -z "$backend_model" ] || [ "$effective_context" -eq 0 ]; then
-  detection_uncertain="true"
-  if is_integer "$profile_effective_context"; then
-    effective_context="$profile_effective_context"
-  else
-    effective_context=0
-  fi
-  case "$profile_active_tier" in
-    lean|standard|extended) recommended_tier="$profile_active_tier" ;;
-    *) recommended_tier="standard" ;;
-  esac
-  add_signal "detection uncertain: empty model/context; using profile.md tier when available"
-elif [ "$effective_context" -le 16384 ]; then
-  recommended_tier="lean"
-elif [ "$effective_context" -le 65536 ]; then
-  recommended_tier="standard"
-else
-  # > 64K — hosted-large gets extended; hosted-modest stays standard
-  # (attention-quality cap). Case-order matters: hosted-modest
-  # patterns must come BEFORE hosted-large because shell case picks
-  # the first match — e.g., `gpt-4o-mini` matches `*gpt-4*` if that
-  # pattern comes first.
-  case "$backend_model" in
-    *haiku*|*gpt-4o-mini*|*gpt-4o-nano*) recommended_tier="standard" ;;
-    *sonnet*|*opus*|*gpt-4*|*gpt-5*|*gemini-pro*|*gemini-ultra*) recommended_tier="extended" ;;
-    *gemini-flash*) recommended_tier="standard" ;;  # hosted-modest-equivalent
-    *) recommended_tier="standard" ;;
-  esac
+# --- Sub-step 4: tier ---
+case "$class" in
+  hosted-frontier) tier="extended" ;;
+  local-small)     tier="lean" ;;
+  hosted-small|local-large) tier="standard" ;;
+  *) case "$profile_tier" in lean|standard|extended) tier="$profile_tier" ;; *) tier="standard" ;; esac ;;
+esac
+if [ "$ctx" -gt 0 ] && [ "$ctx" -le 16384 ]; then
+  tier="lean"; add_signal "effective_context ${ctx} ≤16K: local window likely misconfigured (Ollama default); lean forced"
 fi
 
-# --- Emit JSON ---
-jq -n \
-  --arg harness "$harness" \
-  --arg bp "$backend_provider" \
-  --arg be "$backend_endpoint" \
-  --arg bm "$backend_model" \
-  --argjson ec "$effective_context" \
-  --arg rt "$recommended_tier" \
-  --argjson sd "$signal_disagreements" \
-  '{
-    harness: $harness,
-    backend_provider: $bp,
-    backend_endpoint: $be,
-    backend_model: $bm,
-    effective_context: $ec,
-    recommended_tier: $rt,
-    signal_disagreements: $sd
-  }'
+jq -n --arg h "$harness" --arg p "$provider" --arg e "$endpoint" --arg m "$model" \
+      --arg c "$class" --argjson x "$ctx" --arg t "$tier" --argjson s "$signals" \
+  '{harness:$h, backend_provider:$p, backend_endpoint:$e, backend_model:$m,
+    model_class:$c, effective_context:$x, recommended_tier:$t, signal_disagreements:$s}'

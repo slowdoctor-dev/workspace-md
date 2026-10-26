@@ -51,3 +51,10 @@ coverage/
 # assets are commonly kept out of git; uncomment and tune to taste:
 # 0-storage/**
 # !0-storage/.gitkeep
+
+# Harness-local state (v0.2.0) — never commit
+CLAUDE.local.md
+.claude/settings.local.json
+.claude/worktrees/
+.claude/agent-memory-local/
+.codex/hooks.local.json

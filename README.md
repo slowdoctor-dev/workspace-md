@@ -2,7 +2,7 @@
 
 > A workspace-topology specification — sibling to [agents.md](https://agents.md).
 >
-> **Status**: v0.1.2 pre-stable, starter-template form. Primarily used
+> **Status**: v0.2.0 pre-stable, starter-template form. Primarily used
 > by the author (sole adopter); public for visibility and feedback.
 >
 > *Adopters*: this README describes the **spec project** — replace or
@@ -15,28 +15,29 @@ accumulate value with use. While `agents.md` describes how agents
 behave, `workspace.md` describes the workspace they operate within.
 
 Designed to be runtime-flexible across LLM runtimes — hosted CLIs
-(Claude Code, Codex CLI, Gemini CLI / Antigravity CLI [`agy`], Cursor…)
-and local backends (Ollama, LM Studio, MLX, llama.cpp, vLLM…). The
-lists are illustrative, not exhaustive. (On the Gemini CLI → Antigravity
-transition, see `3-control/runtime/antigravity-cli.md`.)
+(Claude Code, Codex CLI, Antigravity CLI [`agy`], Cursor…) and local
+backends (Ollama, LM Studio, MLX, llama.cpp, vLLM…). Lists are
+illustrative, not exhaustive.
 
 ## What's here
 
 - **`WORKSPACE.md`** — the topology specification (start here for
-  understanding *what* the spec is)
-- **`AGENTS.md`** — workspace-AAIF entry; the file an AI agent loads
-  first when reading this repo as a workspace
+  *what* the spec is)
+- **`AGENTS.md`** — the operational card every harness loads first:
+  hot read order + rules in one line
 - **`3-control/foundation/`** — operating principles, identity,
-  memory architecture, runtime-flexibility (the spec proper)
+  memory architecture (R1–R5), runtime tiers, adoption
 - **`2-mind/forge/act/skill/`** — 6 lifecycle skills (init,
-  session-start, session-end, dream, audit, detect-runtime) the
-  agent uses to keep the workspace alive
-- **`2-mind/garden/essential/`** — template seeds for adopter memory
-  (USER, NEXT, SOUL working, journal/)
-- **`3-control/runtime/profile.example.md`** — runtime-profile
-  template; `init` copies it to `profile.md` (the active profile) and
-  fills it. A fresh clone has no `profile.md` → tier defaults to
-  `standard`.
+  session-start, session-end, dream, audit, detect-runtime) in the
+  Agent Skills open format; exposed at `.claude/skills` and
+  `.agents/skills`
+- **`2-mind/forge/cue/lifecycle.md`** — canonical hook spec, rendered
+  to each harness's hook format
+- **`3-control/rule/trust.md`** — baseline trust tiers (what is data,
+  what executes, what is T2)
+- **`3-control/runtime/`** — adapter notes per harness
+  (`claude-code.md`, `codex-cli.md`, `antigravity-cli.md`) +
+  `profile.example.md`
 
 ## Why
 
@@ -44,20 +45,23 @@ Most agent-workspace formats target one CLI. **workspace.md** is
 runtime-agnostic by construction:
 
 - Four mandated top folders (`0-storage/`, `1-active/`, `2-mind/`,
-  `3-control/`) — Life-OS-lifecycle ordering, runtime-independent.
-- Memory architecture — 7 stores, 4 operating rules (R1–R4), 6
-  lifecycle skills — drawing metaphorical inspiration from
-  cognitive science (Schacter-Tulving, Conway, Baddeley, McGaugh,
-  Miller, Ebbinghaus, Loftus, Johnson). The citations frame the
-  design intent; they do not validate the cap numbers, which are
-  defensibly grounded but not empirically tested.
-- Runtime-tier system (lean / standard / extended) — adapts caps to
-  the binding constraint: backend `effective_context`. Local 7-13B
-  model? Use `lean`. Hosted Sonnet/Opus? Use `extended`.
+  `3-control/`) — runtime-independent.
+- Memory architecture — 7 stores, 5 operating rules (R1–R5), 6
+  lifecycle skills — drawing metaphorical inspiration from cognitive
+  science (Schacter-Tulving, Conway, Baddeley, McGaugh, Miller,
+  Ebbinghaus, Loftus, Johnson) and informed by 2026 agent-memory
+  results (small consolidated stores win; sleep-style consolidation).
+- Progressive disclosure — a ≈6K-token hot load at session start;
+  everything else on demand. Context windows are 1M now; attention
+  is not.
+- Runtime-tier system (lean / standard / extended) keyed to **model
+  class**, not raw context size.
+- Concurrency-aware — worktrees, subagents, headless runs: journal
+  ids, append-only `NEXT.md`, memory on the integration branch, PR
+  merge as ratification.
 
-The spec is mostly markdown, plus a couple of optional helper scripts
-(`detect-runtime.sh`, `token-count.sh`). The agent runs it; no daemon,
-no gateway, no binary service.
+The spec is markdown plus two optional helper scripts. The agent
+runs it; no daemon, no gateway, no binary service.
 
 ## Quick adoption
 
@@ -66,57 +70,50 @@ git clone <this-repo> my-workspace
 cd my-workspace
 ```
 
-Then, in your agent (Claude Code / Codex CLI / Gemini CLI / Cursor /
-Hermes / ...):
+Then, in your agent (Claude Code / Codex CLI / Antigravity CLI / Cursor
+/ Hermes / ...):
 
-1. Read `AGENTS.md` to load the 7-item read order.
-2. Invoke the `init` skill — the agent follows the procedure in
-   `2-mind/forge/act/skill/init/SKILL.md` (verify structure → invoke
-   `detect-runtime` → propose `profile.md` for ratify). `init` is a
-   markdown-described procedure, not a shell command; your agent
-   reads the SKILL.md and executes the steps.
+1. It reads `AGENTS.md` natively (fallback: a one-line `CLAUDE.md`
+   containing `@AGENTS.md`).
+2. Invoke the `init` skill — the agent follows
+   `2-mind/forge/act/skill/init/SKILL.md` (verify structure → run
+   `detect-runtime` → propose `profile.md` for ratify → expose native
+   aliases).
 3. Customize `3-control/foundation/SOUL.md` to your workspace's
-   identity. The canonical SOUL.md ships with this spec-repo's own
-   caretaker identity — adopters replace the section content,
-   preserving the section structure (per the Adopter note inside).
-4. Start your first session — `session-start` loads the 7-item read
+   identity (replace section content, keep structure).
+4. Start your first session — `session-start` loads the hot read
    order; `session-end` writes a journal entry on close.
 
-After a few sessions, the `dream` skill (auto-invoked at
-substantive-session close) distills journal entries into your
-agent's persistent memory at `2-mind/garden/essential/USER.md` and
-`SOUL.md` working. The `audit` skill periodically prunes and
-archives.
+After a few sessions, `dream` distills journal entries (and your
+harness's own auto memory, as an inbox) into
+`2-mind/garden/essential/USER.md` and working `SOUL.md`. `audit`
+periodically prunes, archives, and logs store sizes.
 
 ## Reading order for new readers
 
-If you're new to the spec, read in this order:
-
 1. **This README** — orientation
-2. **`WORKSPACE.md`** — full topology spec, conventions, known limits
-3. **`3-control/foundation/PRINCIPLE.md`** — 6 core design values +
-   per-layer operation
-4. **`3-control/foundation/use-driven-memory.md`** — 7 stores +
-   2 tiers + 4 rules + 6 skills (the cognitive memory architecture)
-5. **`3-control/foundation/runtime-flexibility.md`** — how the spec
-   adapts across harnesses + backends (R2 Part B mechanism)
-6. **Skills**: `2-mind/forge/act/skill/<name>/SKILL.md` for each
-   lifecycle skill
+2. **`WORKSPACE.md`** — topology, conventions, known limits
+3. **`3-control/foundation/PRINCIPLE.md`** — 7 core design values
+4. **`3-control/foundation/use-driven-memory.md`** — stores, tiers,
+   R1–R5, skills
+5. **`3-control/foundation/runtime-flexibility.md`** — model classes
+   and tiers
+6. **Skills**: `2-mind/forge/act/skill/<name>/SKILL.md`
 
 ## Status
 
-**v0.1.2 pre-stable** — breaking changes possible. The spec matures
-with usage. Numbers (caps, thresholds) are *defensibly grounded but
-not empirically validated*; first real adopter workloads will surface
-where they need adjustment. See `WORKSPACE.md` §Known limitations
-for acknowledged gaps.
+**v0.2.0 pre-stable** — breaking changes possible. v0.2.0 is a
+breaking release: single `AGENTS.md` entry (symlinks removed), 5-item
+hot read order, model-class tiers, Gemini CLI retired, R5 concurrency,
+harness-memory inbox, trust tiers. Cap numbers remain *defensibly
+grounded but not empirically validated*; `audit` now logs the data to
+fix that.
 
 ## Relationship to agents.md
 
 `workspace.md` is a sibling to [agents.md](https://agents.md), not a
 fork. **AAIF-aligned**: this repo's `AGENTS.md` follows AAIF
-conventions; `CLAUDE.md` and `GEMINI.md` symlink to it for the three
-major hooked CLIs.
+conventions and is read natively by current harnesses.
 
 - `agents.md` answers: *how does this agent behave?*
 - `workspace.md` answers: *how is the directory the agent works in
@@ -127,23 +124,17 @@ The two compose. A workspace can adopt both.
 ## Contributing
 
 Currently maintained by one author; sole adopter so far. Feedback is
-welcome via issues — especially:
-
-- Adoption reports (which CLI? which backend? what broke?)
-- Empirical cap-number observations (what worked, what didn't)
-- New harnesses or backends to add to `detect-runtime` enums
-- Doc clarity improvements
-
-PRs may not be merged quickly while the spec is pre-stable —
-substantive proposals are better discussed in an issue first.
+welcome via issues — especially adoption reports (which harness? which
+backend? what broke?), empirical cap observations (`audit`'s metrics
+lines are the format), new harnesses for `detect-runtime`, and doc
+clarity. PRs may not be merged quickly while pre-stable — discuss
+substantive proposals in an issue first.
 
 ## License
 
 [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0).
-See `LICENSE` for full terms. Permissive (commercial use allowed,
-no copyleft obligation on adopters' workspaces) with patent grant
-and attribution requirement.
+See `LICENSE`.
 
 ---
 
-*Version: v0.1.2 (pre-stable). One approach among many.*
+*Version: v0.2.0 (pre-stable). One approach among many.*

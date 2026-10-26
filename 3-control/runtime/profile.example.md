@@ -16,8 +16,8 @@ triggers a re-ratify prompt at `session-start`.
 
 T2 (Owner-ratified). Default if `profile.md` absent: `standard` (R1
 baseline applies as-is). See `3-control/foundation/runtime-flexibility.md`
-for the full mechanism (tier system, derivation rule, detection,
-graceful degradation).
+for the full mechanism (tier system, model classes, derivation rule,
+detection, graceful degradation).
 
 ---
 
@@ -25,46 +25,45 @@ graceful degradation).
 **backend_provider**: (unfilled — `init` writes after detection)
 **backend_endpoint**: (unfilled — `init` writes after detection)
 **backend_model**: (unfilled — `init` writes after detection)
-**effective_context**: (unfilled — `init` writes after detection)
+**model_class**: (unfilled — `init` writes after detection)
 **active_tier**: standard
+**effective_context**: (optional — record when cheaply known)
 **last_updated**: (unfilled)
 **notes**: (template — `init` will replace on first run)
 
-Field reference:
+Field reference (6 required + 2 optional):
 - `harness` — agent CLI / UI wrapping the agent loop (`claude-code` |
-  `codex-cli` | `gemini-cli` | `antigravity` | `cursor` | `hermes` |
-  `opencode` | `continue` | `custom`; open enum). Note: Gemini CLI
-  sunsets 2026-06-18 for free/Pro/Ultra → `antigravity` (`agy`) is its
-  successor (Enterprise keeps Gemini CLI).
+  `codex-cli` | `antigravity` | `cursor` | `hermes` | `opencode` |
+  `continue` | `gemini-cli` (legacy — retired 2026-06-18 outside
+  Enterprise) | `custom`; open enum)
 - `backend_provider` — LLM token generator (`anthropic` | `openai` |
   `google` | `ollama` | `lm-studio` | `mlx` | `llama-cpp` | `vllm` |
   `custom`; open enum)
 - `backend_endpoint` — URL (hosted SDK default OR e.g.
   `http://localhost:11434/v1`)
-- `backend_model` — model id (e.g. `claude-sonnet-4-6`,
-  `qwen2.5-coder:32b`). **Descriptive vs prescriptive**: on runtimes
-  that let the Owner pick the model, this field is prescriptive (what
-  the workspace targets). On runtimes that deny override and
-  auto-select — e.g. Antigravity CLI removed the `--model` flag and
-  auto-picks Gemini (see `3-control/runtime/antigravity-cli.md`) — it
-  is descriptive only: record the observed selection with an `auto:`
-  prefix (e.g. `auto:gemini-3.5-flash`).
-- `effective_context` — integer tokens (from `/v1/models` query or
-  known constant; see `detect-runtime/SKILL.md` §3)
+- `backend_model` — model id (e.g. `claude-opus-5-5`, `qwen3:32b`).
+  **Descriptive vs prescriptive**: where the Owner picks the model
+  this is prescriptive (what the workspace targets); where the harness
+  auto-selects, record the observed selection with an `auto:` prefix
+  (e.g. `auto:gemini-3-flash`).
+- `model_class` — `hosted-frontier` | `hosted-small` | `local-large` |
+  `local-small` | `uncertain` (open enum; defined in
+  `runtime-flexibility.md §Model classes`). **Drives the tier.**
 - `active_tier` — `lean` | `standard` | `extended` (Owner-ratified;
   may differ from detection's recommendation)
+- `effective_context` *(optional)* — integer tokens when cheaply known
+  (Models API `max_input_tokens`, local `/v1/models`). Used only as a
+  sanity check: ≤16K forces `lean`.
 - `last_updated` — `YYYY-MM-DD` of most recent ratification
-- `notes` — Owner annotations: rationale, exceptions, declared
-  attention-quality observations
+- `notes` — Owner annotations: rationale, exceptions, class judgment
+  calls for mid-size local models
 
 ---
 
 ## Tier reference
 
 Full cap table at `3-control/foundation/runtime-flexibility.md`.
-Summary:
-
-Caps are in **tokens** (line counts are a secondary advisory).
+Summary (tokens; line counts are a secondary advisory):
 
 | Tier | USER (hard / consol) | NEXT | journal/<entry> | garden/<topic> flag |
 |---|---|---|---|---|

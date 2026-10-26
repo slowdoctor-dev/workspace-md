@@ -2,13 +2,17 @@
      (the Started/Closed/Runtime/Working-dir header below is their R3
      metadata). If your workspace mandates frontmatter, see the journal
      carve-out in 3-control/foundation/adoption.md. Keep this consistent
-     across runtimes — do not let one CLI add frontmatter and another omit it. -->
+     across runtimes.
+     Filename: <YYYY-MM-DD>-<runtime>-<sid>.md
+     sid scheme for this workspace: (unset — default: harness session-id
+     prefix, else HHMMSS; legacy NNN allowed for sequential use) -->
 
-# Journal — YYYY-MM-DD <runtime> NNN
+# Journal — YYYY-MM-DD <runtime> <sid>
 
 **Started**: YYYY-MM-DD HH:MM
 **Closed**: YYYY-MM-DD HH:MM
-**Runtime**: <e.g., Claude Code / Codex CLI / Gemini CLI>
+**Runtime**: <e.g., Claude Code / Codex CLI / Antigravity CLI / cloud / cron>
+**Branch**: <integration branch, or worktree/feature branch name — R5>
 **Working dir**: <repo or sub-path>
 
 ## Summary
@@ -22,17 +26,19 @@ Architecture / naming / design choices — one bullet each.
 ## Learnings
 
 New insights, surprising findings, corrections — cite which file or
-decision benefited.
+decision benefited. Include T1 items corrected in use
+(reconsolidation, R3).
 
 ## Procedural changes
 
-New skills / scripts / rules — anything new in `2-mind/forge/` or
-`3-control/`, per-item.
+New skills / scripts / rules / cue rows — anything new in
+`2-mind/forge/` or `3-control/`, per item. T2 items: ratified
+in-session, or queued (`1-active/proposals/…`, PR #).
 
 ## Open / NEXT
 
-Items transferred to `garden/essential/NEXT.md` — keep the snapshot
-here for source-monitoring trail.
+Items appended to `garden/essential/NEXT.md` as this session's block —
+keep the snapshot here for the source-monitoring trail.
 
 ## Owner-signals
 
@@ -42,5 +48,6 @@ to `garden/essential/USER.md` or `garden/essential/SOUL.md`.
 ## Consolidations applied (filled by `dream`)
 
 After `dream` runs against this entry, log T1 writes (USER.md,
-garden/essential/SOUL.md, garden/<topic>.md) and any T2 graduations
-proposed / ratified / declined.
+garden/essential/SOUL.md, garden/<topic>.md), reconsolidations,
+harness-inbox items promoted/dropped, and T2 graduations proposed /
+ratified / queued / declined.

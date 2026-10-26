@@ -1,64 +1,53 @@
 # Antigravity CLI adapter
 
 Runtime adapter notes for **Antigravity CLI** (`agy`) — Google's
-successor to Gemini CLI. Gemini CLI sunsets **2026-06-18** for free /
-AI Pro / AI Ultra / org installs; Code Assist Standard/Enterprise keep
-Gemini CLI. This file is the per-workspace adapter convention (T2);
-the universal mechanism lives in `runtime-flexibility.md`.
+successor to Gemini CLI. Gemini CLI stopped serving free / AI Pro /
+AI Ultra accounts on **2026-06-18**; Code Assist Standard/Enterprise
+keep Gemini CLI. This file is the per-workspace adapter convention
+(T2); the universal mechanism lives in `runtime-flexibility.md`.
 
-**This doc is the canonical home for the Antigravity/Gemini-transition
-facts** (sunset date, `agy` binary, MCP rename, collision, model
-auto-select). README / WORKSPACE / AGENTS / profile mention it briefly
-and point here — they don't restate the volatile details. These are
-external vendor claims; verify before relying.
+**Canonical home for the Antigravity/Gemini-transition facts.** Other
+docs mention the transition briefly and point here. These are external
+vendor claims, several from third-party guides — **verify before
+relying**; `last_verified: 2026-10-26` (sunset confirmed via Google's
+announcement + post-shutdown reporting; feature facts via secondary
+sources, marked below).
 
-`last_verified: 2026-05-24`
-
-| Surface | Mapping | Notes |
+| Surface | Mapping | Confidence |
 |---|---|---|
-| Context files | `AGENTS.md` + `GEMINI.md` auto-loaded, unchanged | no edits needed (✓ compatible) |
-| Skills | `.agents/skills` → `2-mind/forge/act/skill/` (symlink) | Antigravity's native skills dir; skills are `.md`, format-compatible |
-| MCP | `.agents/mcp_config.json` — **rendered on demand** (not pre-created): created + symlinked to `3-control/external/mcp/mcp_config.json` only after the first server is registered, with `url` → `serverUrl` on remote servers. See `3-control/external/mcp/README.md` |
-| Model | `--model` flag **removed**; runtime auto-selects (Gemini) | `profile.md backend_model` is *descriptive* here — record `auto:gemini-3.5-flash` |
-| Hooks | same JSON hook format + lifecycle events as Gemini CLI | SessionStart hook usable for R2 enforcement |
-| Headless | `agy -p "<prompt>" --output-format json` | lifecycle skills (`init`, `audit`, `dream`) are CI-runnable via headless mode |
+| Context files | `AGENTS.md` + `GEMINI.md` both auto-loaded | official codelab + guides — no `GEMINI.md` needed when `AGENTS.md` exists |
+| Skills | `.agents/skills/` → `2-mind/forge/act/skill/`; SKILL.md folders with name/description frontmatter | official codelab |
+| MCP | `.agents/mcp_config.json` (workspace) / `~/.gemini/config/mcp_config.json` (user); remote servers use `serverUrl` (not `url`) — rendered from `registry.json` on demand | guides agree; `agy mcp add/list` exists for user-level config (reported ≥1.1.16) |
+| Hooks | JSON hook format inherited from Gemini CLI; location reported as `.agents/hooks.json` (project) / `~/.gemini/config/hooks.json` (user) **or** `settings.json` — sources conflict | **unverified** — check `antigravity.google/docs` before rendering `cue/lifecycle.md` |
+| Model | some guides document `agy --model` and `/model`; v0.1.x of this spec recorded the flag as removed — **conflicting** | **unverified**; record the observed model with `auto:` prefix in `profile.md` when not Owner-selected |
+| Headless | `agy -p "<prompt>" --output-format json` | guides |
+| Subagents | first-class; specs under `2-mind/forge/role/<name>/`, inherit workspace `AGENTS.md` and see `.agents/skills` | codelab + guides |
 
 ## Detection
 
-`detect-runtime` recognizes `agy` via: `agy --version`,
-`~/.config/agy/credentials.json` or `~/.gemini/antigravity-cli/`, and
-`AGY_*` env vars; `harness = antigravity`. It also **warns** when both
-`gemini` and `agy` are installed — they share `~/.gemini/GEMINI.md`
-(global rules), causing rule leakage (google-gemini/gemini-cli#16058,
-closed "not planned").
-
-## Subagents
-
-Antigravity promotes subagents to a first-class feature for parallel
-work. Model subagent-scoped specs under the existing per-agent
-convention: `2-mind/forge/role/<subagent>/AGENTS.md` (+ optional
-`rules/`). Subagents inherit the workspace `AGENTS.md` context and see
-skills via `.agents/skills` (= `2-mind/forge/act/skill/`). Keep
-subagent rules in the agent-local home, not workspace-wide
-`3-control/rule/`, unless they apply to every agent.
+`detect-runtime`: `agy --version`, `~/.config/agy/`, `AGY_*` env →
+`harness = antigravity`. **Warns** when both `gemini` and `agy` are
+installed — they share `~/.gemini/GEMINI.md` (global rules), causing
+rule leakage (google-gemini/gemini-cli#16058, closed "not planned").
+`model_class`: Gemini 3.x Pro → `hosted-frontier`; Flash / Flash-Lite →
+`hosted-small`.
 
 ## Install
 
 `curl -fsSL https://antigravity.google/cli/install.sh | bash`
 (PowerShell variant on Windows). Part of the Antigravity 2.0 platform.
 
-## Sources (`last_verified: 2026-05-24`)
+## Sources
 
 - Google Developers Blog — Transitioning Gemini CLI to Antigravity CLI:
   <https://developers.googleblog.com/an-important-update-transitioning-gemini-cli-to-antigravity-cli/>
-- Google Cloud Blog — Choosing Antigravity or Gemini CLI:
-  <https://cloud.google.com/blog/topics/developers-practitioners/choosing-antigravity-or-gemini-cli>
-- Antigravity codelab (agents.md + skills.md, `.agents/` layout):
-  <https://codelabs.developers.google.com/autonomous-ai-developer-pipelines-antigravity>
-- Migration guide (`url`→`serverUrl`, `--model` removal, hook format):
-  <https://www.aimadetools.com/blog/migrate-gemini-cli-to-antigravity-cli/>
-- `~/.gemini/GEMINI.md` cross-tool collision (closed "not planned"):
+- The New Stack (2026-06-20) — shutdown confirmed:
+  <https://thenewstack.io/gemini-cli-antigravity-replacement/>
+- Antigravity codelab (agents.md + skills, `.agents/` layout):
+  <https://codelabs.developers.google.com/sdd-agy-cli>
+- Antigravity CLI features / plugins (official):
+  <https://antigravity.google/docs/cli/features/>, <https://antigravity.google/docs/plugins/>
+- `~/.gemini/GEMINI.md` cross-tool collision:
   <https://github.com/google-gemini/gemini-cli/issues/16058>
 
-Re-verify against current vendor docs (`audit` freshness scan flags
-this `last_verified` after 6 months).
+`audit` flags this `last_verified` after 6 months.
