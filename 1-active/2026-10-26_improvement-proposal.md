@@ -272,3 +272,32 @@ v0.2.0 작업 순서 권고: **P0-C(축소) → P0-B(로드 재편) → P0-A/D(e
 - Worktree 병렬 에이전트 관행: <https://noqta.tn/en/blog/git-worktrees-parallel-ai-coding-agents-guide-2026>, <https://codex.danielvaughan.com/2026/03/26/codex-cli-worktree-parallel-development/>
 - 스킬 공급망 보안: <https://snyk.io/blog/snyk-vercel-securing-agent-skill-ecosystem/>, <https://labs.cloudsecurityalliance.org/research/csa-research-note-skill-md-agent-context-poisoning-20260506>
 - Gemini CLI 종료 후속 보도: <https://thenewstack.io/gemini-cli-antigravity-replacement/>
+
+---
+
+## 7. 재확인 결과 및 추가 제안 (2026-10-26, 적용 직전)
+
+### 7.1 재확인 — 공식 문서로 확정된 것
+| 항목 | 결과 | 출처 |
+|---|---|---|
+| Claude Code `AGENTS.md` 네이티브 | **확정** (v2.1.277+). "symlink는 삭제해도 됨". 설정 `claude-md-and-agents-md`로 병행 로드 가능 | code.claude.com/docs/en/memory |
+| Claude Code auto memory | **확정**: `~/.claude/projects/<project>/memory/MEMORY.md` + topic files; 앞 200줄/25KB 로드; worktree 간 공유; 셀프호스트 환경 기본 off; 끄기 `autoMemoryEnabled:false` / `CLAUDE_CODE_DISABLE_AUTO_MEMORY=1`; 위치 변경 `autoMemoryDirectory` | 같은 문서 §Auto memory |
+| Claude Code subagent | **확정**: `.claude/agents/<name>.md`; `isolation: worktree`; `memory: user|project|local` (`.claude/agent-memory/<name>/`); subagent는 CLAUDE.md는 받지만 auto memory는 받지 않음 | docs/en/sub-agents |
+| Claude Code worktree | **확정**: `.claude/worktrees/<name>/`; `worktree.baseRef`; main checkout의 `.claude/skills`·`agents` read-through; `.claude` 자체가 symlink면 worktree 생성 거부 (→ `.claude/skills`만 symlink, `.claude/`는 실제 디렉터리) | docs/en/worktrees |
+| Claude Code hooks | **확정**: `SessionStart` source = startup/resume/clear/compact/fork; `PreCompact`/`PostCompact`/`SessionEnd`/`Stop`/`SubagentStart|Stop`/`WorktreeCreate` | docs/en/hooks |
+| Codex `.agents/skills` | **확정** (공식 문서 발췌: cwd→repo root 스캔) | developers.openai.com/codex/skills |
+| Codex hooks | **확정(2차)**: 2026-05 GA; `.codex/hooks.json` 또는 config.toml 인라인; SessionStart source startup/resume/clear; PreCompact/PostCompact | 2차 자료 다수 |
+| Codex memories | **2차**: `~/.codex/memories/`, 기본 off, 백그라운드 요약 | mem0 / 블로그 |
+| Antigravity | `.agents/skills`, `.agents/mcp_config.json`(serverUrl) **확정(2차)**; hooks 위치는 자료 불일치(`.agents/hooks.json` vs settings); **`--model` 플래그는 존재한다는 자료가 있어 v0.1.2의 "removed" 서술과 충돌** → 스펙에서는 "verify"로 완화 | 2차 자료 |
+| 모델 context | Claude 5 전 계열 1M(공식 표); GPT-5.5 ≈1M; Gemini 3.x 1M **확정** → P0-C 근거 유효 | Anthropic 표, Vertex 문서 |
+| ETH 연구 | arXiv:2602.11988. LLM 생성 컨텍스트 파일: 성공률 −~3%, 비용 +20%+; 사람 작성은 소폭 이득 → P0-B 근거 유효 | 2차 요약 |
+| Ollama 기본 context | 빌드별 2K/4K/VRAM 의존으로 **불일치** → "설정된 context가 hot load를 못 담는 경우"만 `lean` 강제 규칙으로 남김 | 2차 자료 |
+
+접근 불가(네트워크 정책): developers.openai.com, antigravity.google, arxiv.org, agentskills.io 직접 fetch 실패. 해당 항목은 검색 발췌·2차 자료로 확인했고 스펙 본문에는 "verify before relying"를 유지한다.
+
+### 7.2 최신 연구 반영 — 추가 제안 2건
+- **M1. 두 속도 메모리 + 회수 시 재공고화(reconsolidation on retrieval)**: Auto-Dreamer(arXiv:2605.20616, 2026-05)는 세션 내 빠른 capture와 세션 간 느린 consolidation을 분리하고, **12× 작은 메모리 뱅크**가 더 큰 베이스라인을 이겼다고 보고 — R1 캡과 `session-end → dream` 2단 구조를 지지한다. "Human-Inspired Memory Architecture"(arXiv:2605.08538)의 **retrieval-triggered reconsolidation**은 스펙에 없다: `USER.md` 항목이 세션 중 **틀린 것으로 드러나면** 그 자리에서 수정하고 출처를 추가하는 절차를 `dream`(mid-session 모드)에 넣는다. R3와 정합(수정도 인용).
+- **M2. 메모리 과개인화(over-personalisation) 가드**: Codex 메모리 도입 후 "저장된 사용자 선호가 코드베이스 사실을 이긴다"는 sycophancy 위험이 보고됨(2026-06). `USER.md` 헤더와 PRINCIPLE에 한 줄: **person-model은 스타일·절차를 정하고, 사실·근거는 이기지 못한다**. Owner 선호와 증거가 충돌하면 증거를 제시하고 Owner가 결정.
+
+### 7.3 적용 범위 결정
+Owner 지시("재확인 후 적용")에 따라 P0–P2 + M1·M2를 **v0.2.0 한 번에** 적용한다. 로드맵의 단계 분할은 폐기. P2-K(`token-count.sh`)는 이미 Anthropic `count_tokens`·o200k 분기가 있어 **기본 폴백만 o200k로 변경**하는 최소 수정으로 축소.
