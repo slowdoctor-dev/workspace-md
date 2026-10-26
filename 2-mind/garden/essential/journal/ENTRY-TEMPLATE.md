@@ -4,8 +4,8 @@
      carve-out in 3-control/foundation/adoption.md. Keep this consistent
      across runtimes.
      Filename: <YYYY-MM-DD>-<runtime>-<sid>.md
-     sid scheme for this workspace: (unset — default: harness session-id
-     prefix, else HHMMSS; legacy NNN allowed for sequential use) -->
+     sid scheme for this workspace: harness session-id prefix (6 chars,
+     e.g. 01JBv5), else HHMMSS. Set 2026-10-26. -->
 
 # Journal — YYYY-MM-DD <runtime> <sid>
 

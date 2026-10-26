@@ -20,3 +20,8 @@ Block shape:
 ```
 
 <!-- blocks below this line; file is cleared to here on consumption -->
+
+### cloud/01JBv5 @ 2026-10-26T12:55
+**Outstanding**: v0.2.0 merged to `main`. No `profile.md` yet — run `init` (expect claude-code / anthropic / hosted-frontier / extended; mixed-runtime rule if local backends are used).
+**Open questions**: reword canonical `SOUL.md §Avoid` "per-runtime entry (→ AGENTS.md)" for the card concept? Archive `1-active/2026-10-26_improvement-proposal.md` now or let `audit` do it?
+**Next-session priorities**: confirm `AGENTS.md` loads natively without `CLAUDE.md`; run `init`; first `audit` pass for a metrics baseline.
